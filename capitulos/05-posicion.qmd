@@ -9,11 +9,11 @@
 
 ## Centro no significa dato típico en todos los sentidos
 
-Una medida de posición resume dónde se ubican los valores, pero ninguna describe por sí sola toda la distribución. Dos muestras con igual media pueden diferir en dispersión, asimetría, multimodalidad y patrón espacial.
+Una medida de posición resume dónde se ubican los valores, pero ninguna describe por sí sola toda la distribución. Dos muestras con igual media pueden diferir en dispersión, asimetría, multimodalidad y patrón espacial [@alperin_2013, pp. 18–23; @davis_2002, pp. 29–39].
 
 ## Media aritmética
 
-La [media aritmética](../glosario.qmd#glosario-media) de una muestra $x_1,\ldots,x_n$ es
+La [media aritmética](../glosario.qmd#glosario-media) de una muestra $x_1,\ldots,x_n$, medida central basada en el balance de todos los valores, es [@alperin_2013, pp. 20–22]
 
 $$
 \bar{x}=\frac{1}{n}\sum_{i=1}^n x_i.
@@ -49,7 +49,7 @@ $$
 
 Es útil cuando los cambios son multiplicativos o los órdenes de magnitud resultan más relevantes que las diferencias absolutas. No admite ceros ni valores negativos sin una justificación adicional.
 
-Si $Y=\log X$ es normal con media $\mu_Y$ y varianza $\sigma_Y^2$, entonces $X$ es lognormal. En ese modelo,
+Si $Y=\log X$ es normal con media $\mu_Y$ y varianza $\sigma_Y^2$, entonces $X$ es lognormal [@isaaks_srivastava_1989, pp. 13–16]. En ese modelo,
 
 $$
 \operatorname{Mediana}(X)=e^{\mu_Y},\qquad
@@ -103,7 +103,7 @@ Así, media y mediana no compiten por el mismo criterio: una optimiza pérdidas 
 
 ## Moda
 
-La [moda](../glosario.qmd#glosario-moda) es el valor o categoría más frecuente. Es natural para variables categóricas. En variables continuas depende del agrupamiento o del método usado para estimar densidad; por eso una moda obtenida de un histograma puede cambiar al modificar los intervalos.
+La [moda](../glosario.qmd#glosario-moda) es el valor o categoría más frecuente. Es natural para variables categóricas. En variables continuas depende del agrupamiento o del método usado para estimar densidad; por eso una moda obtenida de un histograma puede cambiar al modificar los intervalos [@alperin_2013, pp. 19–23].
 
 ## Cuantiles
 

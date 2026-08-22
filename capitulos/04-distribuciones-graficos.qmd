@@ -10,7 +10,7 @@
 
 ## De una lista a una distribución
 
-Una lista conserva cada observación, pero dificulta percibir estructura cuando $n$ crece. La [distribución](../glosario.qmd#glosario-distribucion) describe cómo se reparten los valores: qué regiones son frecuentes, cuánto ocupan las colas, si existen varios grupos y qué proporción queda por debajo de un umbral.
+Una lista conserva cada observación, pero dificulta percibir estructura cuando $n$ crece. La [distribución](../glosario.qmd#glosario-distribucion) describe cómo se reparten los valores: qué regiones son frecuentes, cuánto ocupan las colas, si existen varios grupos y qué proporción queda por debajo de un umbral [@alperin_2013, pp. 12–18; @isaaks_srivastava_1989, cap. 2, pp. 10–23].
 
 Para una variable categórica con categorías $c_1,\ldots,c_k$, la distribución empírica se describe mediante
 
@@ -38,7 +38,7 @@ Las tres responden preguntas diferentes: ¿cuántos?, ¿qué proporción? y ¿cu
 
 ## Histograma
 
-Un [histograma](../glosario.qmd#glosario-histograma) divide el eje de la variable en intervalos o *bins*. Si todos tienen el mismo ancho, la altura puede representar frecuencia o proporción. Si los anchos difieren, comparar alturas directamente es engañoso: debe usarse [densidad](../glosario.qmd#glosario-densidad) para que el **área** represente probabilidad.
+Un [histograma](../glosario.qmd#glosario-histograma) divide el eje de la variable en intervalos o *bins* [@alperin_2013, pp. 13–16; @isaaks_srivastava_1989, pp. 10–12]. Si todos tienen el mismo ancho, la altura puede representar frecuencia o proporción. Si los anchos difieren, comparar alturas directamente es engañoso: debe usarse [densidad](../glosario.qmd#glosario-densidad) para que el **área** represente probabilidad.
 
 Para un intervalo $B_j$ de ancho $a_j$,
 
@@ -79,7 +79,7 @@ Debe indicarse siempre la clave: aquí `4 | 7` significa 47.
 
 ## Función de distribución empírica
 
-La [ECDF](../glosario.qmd#glosario-ecdf) responde directamente qué proporción de observaciones es menor o igual que un valor $x$:
+La [ECDF](../glosario.qmd#glosario-ecdf) responde directamente qué proporción de observaciones es menor o igual que un valor $x$, sin elegir intervalos [@isaaks_srivastava_1989, pp. 12–13; @alperin_2013, p. 16]:
 
 $$
 \widehat F_n(x)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i\leq x),
@@ -98,7 +98,7 @@ Así, el percentil 25 es $Q_1$, el percentil 50 es la mediana y el percentil 75 
 
 ## Estimación de densidad por kernels
 
-La [KDE](../glosario.qmd#glosario-kde) reemplaza cada observación por un pequeño [kernel](../glosario.qmd#glosario-kernel) y suma sus contribuciones:
+La [KDE](../glosario.qmd#glosario-kde) reemplaza cada observación por un pequeño [kernel](../glosario.qmd#glosario-kernel) y suma sus contribuciones [@pyrcz_2024, cap. “Univariate Distributions”]:
 
 $$
 \widehat f_h(x)=\frac{1}{nh}\sum_{i=1}^{n}

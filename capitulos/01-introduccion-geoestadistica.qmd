@@ -12,7 +12,7 @@ Al finalizar este capítulo, el lector debería poder:
 
 ## De una medición a una decisión
 
-La estadística no es solamente un conjunto de fórmulas. Es una forma organizada de aprender a partir de [observaciones](../glosario.qmd#glosario-observacion):
+La estadística no es solamente un conjunto de fórmulas. Es una forma organizada de aprender a partir de [observaciones](../glosario.qmd#glosario-observacion), desde la formulación del problema y la medición hasta el análisis y la interpretación [@alperin_2013, pp. 1–10; @davis_2002, pp. 1–10]:
 
 $$
 \text{recolectar}\longrightarrow\text{organizar}\longrightarrow
@@ -27,7 +27,7 @@ En geología, los datos suelen ser escasos respecto de la extensión y complejid
 
 ## ¿Qué agrega la geoestadística?
 
-La estadística clásica estudia la variabilidad de los valores. La [geoestadística](../glosario.qmd#glosario-geoestadistica) estudia, además, cómo esa variabilidad se organiza en el espacio. Una observación espacial puede representarse como
+La estadística clásica estudia la variabilidad de los valores. La [geoestadística](../glosario.qmd#glosario-geoestadistica) estudia, además, cómo esa variabilidad se organiza en el espacio, mediante descripciones que incorporan localización, separación y continuidad [@isaaks_srivastava_1989, cap. 4, pp. 40–65]. Una observación espacial puede representarse como
 
 $$
 \bigl(\mathbf{u}_i,z(\mathbf{u}_i)\bigr),
@@ -60,7 +60,7 @@ Cuatro ideas atraviesan el manual:
 
 ## Breve desarrollo histórico
 
-La geoestadística moderna combina ideas de procesos estocásticos con problemas de evaluación de recursos. Los trabajos de D. G. Krige en minería mostraron que la configuración espacial de las muestras afectaba la estimación de leyes. Georges Matheron formalizó después la teoría de variables regionalizadas y el kriging. Con el desarrollo computacional, estas ideas se extendieron a petróleo, hidrogeología, ambiente, suelos, agricultura y ciencias del sistema terrestre.
+La geoestadística moderna combina ideas de procesos estocásticos con problemas de evaluación de recursos. Los trabajos de D. G. Krige en minería mostraron que la configuración espacial de las muestras afectaba la estimación de leyes. Georges Matheron formalizó después la teoría de variables regionalizadas y el kriging. Con el desarrollo computacional, estas ideas se extendieron a petróleo, hidrogeología, ambiente, suelos, agricultura y ciencias del sistema terrestre [@alperin_2013, pp. 1–3; @isaaks_srivastava_1989, cap. 1].
 
 La historia importa porque recuerda que las herramientas no nacieron como una colección abstracta: respondieron a problemas de decisión bajo información espacial incompleta.
 
@@ -84,7 +84,7 @@ Conviene separar tres objetivos:
 - **[Predicción](../glosario.qmd#glosario-prediccion):** estimar una variable en una localización o volumen no observado.
 - **[Simulación condicional](../glosario.qmd#glosario-simulacion-condicional):** producir realizaciones alternativas compatibles con datos y modelo para representar escenarios posibles.
 
-Una predicción suavizada y una simulación pueden compartir datos y variograma, pero responden preguntas diferentes. La primera busca estimar; la segunda, reproducir variabilidad y evaluar consecuencias de escenarios alternativos.
+Una predicción suavizada y una simulación pueden compartir datos y variograma, pero responden preguntas diferentes. La primera busca estimar; la segunda, reproducir variabilidad y evaluar consecuencias de escenarios alternativos [@pyrcz_2024, caps. “Simple and Ordinary Kriging” y “Stochastic Simulation”].
 
 ## El problema debe preceder al método
 

@@ -22,7 +22,7 @@ Definir la unidad exige decisiones. Si un pozo fue muestreado varias veces, ¿ca
 
 ## Población y muestra
 
-Llamamos **[población](../glosario.qmd#glosario-poblacion)** al conjunto de unidades sobre el cual deseamos formular conclusiones. Una **[muestra](../glosario.qmd#glosario-muestra)** es el subconjunto efectivamente observado.
+Llamamos **[población](../glosario.qmd#glosario-poblacion)** al conjunto de unidades sobre el cual deseamos formular conclusiones. Una **[muestra](../glosario.qmd#glosario-muestra)** es el subconjunto efectivamente observado. En geología conviene distinguir además la población geológica —objetos o eventos del sistema— de la población estadística de valores derivados de sus características [@alperin_2013, pp. 3–6].
 
 Estas definiciones sólo son útiles si delimitamos la población:
 
@@ -37,7 +37,7 @@ Definir la población equivale a definir el dominio de validez de nuestras concl
 
 ## Representatividad y diseño de muestreo
 
-Una muestra es representativa respecto de una pregunta cuando su mecanismo de selección permite aprender sobre la población definida sin excluir sistemáticamente partes relevantes de ella. No es una propiedad que pueda decidirse sólo mirando $n$.
+Una muestra es representativa respecto de una pregunta cuando su mecanismo de selección permite aprender sobre la población definida sin excluir sistemáticamente partes relevantes de ella. No es una propiedad que pueda decidirse sólo mirando $n$; depende del diseño, la unidad de muestreo y el modo en que se seleccionaron las observaciones [@mckillup_dyar_2010, cap. 4, pp. 28–44; @alperin_2013, pp. 5–6].
 
 - **Muestreo regular:** cubre el dominio mediante una grilla o separación aproximadamente constante. Facilita cobertura, pero puede interactuar con periodicidades del fenómeno.
 - **Muestreo aleatorio:** cada unidad tiene una probabilidad de selección conocida. Favorece inferencia basada en diseño, aunque puede dejar vacíos espaciales.
@@ -48,7 +48,7 @@ En muchas campañas reales se combinan diseños. La tarea no consiste en etiquet
 
 ### Geometría del muestreo
 
-En un problema espacial no alcanza con saber cuántas observaciones hay. Su configuración determina qué distancias y direcciones aparecen entre pares. Si no existen pares para cierto rango de separación o azimut, será difícil aprender la continuidad correspondiente. Aumentar $n$ dentro de una zona ya densamente muestreada puede añadir redundancia sin mejorar la cobertura del dominio.
+En un problema espacial no alcanza con saber cuántas observaciones hay. Su configuración determina qué distancias y direcciones aparecen entre pares. Si no existen pares para cierto rango de separación o azimut, será difícil aprender la continuidad correspondiente. Aumentar $n$ dentro de una zona ya densamente muestreada puede añadir redundancia sin mejorar la cobertura del dominio [@isaaks_srivastava_1989, cap. 7, pp. 140–182].
 
 Una ubicación rodeada por datos y otra situada fuera de la envolvente muestral tampoco están igualmente informadas. La primera corresponde a interpolación dentro de la cobertura; la segunda se aproxima a una extrapolación, normalmente más dependiente de los supuestos.
 
@@ -62,7 +62,7 @@ $$
 \bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.
 $$
 
-El estadístico es observable; el parámetro que intentamos conocer generalmente no lo es. Dos muestras de la misma población pueden producir valores diferentes de $\bar{x}$. Esa variación entre muestras es la puerta de entrada a la inferencia.
+El estadístico es observable; el parámetro que intentamos conocer generalmente no lo es. Dos muestras de la misma población pueden producir valores diferentes de $\bar{x}$. Esa variación entre muestras es la puerta de entrada a la inferencia [@mckillup_dyar_2010, cap. 7, pp. 66–83].
 
 | Población | Muestra |
 |---|---|
@@ -100,7 +100,7 @@ Un estadístico describe exactamente la muestra utilizada. Convertirlo en una af
 
 ## ¿Qué se pierde al ignorar la localización?
 
-La lista de concentraciones permite calcular histogramas, cuantiles o una media. Sin embargo, si permutamos los valores entre las coordenadas de los pozos, todos esos resúmenes permanecen iguales y el patrón espacial puede cambiar por completo.
+La lista de concentraciones permite calcular histogramas, cuantiles o una media. Sin embargo, si permutamos los valores entre las coordenadas de los pozos, todos esos resúmenes permanecen iguales y el patrón espacial puede cambiar por completo. Esta separación entre descripción univariada y descripción espacial estructura el tratamiento clásico de datos regionalizados [@isaaks_srivastava_1989, caps. 2 y 4].
 
 Ese experimento mental muestra el límite central de la estadística no espacial: describe **qué valores** fueron observados, pero no necesariamente **cómo se organizan en el espacio**.
 

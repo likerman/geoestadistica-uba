@@ -10,7 +10,7 @@
 
 ## Misma posición, distinta variabilidad
 
-Los conjuntos $10,10,10,10,10$ y $2,6,10,14,18$ tienen media 10, pero no describen el mismo comportamiento. Una medida central necesita acompañarse por una medida de dispersión.
+Los conjuntos $10,10,10,10,10$ y $2,6,10,14,18$ tienen media 10, pero no describen el mismo comportamiento. Una medida central necesita acompañarse por una medida de dispersión [@alperin_2013, pp. 24–27; @isaaks_srivastava_1989, pp. 16–21].
 
 ## Rango e intervalo intercuartílico
 
@@ -54,7 +54,7 @@ $$
 \sigma^2=\frac{1}{N}\sum_{i=1}^{N}(x_i-\mu)^2,
 $$
 
-mientras que la varianza muestral usada para estimar $\sigma^2$ es
+mientras que la varianza muestral usada para estimar $\sigma^2$ es [@alperin_2013, pp. 24–25; @davis_2002, pp. 34–39]
 
 $$
 s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2.
@@ -71,7 +71,7 @@ $$
 
 para cualquier constante $a$. Por ello, las desviaciones respecto de $\bar{x}$ tienden a ser menores que las desviaciones respecto de la media poblacional desconocida $\mu$.
 
-Además, una vez conocidas $n-1$ desviaciones, la última queda fijada porque deben sumar cero. Existen $n-1$ [grados de libertad](../glosario.qmd#glosario-grados-libertad). Bajo muestreo independiente e idénticamente distribuido,
+Además, una vez conocidas $n-1$ desviaciones, la última queda fijada porque deben sumar cero. Existen $n-1$ [grados de libertad](../glosario.qmd#glosario-grados-libertad) [@davis_2002, p. 69]. Bajo muestreo independiente e idénticamente distribuido,
 
 $$
 \mathbb{E}\!\left[\sum_{i=1}^{n}(X_i-\bar X)^2\right]
@@ -94,7 +94,7 @@ $$
 
 Recupera las unidades originales. Si $s=5$ m, no significa que cada dato esté exactamente a 5 m de la media; es una medida global de dispersión cuadrática.
 
-La interpretación mediante porcentajes alrededor de la media requiere un modelo. Para una distribución normal, aproximadamente 68 %, 95 % y 99,7 % caen dentro de una, dos y tres desviaciones estándar. No es una regla universal para cualquier distribución.
+La interpretación mediante porcentajes alrededor de la media requiere un modelo. Para una distribución normal, aproximadamente 68 %, 95 % y 99,7 % caen dentro de una, dos y tres desviaciones estándar. No es una regla universal para cualquier distribución [@mckillup_dyar_2010, cap. 7, pp. 66–83].
 
 Sin asumir normalidad, la desigualdad de Chebyshev establece, para $k>1$ y varianza finita,
 
@@ -118,7 +118,7 @@ $$
 CV=\frac{s}{\bar{x}}\times100\%.
 $$
 
-Permite comparar dispersión relativa entre variables positivas medidas en escala de razón. Es inestable si $\bar{x}$ está cerca de cero y carece de interpretación útil en escalas con cero arbitrario, como grados Celsius.
+Permite comparar dispersión relativa entre variables positivas medidas en escala de razón. Es inestable si $\bar{x}$ está cerca de cero y carece de interpretación útil en escalas con cero arbitrario, como grados Celsius [@alperin_2013, pp. 25–27].
 
 ## Simulación de la corrección $n-1$
 

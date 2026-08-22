@@ -10,9 +10,9 @@
 
 ## Variable y dato
 
-Una **[variable](../glosario.qmd#glosario-variable)** es una propiedad que puede adoptar diferentes valores entre unidades de observación. Un **[dato](../glosario.qmd#glosario-dato)** es el valor registrado para una unidad particular. “Porosidad” es una variable; “18,4 % en la muestra M17” es un dato.
+Una **[variable](../glosario.qmd#glosario-variable)** es una propiedad que puede adoptar diferentes valores entre unidades de observación. Un **[dato](../glosario.qmd#glosario-dato)** es el valor registrado para una unidad particular. “Porosidad” es una variable; “18,4 % en la muestra M17” es un dato [@alperin_2013, pp. 6–10; @mckillup_dyar_2010, cap. 3, pp. 15–27].
 
-El tipo de variable condiciona qué resúmenes y gráficos tienen sentido. Asignar números a categorías no las convierte automáticamente en cantidades.
+El tipo de variable y su escala de medición condicionan qué resúmenes y gráficos tienen sentido. Asignar números a categorías no las convierte automáticamente en cantidades [@alperin_2013, pp. 6–9].
 
 ## Variables cualitativas
 
@@ -65,7 +65,7 @@ Dos análisis pueden compartir una coordenada y representar volúmenes o interva
 
 ## Calidad antes del análisis
 
-Una revisión mínima debe incluir:
+Una revisión mínima debe reconstruir el proceso de medición, los posibles errores y la historia de muestreo [@alperin_2013, pp. 8–10; @isaaks_srivastava_1989, cap. 6, pp. 107–138]. Debe incluir:
 
 1. **identificadores:** unicidad y correspondencia con la unidad observada;
 2. **unidades:** consistencia y conversiones documentadas;
@@ -78,7 +78,7 @@ Una revisión mínima debe incluir:
 
 ## Dato atípico no significa dato erróneo
 
-Un [valor atípico](../glosario.qmd#glosario-valor-atipico) puede provenir de un error de transcripción, contaminación, cambio de unidad o falla instrumental. También puede representar mineralización, una facies poco frecuente o un proceso hidrogeoquímico real. La rareza estadística es una señal para investigar, no una autorización para eliminar.
+Un [valor atípico](../glosario.qmd#glosario-valor-atipico) puede provenir de un error de transcripción, contaminación, cambio de unidad o falla instrumental. También puede representar mineralización, una facies poco frecuente o un proceso hidrogeoquímico real. La rareza estadística es una señal para investigar, no una autorización para eliminar [@alperin_2013, p. 30].
 
 ## Plantilla reproducible de auditoría
 

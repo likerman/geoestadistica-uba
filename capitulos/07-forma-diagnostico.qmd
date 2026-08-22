@@ -22,7 +22,7 @@ $$
 \mu_k=\mathbb{E}\!\left[(X-\mu)^k\right].
 $$
 
-El primer momento respecto del origen es la media. El primer momento central es cero. El segundo momento central es la varianza. Las potencias impares conservan dirección; las pares miden magnitud sin signo y enfatizan progresivamente los extremos.
+El primer momento respecto del origen es la media. El primer momento central es cero. El segundo momento central es la varianza. Las potencias impares conservan dirección; las pares miden magnitud sin signo y enfatizan progresivamente los extremos [@davis_2002, pp. 29–39].
 
 ## Asimetría
 
@@ -34,7 +34,7 @@ $$
 
 $\gamma_1>0$ suele asociarse con una cola derecha larga, común en leyes y concentraciones; $\gamma_1<0$, con cola izquierda. Un valor cercano a cero no garantiza simetría: formas asimétricas diferentes pueden compensar el tercer momento.
 
-La simetría tampoco implica unimodalidad. Una distribución puede ser simétrica y bimodal, por ejemplo al mezclar dos poblaciones con centros separados.
+La simetría tampoco implica unimodalidad. Una distribución puede ser simétrica y bimodal, por ejemplo al mezclar dos poblaciones con centros separados [@alperin_2013, p. 28; @isaaks_srivastava_1989, pp. 20–21].
 
 ## Curtosis
 
@@ -50,11 +50,11 @@ $$
 \gamma_2=\beta_2-3,
 $$
 
-de modo que la normal tiene $\gamma_2=0$. La curtosis se interpreta principalmente como sensibilidad al peso de las colas y a valores extremos, no simplemente como “altura del pico”. Conviene informar si se usa curtosis o exceso de curtosis y qué corrección muestral aplica el programa.
+de modo que la normal tiene $\gamma_2=0$. La curtosis se interpreta principalmente como sensibilidad al peso de las colas y a valores extremos, no simplemente como “altura del pico”. Conviene informar si se usa curtosis o exceso de curtosis y qué corrección muestral aplica el programa [@alperin_2013, pp. 28–29; @isaaks_srivastava_1989, pp. 20–21].
 
 ## Boxplot
 
-El [boxplot](../glosario.qmd#glosario-boxplot) resume mediana, cuartiles y posibles valores atípicos. La caja va de $Q_1$ a $Q_3$ y tiene longitud IQR. En la convención de Tukey, las cercas son
+El [boxplot](../glosario.qmd#glosario-boxplot) resume mediana, cuartiles y posibles valores atípicos. La caja va de $Q_1$ a $Q_3$ y tiene longitud IQR [@davis_2002, cap. 2, “Summary Statistics”]. En la convención de Tukey, las cercas son
 
 $$
 L=Q_1-1.5\operatorname{IQR},\qquad
@@ -85,7 +85,7 @@ $$
 p_i=\frac{i-0.5}{n},\qquad q_i=\Phi^{-1}(p_i),
 $$
 
-y se grafican los pares $(q_i,x_{(i)})$. Una relación aproximadamente lineal es compatible con normalidad; curvaturas sistemáticas indican asimetría, colas diferentes o mezcla de poblaciones.
+y se grafican los pares $(q_i,x_{(i)})$. Una relación aproximadamente lineal es compatible con normalidad; curvaturas sistemáticas indican asimetría, colas diferentes o mezcla de poblaciones [@isaaks_srivastava_1989, pp. 13–16].
 
 El QQ-plot no “prueba” que los datos sean normales. Con muestras pequeñas tiene poca resolución y con muestras enormes detecta desviaciones irrelevantes. La pregunta correcta es si el modelo normal resulta adecuado para el objetivo y la escala considerados.
 
@@ -123,7 +123,7 @@ print(f"Exceso de curtosis: {stats.kurtosis(x, fisher=True, bias=False):.2f}")
 
 ## Transformaciones
 
-Para variables positivas y asimétricas, $Y=\log X$ puede estabilizar escala y reducir asimetría. Pero transformar no es un ritual para “normalizar”. Cambia la interpretación: diferencias en logaritmos corresponden a razones en escala original. Además, volver mediante $\exp(\bar Y)$ produce una media geométrica, no la media aritmética de $X$.
+Para variables positivas y asimétricas, $Y=\log X$ puede estabilizar escala y reducir asimetría. Pero transformar no es un ritual para “normalizar”. Cambia la interpretación: diferencias en logaritmos corresponden a razones en escala original. Además, volver mediante $\exp(\bar Y)$ produce una media geométrica, no la media aritmética de $X$ [@davis_2002, pp. 97–102].
 
 ## Flujo para investigar un valor extremo
 
@@ -186,7 +186,7 @@ fig.colorbar(m, ax=axes[0, :], label="Concentración sintética")
 plt.show()
 ```
 
-La muestra preferencial ilustra un sesgo deliberado hacia valores altos. Las muestras sudoeste y noreste pueden ser internamente coherentes pero no representar el dominio completo. La aleatoria evita esa regla de selección, aunque una realización particular todavía puede dejar huecos espaciales.
+La muestra preferencial ilustra un sesgo deliberado hacia valores altos. Las muestras sudoeste y noreste pueden ser internamente coherentes pero no representar el dominio completo. La aleatoria evita esa regla de selección, aunque una realización particular todavía puede dejar huecos espaciales. Casos clásicos de muestreo geoestadístico muestran precisamente cómo la historia de selección afecta tanto la distribución univariada como la descripción espacial [@isaaks_srivastava_1989, cap. 6, pp. 107–138].
 
 ## De grupos a pares
 
