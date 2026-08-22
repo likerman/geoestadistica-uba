@@ -1,0 +1,3 @@
+# Comparación de grupos y ANOVA
+
+Capítulo planificado y todavía no incluido en la publicación. Desarrollará comparación de medias, partición de la variabilidad, supuestos, tamaños de efecto y comparaciones múltiples antes de los métodos multivariados.

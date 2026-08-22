@@ -1,0 +1,98 @@
+# Notación y lenguaje probabilístico mínimo
+
+Este capítulo reúne las convenciones necesarias para leer las fórmulas de la primera parte. No sustituye el desarrollo sistemático de probabilidad e inferencia que aparecerá más adelante; evita utilizar símbolos sin definir.
+
+## Observación, variable y realización
+
+Una letra minúscula, como $x_i$, representa normalmente un valor observado. Una letra mayúscula, como $X$, representa una [variable aleatoria](../glosario.qmd#glosario-variable-aleatoria): una regla que asigna un valor numérico a cada resultado posible de un experimento o mecanismo de observación.
+
+Si $X_1,\ldots,X_n$ representan las variables antes de observar la muestra, entonces $x_1,\ldots,x_n$ son sus realizaciones. Esta distinción permite separar una cantidad aleatoria, como
+
+$$
+\bar X=\frac{1}{n}\sum_{i=1}^{n}X_i,
+$$
+
+del número que calculamos después de observar los datos,
+
+$$
+\bar x=\frac{1}{n}\sum_{i=1}^{n}x_i.
+$$
+
+En la parte espacial, $Z(\mathbf u)$ denotará una variable aleatoria asociada con la localización $\mathbf u$, mientras que $z(\mathbf u)$ denotará un valor observado o una realización particular. Esta convención se mantendrá en todo el manual.
+
+## Distribución, densidad y acumulación
+
+La distribución de $X$ describe qué valores puede tomar y con qué probabilidad. Su función de distribución acumulada es
+
+$$
+F_X(x)=P(X\leq x).
+$$
+
+Para una variable continua, cuando existe una función de densidad $f_X$, la probabilidad de un intervalo se obtiene como un área:
+
+$$
+P(a<X\leq b)=\int_a^b f_X(x)\,dx,
+\qquad \int_{-\infty}^{\infty}f_X(x)\,dx=1.
+$$
+
+Una densidad puede superar uno: lo que debe quedar entre cero y uno es el área que representa una probabilidad, no necesariamente la altura de la curva.
+
+## Esperanza y varianza
+
+La [esperanza](../glosario.qmd#glosario-esperanza) o valor esperado de una variable continua es
+
+$$
+\mathbb E[X]=\int_{-\infty}^{\infty}x f_X(x)\,dx,
+$$
+
+si la integral existe. Es una propiedad del modelo probabilístico, no el promedio de una muestra particular. La varianza poblacional es
+
+$$
+\operatorname{Var}(X)=\mathbb E[(X-\mu)^2],
+\qquad \mu=\mathbb E[X].
+$$
+
+La media y la varianza muestrales intentan describir o estimar estas cantidades a partir de una realización finita.
+
+## Distribución normal y función cuantil
+
+Una variable $X$ normal con media $\mu$ y varianza $\sigma^2$ se escribe
+
+$$
+X\sim\mathcal N(\mu,\sigma^2).
+$$
+
+Su densidad es
+
+$$
+f(x)=\frac{1}{\sigma\sqrt{2\pi}}
+\exp\!\left[-\frac{(x-\mu)^2}{2\sigma^2}\right].
+$$
+
+La normal estándar tiene media cero y varianza uno. Su función acumulada se denota $\Phi$. La función inversa $\Phi^{-1}(p)$ devuelve el cuantil cuya probabilidad acumulada es $p$; se utiliza, por ejemplo, para construir un QQ-plot normal.
+
+La normal es un modelo, no una forma que deba imponerse a todo conjunto de datos. Su adecuación depende del proceso, del objetivo y de la escala.
+
+## Parámetros, estadísticos y estimadores
+
+Un [parámetro](../glosario.qmd#glosario-parametro) es una propiedad fija —aunque desconocida— del modelo o de la población definida. Un [estadístico](../glosario.qmd#glosario-estadigrafo) es cualquier función de la muestra que no contiene parámetros desconocidos. Un [estimador](../glosario.qmd#glosario-estimador) es un estadístico utilizado para aproximar un parámetro; la [estimación](../glosario.qmd#glosario-estimacion) es el valor numérico obtenido.
+
+Por ejemplo, $\bar X$ es un estimador de $\mu$ y $\bar x=18.4$ es una estimación concreta.
+
+## Convenciones principales
+
+| Símbolo | Significado |
+|---|---|
+| $N$ | tamaño de una población finita |
+| $n$ | tamaño de muestra |
+| $X$ | variable aleatoria |
+| $x_i$ | observación $i$ |
+| $\mu$, $\sigma^2$ | media y varianza poblacionales |
+| $\bar x$, $s^2$ | media y varianza muestrales |
+| $\mathbf u$ | localización espacial |
+| $Z(\mathbf u)$ | variable aleatoria espacial |
+| $z(\mathbf u)$ | valor observado en $\mathbf u$ |
+| $V$ | soporte de una observación o bloque |
+| $h$ o $\mathbf h$ | separación espacial |
+
+Salvo indicación contraria, los logaritmos serán naturales y se escribirán $\log x$ o $\ln x$. Toda concentración deberá acompañarse por su unidad y toda coordenada por su sistema de referencia.

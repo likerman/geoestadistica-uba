@@ -1,0 +1,73 @@
+# Laboratorio integrador: población sintética de arsénico
+
+Este laboratorio aplica los capítulos 01–07 sobre una única población didáctica de 1000 pozos. Los valores, coordenadas y unidades hidroestratigráficas son **completamente sintéticos**: permiten estudiar muestreo y espacialidad, pero no describen ningún municipio real ni sirven para evaluar exposición.
+
+[Descargar notebook](01_caso_arsenico_sintetico.ipynb) · [Abrir en Google Colab](https://colab.research.google.com/github/likerman/geoestadistica-uba/blob/main/ejemplos/01_caso_arsenico_sintetico.ipynb) · [Descargar datos](../datos/arsenico_sintetico.csv)
+
+## Preguntas
+
+1. ¿Cómo cambia la distribución al pasar de la población a cada muestra de 50 pozos?
+2. ¿Qué estadísticos son sensibles al muestreo preferencial?
+3. ¿Por qué una muestra puede tener una distribución razonable y dejar grandes huecos espaciales?
+4. ¿Qué información se pierde al eliminar coordenadas, profundidad y unidad?
+
+## Carga y selección
+
+```{python}
+#| label: tbl-resumen-caso-sintetico
+
+import pandas as pd
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+aleatoria = datos[datos["muestra_aleatoria_50"]]
+preferencial = datos[datos["muestra_preferencial_50"]]
+
+pd.DataFrame({
+    "población": datos["as_ug_l"].describe(),
+    "aleatoria": aleatoria["as_ug_l"].describe(),
+    "preferencial": preferencial["as_ug_l"].describe(),
+}).round(2)
+```
+
+## Distribución y cobertura
+
+```{python}
+#| label: fig-caso-sintetico-integrador
+#| fig-cap: "Dos muestras del mismo tamaño difieren en distribución y cobertura espacial. Datos completamente sintéticos."
+#| fig-alt: "Histogramas y mapas de una muestra aleatoria y una preferencial de una población sintética de arsénico."
+
+import matplotlib.pyplot as plt
+
+fig, axes = plt.subplots(2, 2, figsize=(11, 8), constrained_layout=True)
+bins = range(0, 56, 4)
+
+for fila, (nombre, muestra) in enumerate([
+    ("Muestra aleatoria", aleatoria),
+    ("Muestra preferencial", preferencial),
+]):
+    axes[fila, 0].hist(datos["as_ug_l"], bins=bins, density=True,
+                       color="#C4D0DA", label="Población")
+    axes[fila, 0].hist(muestra["as_ug_l"], bins=bins, density=True,
+                       histtype="step", linewidth=2, color="#B56F3A", label=nombre)
+    axes[fila, 0].set(xlabel="As sintético (µg/L)", ylabel="Densidad", title=nombre)
+    axes[fila, 0].legend()
+
+    axes[fila, 1].scatter(datos["x_m"], datos["y_m"], s=4, color="#D5DADF")
+    puntos = axes[fila, 1].scatter(muestra["x_m"], muestra["y_m"],
+                                   c=muestra["as_ug_l"], cmap="viridis", s=32)
+    axes[fila, 1].set(xlabel="x (m)", ylabel="y (m)", title=f"Cobertura: {nombre.lower()}")
+
+fig.colorbar(puntos, ax=axes[:, 1], label="As sintético (µg/L)")
+plt.show()
+```
+
+## Interpretación
+
+La selección preferencial sobre-representa concentraciones altas porque su probabilidad de inclusión depende de la propia variable. La muestra aleatoria evita esa regla, aunque una realización de 50 pozos todavía deja huecos. Comparar sólo histogramas no permite diagnosticar cobertura; comparar sólo mapas tampoco sustituye el análisis de la distribución.
+
+## Actividades
+
+1. Calcule media, mediana, desviación estándar, IQR, asimetría y exceso de curtosis para las tres columnas del resumen.
+2. Repita el muestreo aleatorio 500 veces y grafique la distribución de las medias.
+3. Permute las concentraciones de la muestra aleatoria entre sus coordenadas y verifique qué resúmenes cambian.
+4. Estratifique por `unidad_sintetica` y discuta si la distribución marginal mezcla poblaciones diferentes.

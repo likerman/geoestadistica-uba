@@ -31,7 +31,7 @@ A lo largo del texto volveremos sobre concentraciones de arsénico medidas en po
 - reconocer continuidad, anisotropía y escalas espaciales;
 - estimar en lugares no muestreados y cuantificar incertidumbre.
 
-Los datos definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporar resultados numéricos al manual.
+Los datos reales definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporarlos. Mientras tanto, el [laboratorio integrador](ejemplos/01-caso-sintetico.qmd) utiliza una población sintética reproducible de 1000 pozos para mantener un mismo caso entre capítulos sin atribuir valores a localizaciones reales.
 
 ## Reproducibilidad
 

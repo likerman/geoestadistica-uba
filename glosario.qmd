@@ -132,6 +132,18 @@ Función calculada exclusivamente a partir de una muestra, como $\bar{x}$, $s^2$
 
 Regla o función de los datos destinada a estimar una cantidad desconocida. Antes de observar la muestra es una variable aleatoria; después produce una estimación concreta. Sus propiedades —sesgo, varianza y error cuadrático medio, entre otras— dependen del modelo y del mecanismo de muestreo.
 
+### Estimación {#glosario-estimacion}
+
+**Inglés:** *estimate*.
+
+Valor numérico producido por un estimador después de observar una muestra. Si $\bar X$ es el estimador de $\mu$, el número $\bar x=18.4$ calculado con datos concretos es una estimación. No debe confundirse la regla aleatoria con su resultado.
+
+### Esperanza matemática {#glosario-esperanza}
+
+**Inglés:** *expectation* o *expected value*. **Notación:** $\mathbb E[X]$.
+
+Promedio ponderado por probabilidades de los valores posibles de una variable aleatoria, cuando existe. Es una propiedad de una distribución o modelo; no es idéntica a la media obtenida en una muestra particular.
+
 ### Exceso de curtosis {#glosario-exceso-curtosis}
 
 **Inglés:** *excess kurtosis*. **Símbolo:** $\gamma_2$.
@@ -343,6 +355,12 @@ Generación de realizaciones espaciales alternativas compatibles con datos, dist
 Geometría, tamaño y orientación del volumen, área, longitud o intervalo sobre el cual una medición integra una propiedad. Cambiar el soporte puede modificar distribución y varianza aunque la localización nominal sea la misma.
 
 ## V
+
+### Variable aleatoria {#glosario-variable-aleatoria}
+
+**Inglés:** *random variable*.
+
+Función que asigna un valor numérico a cada resultado posible de un mecanismo aleatorio. Se representa habitualmente con mayúscula, por ejemplo $X$; un valor observado se representa con minúscula, $x$. Una variable aleatoria queda caracterizada probabilísticamente por su distribución.
 
 ### Valor atípico {#glosario-valor-atipico}
 

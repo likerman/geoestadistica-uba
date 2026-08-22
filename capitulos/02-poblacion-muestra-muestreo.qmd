@@ -35,6 +35,12 @@ Una muestra grande no corrige una población mal definida. Tampoco garantiza [re
 
 Definir la población equivale a definir el dominio de validez de nuestras conclusiones. Si combinamos observaciones generadas por procesos geológicos distintos, la distribución resultante puede ser una mezcla cuyos estadísticos no representen adecuadamente ninguno de los dominios por separado.
 
+### Población finita, población conceptual y campo espacial
+
+“Población” puede referirse a objetos distintos. Los 1000 pozos existentes forman una **población finita**: en principio cada unidad podría enumerarse. Todos los puntos posibles de un acuífero no forman una lista finita de pozos; suelen representarse mediante una **población conceptual** o un modelo espacial. Finalmente, un campo aleatorio describe una familia de variables $Z(\mathbf u)$ indexadas por localización.
+
+La distinción afecta la inferencia. En una población finita, la incertidumbre puede relacionarse con qué unidades quedaron fuera de la muestra. En un enfoque basado en modelos, también depende de los supuestos probabilísticos sobre valores no observados. Ninguna perspectiva elimina la necesidad de delimitar dominio, tiempo y soporte.
+
 ## Representatividad y diseño de muestreo
 
 Una muestra es representativa respecto de una pregunta cuando su mecanismo de selección permite aprender sobre la población definida sin excluir sistemáticamente partes relevantes de ella. No es una propiedad que pueda decidirse sólo mirando $n$; depende del diseño, la unidad de muestreo y el modo en que se seleccionaron las observaciones [@mckillup_dyar_2010, cap. 4, pp. 28–44; @alperin_2013, pp. 5–6].
@@ -45,6 +51,12 @@ Una muestra es representativa respecto de una pregunta cuando su mecanismo de se
 - **Muestreo por accesibilidad:** caminos, permisos, relieve o costos condicionan la selección. Puede producir sesgo aun sin intención explícita.
 
 En muchas campañas reales se combinan diseños. La tarea no consiste en etiquetar la muestra como “buena” o “mala”, sino en reconstruir cómo fue obtenida y qué consecuencias tiene para la pregunta.
+
+### Inferencia basada en diseño e inferencia basada en modelo
+
+En la **inferencia basada en diseño**, la aleatoriedad procede del mecanismo utilizado para seleccionar unidades y las probabilidades de inclusión permiten construir estimadores. En la **inferencia basada en modelo**, se especifica un modelo para la variable y la incertidumbre se evalúa bajo ese modelo. La geoestadística utiliza principalmente el segundo enfoque, aunque el diseño de la campaña sigue condicionando qué puede aprenderse.
+
+Una grilla regular puede ser excelente para describir continuidad y, sin aleatorización, no proporcionar automáticamente las mismas garantías que un muestreo probabilístico para estimar una media finita. La adecuación del diseño depende de la cantidad objetivo.
 
 ### Geometría del muestreo
 
@@ -111,6 +123,7 @@ El siguiente ejemplo construye concentraciones sintéticas con continuidad espac
 ```{python}
 #| label: fig-permutacion-espacial
 #| fig-cap: "Los mismos valores producen patrones espaciales diferentes cuando se reasignan entre localizaciones."
+#| fig-alt: "Dos mapas de puntos con idénticos valores y distinto orden espacial, junto a histogramas superpuestos idénticos."
 #| layout-ncol: 3
 
 import numpy as np
@@ -165,6 +178,12 @@ Una muestra espacial contiene al menos dos clases de información: los valores o
 2. ¿Por qué varias mediciones del mismo pozo no equivalen automáticamente a varios pozos?
 3. ¿Qué propiedades de los datos no cambian al permutar valores entre localizaciones?
 4. ¿Puede una muestra de gran tamaño ser sesgada? Proponga un mecanismo geológico o logístico que lo produzca.
+
+## Ejercicios de profundización
+
+1. Defina tres poblaciones diferentes compatibles con la frase “concentración de arsénico en la provincia de Buenos Aires”. Indique cómo cambiaría la unidad de observación.
+2. Dibuje un dominio con una zona inaccesible y compare muestreo regular, aleatorio y por accesibilidad. Identifique el sesgo posible en cada caso.
+3. Explique si el promedio de todos los análisis disponibles en una base administrativa estima necesariamente la media de todos los pozos.
 
 ## Puente al capítulo siguiente
 

@@ -64,6 +64,12 @@ $$
 
 Siempre conviene inspeccionar más de una resolución y justificar la elegida.
 
+### El histograma también tiene incertidumbre
+
+Las barras describen la muestra observada, no una distribución poblacional conocida. Con $n$ pequeño, cambios modestos en las observaciones pueden alterar picos, huecos y colas aparentes. Comparar varios anchos de clase, mostrar los datos individuales y utilizar una ECDF ayuda a distinguir rasgos persistentes de artefactos de agrupamiento.
+
+Si se comparan grupos con tamaños distintos, las frecuencias absolutas pueden resultar engañosas. Las proporciones o densidades permiten comparar forma, pero no deben ocultar el tamaño muestral: conviene informar $n$ junto a cada gráfico.
+
 ### Tallo y hojas
 
 El gráfico de tallo y hojas separa cada valor en una parte principal —el tallo— y una cifra final —la hoja—. Conserva más detalle que un histograma y permite reconstruir las observaciones en muestras pequeñas. Su uso actual es principalmente pedagógico: hace visible que toda representación negocia entre síntesis y pérdida de información.
@@ -115,11 +121,16 @@ Un $h$ pequeño produce una curva irregular; uno grande puede fusionar modos rea
 
 Usar un kernel gaussiano no equivale a suponer que los datos siguen una distribución normal. La forma final surge de sumar muchos kernels centrados en observaciones diferentes. El kernel describe cómo aporta cada dato a la estimación local; no impone por sí solo una distribución normal global.
 
+### Selección del ancho de banda
+
+El ancho de banda controla el compromiso entre variabilidad y sesgo. Reglas automáticas como Scott o Silverman son puntos de partida construidos bajo condiciones particulares. Para distribuciones multimodales, acotadas o fuertemente asimétricas conviene explorar sensibilidad, considerar una transformación o emplear correcciones de borde. Una curva visualmente suave no es evidencia suficiente de que la estructura estimada sea real.
+
 ## Ejemplo reproducible
 
 ```{python}
 #| label: fig-hist-ecdf-kde
 #| fig-cap: "Tres representaciones complementarias de una muestra sintética de concentraciones."
+#| fig-alt: "Histograma, función acumulada empírica y curvas KDE con diferentes anchos de banda para una misma muestra."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -169,3 +180,9 @@ Los tres gráficos no compiten. El histograma comunica recuentos por intervalos;
 2. ¿Qué gráfico usaría para responder qué porcentaje de pozos está bajo 10 µg/L?
 3. ¿Qué ocurre con la KDE cuando $h\rightarrow0$?
 4. ¿Por qué dos histogramas de los mismos datos pueden sugerir formas diferentes?
+
+## Ejercicios de profundización
+
+1. Construya histogramas de una misma muestra con cuatro orígenes y anchos de intervalo. Identifique qué conclusiones permanecen estables.
+2. Compare frecuencias absolutas y densidades para dos muestras con tamaños diferentes. Explique qué pregunta responde cada eje vertical.
+3. Simule 20 y 200 observaciones de una misma distribución y compare ECDF y KDE. ¿Qué rasgos se vuelven más estables?

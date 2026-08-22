@@ -5,6 +5,11 @@
 - Usar la presentación vigente y el guión docente como fuente de secuencia y decisiones didácticas.
 - No copiar diapositivas como prosa: expandir argumentos, supuestos y conexiones.
 - Registrar en `PLAN.md` todo cambio de alcance o de orden respecto de la clase.
+- Distinguir mediante mayúsculas y minúsculas variables aleatorias, realizaciones, estimadores y estimaciones según `00-notacion-prerrequisitos.qmd`.
+- Toda figura computacional debe incluir `fig-cap` y `fig-alt`.
+- Todo dato sintético debe poder regenerarse con semilla fija y declarar explícitamente que no representa observaciones reales.
+- Las afirmaciones geológicas, hidrogeológicas y estadísticas sustantivas deben citar una fuente adecuada en el punto donde aparecen.
+- Los capítulos planificados no se incorporan a `_quarto.yml` hasta contener objetivos, desarrollo, ejemplos, ejercicios y bibliografía.
 - No afirmar que un capítulo está alineado hasta revisar la versión vigente del material correspondiente.
 
 ## Estructura mínima de un capítulo
@@ -35,4 +40,3 @@
 - Distinguir población de muestra, parámetro de estadístico y modelo de dato observado.
 - Evitar presentar reglas heurísticas como leyes universales.
 - Escribir en español claro; conservar el término inglés entre paréntesis cuando facilite la búsqueda bibliográfica.
-

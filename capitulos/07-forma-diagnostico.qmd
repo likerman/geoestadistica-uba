@@ -52,6 +52,18 @@ $$
 
 de modo que la normal tiene $\gamma_2=0$. La curtosis se interpreta principalmente como sensibilidad al peso de las colas y a valores extremos, no simplemente como “altura del pico”. Conviene informar si se usa curtosis o exceso de curtosis y qué corrección muestral aplica el programa [@alperin_2013, pp. 28–29; @isaaks_srivastava_1989, pp. 20–21].
 
+### Parámetros poblacionales y estimadores muestrales
+
+Las fórmulas anteriores definen propiedades de una distribución. En una muestra pueden calcularse momentos empíricos
+
+$$
+m_k=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar x)^k,
+$$
+
+y formar $g_1=m_3/m_2^{3/2}$ y $g_2=m_4/m_2^2-3$. Estos estimadores tienen sesgo en muestras finitas. Existen correcciones, por lo que Excel, R, pandas y SciPy pueden informar resultados distintos si utilizan convenciones diferentes. En el código de este capítulo, `bias=False` solicita las correcciones de SciPy y `fisher=True` informa exceso de curtosis.
+
+Una comparación reproducible debe registrar definición, denominadores y corrección, no solamente el nombre “asimetría” o “curtosis”.
+
 ## Boxplot
 
 El [boxplot](../glosario.qmd#glosario-boxplot) resume mediana, cuartiles y posibles valores atípicos. La caja va de $Q_1$ a $Q_3$ y tiene longitud IQR [@davis_2002, cap. 2, “Summary Statistics”]. En la convención de Tukey, las cercas son
@@ -89,11 +101,14 @@ y se grafican los pares $(q_i,x_{(i)})$. Una relación aproximadamente lineal es
 
 El QQ-plot no “prueba” que los datos sean normales. Con muestras pequeñas tiene poca resolución y con muestras enormes detecta desviaciones irrelevantes. La pregunta correcta es si el modelo normal resulta adecuado para el objetivo y la escala considerados.
 
+La evaluación debería combinar mecanismo generador, gráficos y consecuencias del supuesto. Un test formal produce evidencia contra una hipótesis bajo condiciones específicas, pero no mide por sí solo si la desviación afecta una media, un intervalo, una predicción o una decisión geológica.
+
 ## Diagnóstico gráfico reproducible
 
 ```{python}
 #| label: fig-diagnostico-forma
 #| fig-cap: "Histograma, boxplot y QQ-plot de una muestra asimétrica sintética."
+#| fig-alt: "Histograma con cola derecha, boxplot con valores altos y QQ-plot curvado de una muestra lognormal sintética."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -147,6 +162,7 @@ El experimento reproducible siguiente construye cuatro estrategias sobre un camp
 ```{python}
 #| label: fig-cuatro-muestras
 #| fig-cap: "Cuatro muestras de igual tamaño pueden representar de manera diferente un campo espacial heterogéneo."
+#| fig-alt: "Mapas e histogramas de cuatro muestras de cincuenta puntos con estrategias aleatoria, sudoeste, noreste y preferencial."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -208,3 +224,9 @@ con una medida de diferencia, por ejemplo $|z(\mathbf{u}_i)-z(\mathbf{u}_j)|$ o 
 2. ¿Qué rasgo importante puede ocultar un boxplot?
 3. ¿Cómo se vería una cola derecha pesada en un QQ-plot normal?
 4. ¿Qué cambia conceptualmente al analizar $\log X$ en lugar de $X$?
+
+## Ejercicios de profundización
+
+1. Calcule $g_1$ y $g_2$ manualmente para una muestra pequeña y compárelos con SciPy usando `bias=True` y `bias=False`.
+2. Simule una distribución simétrica bimodal y explique por qué asimetría cercana a cero no implica normalidad.
+3. Construya QQ-plots para muestras normales de tamaños 15, 100 y 5000. Discuta resolución, sensibilidad y relevancia práctica.

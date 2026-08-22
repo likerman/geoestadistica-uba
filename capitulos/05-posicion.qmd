@@ -76,6 +76,25 @@ $$
 
 muestra que el RMS combina nivel respecto del cero y dispersión. No es lo mismo que la desviación estándar, que mide dispersión alrededor de la media.
 
+En una muestra, la identidad correspondiente debe usar la varianza con divisor $n$:
+
+$$
+\frac{1}{n}\sum_{i=1}^{n}x_i^2
+=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar x)^2+\bar x^2.
+$$
+
+Por tanto, $x_{\mathrm{RMS}}^2=s_n^2+\bar x^2$, donde $s_n^2$ denota aquí la varianza descriptiva con divisor $n$. Si se utiliza la varianza con divisor $n-1$, la identidad necesita el factor correspondiente.
+
+## Media ponderada y compositado
+
+Cuando las observaciones representan soportes diferentes, una media simple asigna el mismo peso a todas. Para pesos no negativos $w_i$,
+
+$$
+\bar x_w=\frac{\sum_{i=1}^{n}w_i x_i}{\sum_{i=1}^{n}w_i}.
+$$
+
+En testigos, $w_i$ puede representar longitud sólo si la cantidad objetivo y la geometría justifican esa ponderación. Para estimar metal contenido podrían intervenir además densidad, área o volumen. Elegir pesos es definir qué promedio físico se pretende calcular; no es un detalle de software.
+
 ## Mediana
 
 Ordenados los datos $x_{(1)}\leq\cdots\leq x_{(n)}$, la [mediana](../glosario.qmd#glosario-mediana) divide la muestra en dos mitades. Si $n$ es impar,
@@ -116,6 +135,7 @@ Distintos programas utilizan convenciones de interpolación ligeramente diferent
 ```{python}
 #| label: fig-media-mediana-extremo
 #| fig-cap: "Respuesta de la media y la mediana al aumentar un valor extremo."
+#| fig-alt: "La media aumenta con el valor extremo mientras la mediana permanece estable."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -143,3 +163,9 @@ La mediana no es “mejor” en términos absolutos. Es preferible cuando la pre
 2. ¿Por qué la media geométrica no puede aplicarse directamente a valores negativos?
 3. Demuestre la fórmula de actualización de la media.
 4. ¿Puede una distribución bimodal quedar bien representada por una única medida central?
+
+## Ejercicios de profundización
+
+1. Calcule media simple y media ponderada para leyes de tres tramos de longitudes 1, 2 y 5 m. Explique qué supuesto físico introduce el peso por longitud.
+2. Demuestre la identidad muestral que relaciona RMS, media y varianza con divisor $n$.
+3. Construya dos distribuciones con igual media y mediana pero distinta modalidad. Evalúe qué información se pierde al comunicar sólo ambas medidas.

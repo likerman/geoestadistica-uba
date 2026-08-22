@@ -80,6 +80,12 @@ $$
 
 por lo que dividir por $n-1$ hace insesgada a $s^2$ como estimador de $\sigma^2$.
 
+### Qué cambia con dependencia espacial
+
+El resultado anterior utiliza independencia. Si las observaciones están correlacionadas, la esperanza de la suma de cuadrados contiene términos de covarianza y la varianza muestral convencional no conserva automáticamente el mismo insesgamiento. Además, $n$ observaciones próximas pueden equivaler a menos de $n$ unidades independientes para estimar una media.
+
+Esto no vuelve inútil a $s^2$ como resumen descriptivo. Sí impide interpretar mecánicamente fórmulas inferenciales derivadas para muestras independientes. La geometría y el modelo de dependencia serán necesarios para cuantificar un tamaño efectivo o la incertidumbre de una estimación espacial.
+
 ::: {.callout-note title="Matiz importante"}
 La corrección hace insesgada a la **varianza** muestral. La desviación estándar $s=\sqrt{s^2}$ no es exactamente un estimador insesgado de $\sigma$ por la no linealidad de la raíz.
 :::
@@ -110,6 +116,14 @@ La desviación estándar describe heterogeneidad de los valores, no incertidumbr
 
 Más adelante distinguiremos $s$, que resume dispersión entre observaciones, del error estándar de la media, que cuantifica variabilidad de $\bar X$ entre muestras bajo un modelo. Confundirlos lleva a esperar erróneamente que la dispersión de los datos desaparezca al aumentar $n$.
 
+Bajo observaciones independientes con varianza finita,
+
+$$
+\operatorname{SE}(\bar X)=\frac{\sigma}{\sqrt n},
+$$
+
+y suele estimarse mediante $s/\sqrt n$. Con dependencia positiva, esta expresión tiende a subestimar la incertidumbre si se utiliza como si las observaciones fueran independientes.
+
 ## Coeficiente de variación
 
 El [coeficiente de variación](../glosario.qmd#glosario-cv) es
@@ -125,6 +139,7 @@ Permite comparar dispersión relativa entre variables positivas medidas en escal
 ```{python}
 #| label: fig-correccion-n-menos-1
 #| fig-cap: "Sesgo promedio de la varianza calculada con n y con n−1."
+#| fig-alt: "La varianza con divisor n subestima el valor poblacional y la calculada con n menos uno se mantiene alrededor de él."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -162,3 +177,9 @@ Dos mapas que contienen los mismos valores tienen idéntica varianza, desviació
 2. ¿Qué propiedad exacta corrige el divisor $n-1$?
 3. ¿Por qué el CV puede explotar cuando la media se acerca a cero?
 4. ¿Puede una muestra tener gran desviación estándar y fuerte continuidad espacial?
+
+## Ejercicios de profundización
+
+1. Derive $\mathbb E[s^2]=\sigma^2$ para una muestra iid e identifique exactamente dónde se usa la independencia.
+2. Compare dos muestras con igual $n$ y $s$: una distribuida regularmente en todo el dominio y otra concentrada en un sector. Discuta por qué su incertidumbre espacial no es la misma.
+3. Simule muestras correlacionadas y compruebe qué ocurre al usar $s/\sqrt n$ como si fueran independientes.

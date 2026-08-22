@@ -25,6 +25,18 @@ La pregunta epistemológica que antecede a todas ellas es: **¿cómo conocemos u
 
 En geología, los datos suelen ser escasos respecto de la extensión y complejidad del dominio. Un testigo representa una fracción mínima de un yacimiento; un pozo observa una columna localizada dentro de un acuífero; una muestra de mano integra un volumen y una historia de selección. La información es parcial por construcción.
 
+## Tres niveles que no deben confundirse
+
+En un análisis conviven al menos tres niveles:
+
+1. **sistema físico:** acuífero, yacimiento, cuenca o afloramiento;
+2. **mecanismo de observación:** diseño de muestreo, instrumento, soporte y control de calidad;
+3. **modelo:** representación matemática usada para describir variabilidad e incertidumbre.
+
+Un patrón del modelo no es automáticamente una propiedad causal del sistema. Del mismo modo, una irregularidad de la muestra puede provenir del diseño y no del proceso geológico. La interpretación debe explicar cómo se conectan los tres niveles y qué parte de la conclusión depende de supuestos.
+
+Esta separación también aclara el significado de aleatoriedad. Modelar $Z(\mathbf u)$ como campo aleatorio no afirma que la geología carezca de causas; expresa que, con la información disponible, no conocemos una única función espacial con certeza y utilizamos una familia de resultados posibles.
+
 ## ¿Qué agrega la geoestadística?
 
 La estadística clásica estudia la variabilidad de los valores. La [geoestadística](../glosario.qmd#glosario-geoestadistica) estudia, además, cómo esa variabilidad se organiza en el espacio, mediante descripciones que incorporan localización, separación y continuidad [@isaaks_srivastava_1989, cap. 4, pp. 40–65]. Una observación espacial puede representarse como
@@ -100,7 +112,7 @@ El caso utilizado en los primeros capítulos representa un municipio bonaerense 
 
 > ¿Qué podemos aprender sobre esos 1000 pozos a partir de una cantidad limitada de muestras?
 
-La concentración observada no es un número aislado. Es la expresión de un sistema sedimentario e hidrogeológico heterogéneo. En una representación regional simplificada, el subsuelo puede incluir sedimentos postpampeanos, sedimentos pampeanos, las Arenas Puelches y, a mayor profundidad, unidades como la Formación Paraná. Esta sucesión no debe imaginarse como capas perfectamente horizontales y uniformes: existen cambios laterales de facies, variaciones de espesor, niveles menos permeables y conectividad hidráulica variable.
+La concentración observada no es un número aislado. Es la expresión de un sistema sedimentario e hidrogeológico heterogéneo. En el noreste bonaerense, una representación regional simplificada puede incluir sedimentos postpampeanos, sedimentos pampeanos, las Arenas Puelches y, a mayor profundidad, unidades como la Formación Paraná. Esta sucesión no debe extrapolarse sin control a toda la provincia ni imaginarse como capas perfectamente horizontales y uniformes: existen contactos variables, cambios laterales de facies y relaciones hidráulicas regionales [@amato_silva_busso_2006].
 
 La concentración de arsénico medida en un pozo puede depender de la interacción entre:
 
@@ -108,11 +120,45 @@ La concentración de arsénico medida en un pozo puede depender de la interacci�
 - la **hidrogeología**: profundidad, unidad captada, permeabilidad, recarga, flujo y tiempo de residencia;
 - la **hidrogeoquímica**: pH, condiciones redox y reacciones agua–sedimento que controlan liberación, adsorción, transporte y permanencia en solución.
 
-Por eso debe evitarse una explicación lineal del tipo “el arsénico proviene del vidrio volcánico y nada más”. Los sedimentos pueden constituir una fuente geogénica, pero el valor finalmente medido resulta de procesos que interactúan.
+Por eso debe evitarse una explicación lineal del tipo “el arsénico proviene del vidrio volcánico y nada más”. En la llanura Chaco-Pampeana se han propuesto disolución o alteración de vidrio volcánico y silicatos, desorción desde oxihidróxidos bajo determinadas condiciones y concentración evaporativa, moduladas por factores locales [@nicolli_etal_2012]. Estudios del acuífero Pampeano muestran además controles relacionados con adsorción sobre óxidos de hierro, mezcla de aguas y procesos hidrogeológicos regionales [@dietrich_etal_2022; @zabala_etal_2016]. Los sedimentos pueden constituir una fuente geogénica, pero el valor finalmente medido resulta de procesos que interactúan.
 
-::: {.callout-note title="Figura conceptual pendiente"}
-Aquí debe incorporarse una columna hidroestratigráfica simplificada de la llanura bonaerense que muestre sedimentos postpampeanos, pampeanos, Arenas Puelches y Formación Paraná, junto con ejemplos de profundidades y soportes de captación. La figura requiere revisión geológica y una fuente cartográfica o estratigráfica citable antes de publicarse.
-:::
+```{python}
+#| label: fig-columna-hidroestratigrafica
+#| fig-cap: "Esquema conceptual, no a escala, de unidades que pueden integrar el sistema hidrogeológico del noreste bonaerense. La geometría local debe verificarse en cada área."
+#| fig-alt: "Columna esquemática con sedimentos postpampeanos, Pampeano, Arenas Puelches y Formación Paraná, y tres soportes de captación diferentes."
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
+unidades = [
+    ("Sedimentos postpampeanos", 0.15, "#E2E5E8"),
+    ("Sedimentos pampeanos", 0.33, "#C5AB93"),
+    ("Arenas Puelches", 0.25, "#88A3B9"),
+    ("Formación Paraná", 0.27, "#446681"),
+]
+
+fig, ax = plt.subplots(figsize=(8, 5))
+y = 1.0
+for nombre, espesor, color in unidades:
+    y -= espesor
+    ax.add_patch(Rectangle((0.18, y), 0.48, espesor, facecolor=color,
+                           edgecolor="#1D4162"))
+    ax.text(0.42, y + espesor / 2, nombre, ha="center", va="center")
+
+for x, fondo, techo, etiqueta in [
+    (0.74, 0.72, 0.90, "captación somera"),
+    (0.81, 0.43, 0.68, "captación pampeana"),
+    (0.88, 0.20, 0.38, "captación Puelches"),
+]:
+    ax.plot([x, x], [fondo, techo], color="#B56F3A", linewidth=6)
+    ax.text(x + 0.015, (fondo + techo) / 2, etiqueta, va="center", fontsize=9)
+
+ax.text(0.02, 0.02, "Esquema conceptual · sin escala vertical",
+        color="#6D899F", fontsize=9)
+ax.set(xlim=(0, 1.18), ylim=(0, 1), xticks=[], yticks=[])
+ax.set_frame_on(False)
+plt.show()
+```
 
 Este contexto anticipa una idea decisiva: dos pozos que miden As en µg/L no necesariamente captan la misma unidad ni integran las mismas condiciones. La heterogeneidad estadística que veremos en histogramas y boxplots puede ser una expresión de heterogeneidad geológica, aunque un gráfico univariado por sí solo no demuestre el proceso responsable.
 
@@ -122,3 +168,9 @@ Este contexto anticipa una idea decisiva: dos pozos que miden As en µg/L no nec
 2. ¿Qué información se pierde si se conserva la columna de valores y se eliminan las coordenadas?
 3. Distinga inferencia de predicción usando un ejemplo de porosidad.
 4. ¿Por qué una simulación no debe interpretarse como “el mapa verdadero”?
+
+## Ejercicios de profundización
+
+1. Elija un problema geológico y complete la frase de la sección “El problema debe preceder al método”. Identifique por separado sistema físico, mecanismo de observación y modelo posible.
+2. Proponga dos campañas con el mismo número de datos pero distinta cantidad de información espacial. Explique qué distancias, direcciones o dominios quedarían mal representados.
+3. Para una variable medida en testigos, enumere tres mecanismos capaces de producir una aparente tendencia con la profundidad sin que exista una tendencia geológica real.

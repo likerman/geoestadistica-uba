@@ -2,7 +2,8 @@
 
 Los capítulos están ordenados según dependencias conceptuales, no como una colección de técnicas. Cada herramienta aparece porque responde a una limitación encontrada antes.
 
-Las cajas **Interpretación geológica** conectan una definición con decisiones reales. Las cajas **Cuidado** señalan supuestos o errores habituales. Los ejemplos reproducibles se mantienen separados del texto para poder actualizar datos o código sin alterar el argumento teórico.
+Las cajas destacadas conectan definiciones con decisiones reales y señalan supuestos o errores habituales. Cada capítulo incluye el código breve necesario para reproducir sus figuras; los laboratorios integradores y notebooks descargables reúnen flujos de trabajo más extensos.
+
+La notación distingue variables aleatorias de valores observados y estimadores de estimaciones. Antes de avanzar conviene leer [Notación y lenguaje probabilístico mínimo](00-notacion-prerrequisitos.qmd), que define los símbolos utilizados en la primera parte.
 
 El manual y la materia avanzan juntos, pero cumplen funciones diferentes. Las diapositivas organizan una exposición oral; este libro desarrolla definiciones, demostraciones, matices y conexiones que no caben en una presentación.
-

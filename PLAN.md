@@ -18,21 +18,23 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Descriptiva | media aritmética, geométrica y cuadrática; mediana, moda y cuantiles | 05 | revisión docente |
 | Descriptiva | rango, IQR, varianza, desvío, $n-1$ y CV | 06 | revisión docente |
 | Descriptiva | momentos, asimetría, curtosis, boxplot, QQ-plot y normalidad | 07 | revisión docente |
-| Probabilidad | variables aleatorias y modelos | 08 | borrador |
-| Inferencia | TCL, estimación e intervalos | 09 | borrador |
-| Inferencia | hipótesis | 10 | borrador |
-| Bivariado | correlación y regresión | 11 | borrador |
-| Multivariado | ANOVA, cluster, PCA, LDA | 12 | borrador |
-| Espacial | variable regionalizada y supuestos | 13 | borrador |
-| Espacial | variograma | 14 | borrador |
-| Espacial | kriging | 15 | borrador |
+| Probabilidad | variables aleatorias y modelos | 08 | borrador no publicado |
+| Inferencia | TCL, estimación e intervalos | 09 | borrador no publicado |
+| Inferencia | hipótesis | 10 | borrador no publicado |
+| Bivariado | correlación y regresión | 11 | borrador no publicado |
+| Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador no publicado |
+| Multivariado | cluster, PCA y LDA | 13 | borrador no publicado |
+| Espacial | variable regionalizada y supuestos | 14 | borrador no publicado |
+| Espacial | variograma | 15 | borrador no publicado |
+| Espacial | kriging | 16 | borrador no publicado |
+| Integración | simulación, validación, comunicación y límites | 17 | borrador no publicado |
 
 ## Fuente vigente
 
 - Primera parte: presentación editable [`01_Introducción`](https://docs.google.com/presentation/d/17UW_iF2BHRdgfs9wFnIVtZRkuOeAX7GV1rKBKo2xpDg/edit), revisión `VR4C4iC86YcufA`, consultada el 21 de agosto de 2026.
 - Clase 03: [`Guion conceptual — diapositivas 95–152`](https://docs.google.com/document/d/1fR8zu30DK1aX_LXuXpZYuiLraimAGqDgYvZ7H8mxE0o/edit), revisión `AIroW37yAQ31kvVMjJEC58qtxa8Xf2JYj3Mn37aKMFGBPtWdLW513PNdNvUde5zsig5w6xenrMMCeB3La0roUmb4E40HQ2fdfJV0lPWB5Q`, consultada el 21 de agosto de 2026.
 - Clases 01–03: [`Guion conceptual completo — diapositivas 1–153`](https://docs.google.com/document/d/1X6Iz8--SCyHFw6sTqF-xFgwhJ36rKRav1oI4Ymw_emk/edit), revisión `AIroW36-IK5iZWuWE1HXfmfDTu-5QRDZKmRK3Ifch6jTlu1zPyLYYURt6GHDSXGPZRYP00UnD8sxPjau3jQpN8MNDto_wVhib3D1VLVanQ`, consultada el 21 de agosto de 2026.
-- Bibliografía: registrar aquí la edición y las páginas usadas al desarrollar cada capítulo.
+- Bibliografía estadística vigente: Alperin (2013), pp. 1–30; Davis (2002), cap. 2; Isaaks y Srivastava (1989), caps. 1–7; McKillup y Dyar (2010), caps. 3, 4 y 7; Pyrcz (2024), capítulos temáticos citados en el texto.
 
 ## Control de datos del caso conductor
 
@@ -40,7 +42,7 @@ La diapositiva 127 anuncia 50 pozos, pero su tabla contiene 49 identificadores y
 
 ## Próximo corte de trabajo
 
-1. Revisión docente de los capítulos 01–07.
-2. Confirmar el dato faltante del caso del arsénico.
+1. Revisión docente de los capítulos 01–07 y del laboratorio sintético integrador.
+2. Confirmar el dato faltante del caso real del arsénico.
 3. Documentar fuente, licencia, soporte y coordenadas antes de publicar datos reales.
-4. Incorporar correcciones y figuras conceptuales que surjan de la revisión.
+4. Desarrollar el capítulo 08 de probabilidad antes de reincorporar las partes futuras a la navegación pública.

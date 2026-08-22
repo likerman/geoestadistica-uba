@@ -55,7 +55,7 @@ $$
 Z_V(\mathbf{u})=\frac{1}{|V|}\int_V Z(\mathbf{u}+\mathbf{v})\,d\mathbf{v}.
 $$
 
-Al aumentar el soporte suelen atenuarse extremos y reducirse la varianza. Comparar datos de soportes diferentes como si fueran equivalentes puede inducir conclusiones falsas.
+Para promedios comparables de un proceso con segundo momento finito, al aumentar el soporte suelen atenuarse extremos y reducirse la varianza. No es una ley válida sin condiciones: la geometría, la orientación, la tendencia y la covarianza interna del bloque intervienen en la relación volumen–varianza. Comparar soportes diferentes como si fueran equivalentes puede inducir conclusiones falsas.
 
 El cambio de soporte no es lo mismo que el error de medición. El primero cambia la escala física sobre la que se promedia el fenómeno; el segundo expresa discrepancia entre la medición y el valor que pretendíamos observar para ese soporte. Ambos pueden modificar la variabilidad, pero representan mecanismos distintos.
 
@@ -79,6 +79,14 @@ Una revisión mínima debe reconstruir el proceso de medición, los posibles err
 ## Dato atípico no significa dato erróneo
 
 Un [valor atípico](../glosario.qmd#glosario-valor-atipico) puede provenir de un error de transcripción, contaminación, cambio de unidad o falla instrumental. También puede representar mineralización, una facies poco frecuente o un proceso hidrogeoquímico real. La rareza estadística es una señal para investigar, no una autorización para eliminar [@alperin_2013, p. 30].
+
+## Censura y límites de detección
+
+Un resultado informado como “menor que 1 µg/L” no es cero ni un dato faltante. Indica que el valor se encuentra en un intervalo no resuelto por el procedimiento analítico. Reemplazarlo automáticamente por cero, por el límite o por la mitad del límite cambia media, varianza y forma de la distribución, especialmente cuando la fracción censurada es grande [@helsel_2012].
+
+Una tabla preparada para análisis debería conservar al menos el resultado informado, el límite de detección o cuantificación, un indicador de censura, el método analítico, la fecha y las unidades original y armonizada.
+
+El tratamiento estadístico posterior depende de la proporción censurada y del objetivo. Las sustituciones simples pueden servir para una exploración preliminar si se declara su efecto, pero no constituyen una solución general.
 
 ## Plantilla reproducible de auditoría
 
@@ -110,3 +118,9 @@ El valor 14600 µg/L no debe borrarse sólo porque es grande. Primero hay que co
 2. ¿Una escala ordinal puede resumirse siempre mediante diferencias numéricas?
 3. Dé dos ejemplos de observaciones ubicadas en el mismo punto pero con soportes distintos.
 4. ¿Qué información debe acompañar a un valor informado como “menor que 1 µg/L”?
+
+## Ejercicios de profundización
+
+1. Diseñe una tabla mínima para combinar análisis de dos laboratorios con límites de detección diferentes.
+2. Explique por qué promediar leyes de tramos de testigo de longitudes distintas sin ponderar puede ser incorrecto.
+3. Proponga reglas de auditoría que detecten coordenadas intercambiadas, unidades inconsistentes y duplicados temporales sin eliminar automáticamente registros.
