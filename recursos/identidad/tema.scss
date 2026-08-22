@@ -62,8 +62,16 @@ a:hover {
   border-right: 1px solid $geo-gris-claro;
 }
 
+.sidebar-logo-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
 .sidebar-logo {
+  display: block;
   max-width: 112px;
+  margin-inline: auto;
 }
 
 .sidebar-item .active,
