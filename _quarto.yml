@@ -15,7 +15,7 @@ book:
   sidebar:
     logo: recursos/identidad/logo.png
     logo-alt: "Logo de Geoestadística"
-    style: docked
+    style: floating
   site-url: "https://likerman.github.io/geoestadistica-uba/"
   repo-url: "https://github.com/likerman/geoestadistica-uba"
   repo-actions: [edit, issue]
