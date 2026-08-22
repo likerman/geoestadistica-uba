@@ -101,6 +101,26 @@ a:hover {
   text-align: center;
 }
 
+.portada-inicial #quarto-document-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.portada-inicial #quarto-document-content > * {
+  order: 3;
+}
+
+.portada-inicial #quarto-document-content > p:has(> .quarto-cover-image) {
+  order: 1;
+  width: 100%;
+  margin: 0 auto 1.75rem;
+  text-align: center;
+}
+
+.portada-inicial #title-block-header {
+  order: 2;
+}
+
 .portada-inicial .quarto-title-meta {
   justify-content: center;
   text-align: center;
@@ -109,6 +129,7 @@ a:hover {
 .portada-inicial .quarto-cover-image {
   display: block;
   width: 100%;
+  max-width: 900px;
   margin-inline: auto;
 }
 
