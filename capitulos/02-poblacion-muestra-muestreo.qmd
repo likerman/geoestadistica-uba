@@ -64,6 +64,20 @@ El estadístico es observable; el parámetro que intentamos conocer generalmente
 
 El parámetro es fijo para una población definida, aunque sea desconocido. El estadístico cambia de una muestra a otra.
 
+## Qué cambia cuando aumenta el tamaño muestral
+
+Al aumentar $n$, una nueva observación tiene menos influencia relativa sobre la media. Esto ayuda a que $\bar{x}$ sea más estable bajo un mecanismo de muestreo adecuado. No significa que agregar datos elimine un sesgo de selección.
+
+Para la desviación estándar, la interpretación requiere especial cuidado:
+
+$$
+n\uparrow\quad\not\Rightarrow\quad s\downarrow.
+$$
+
+Una muestra pequeña puede haber capturado casualmente valores muy homogéneos. Al ampliar la cobertura pueden aparecer sectores diferentes y $s$ puede aumentar. Lo que esperamos mejorar con más observaciones, bajo el esquema clásico, es la **estabilidad de la estimación de la variabilidad**, no una disminución obligatoria de la variabilidad observada.
+
+En datos espaciales, además, muchas observaciones muy próximas pueden aportar menos información sobre el dominio completo que un número menor de observaciones bien distribuidas. El tamaño de muestra debe leerse junto con cobertura, diseño y dependencia.
+
 ## ¿Qué se pierde al ignorar la localización?
 
 La lista de concentraciones permite calcular histogramas, cuantiles o una media. Sin embargo, si permutamos los valores entre las coordenadas de los pozos, todos esos resúmenes permanecen iguales y el patrón espacial puede cambiar por completo.

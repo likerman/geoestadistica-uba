@@ -86,6 +86,12 @@ Recupera las unidades originales. Si $s=5$ m, no significa que cada dato esté e
 
 La interpretación mediante porcentajes alrededor de la media requiere un modelo. Para una distribución normal, aproximadamente 68 %, 95 % y 99,7 % caen dentro de una, dos y tres desviaciones estándar. No es una regla universal para cualquier distribución.
 
+### Más datos no implican menor desviación estándar
+
+La desviación estándar describe heterogeneidad de los valores, no incertidumbre de la media. Al incorporar pozos de un sector antes no representado, $s$ puede aumentar porque la muestra captura mejor la diversidad del sistema. Esto no indica que la muestra “empeoró”. Una muestra espacialmente restringida puede mostrar un CV pequeño y, al mismo tiempo, representar mal al municipio.
+
+Más adelante distinguiremos $s$, que resume dispersión entre observaciones, del error estándar de la media, que cuantifica variabilidad de $\bar X$ entre muestras bajo un modelo. Confundirlos lleva a esperar erróneamente que la dispersión de los datos desaparezca al aumentar $n$.
+
 ## Coeficiente de variación
 
 $$

@@ -122,6 +122,70 @@ Para variables positivas y asimétricas, $Y=\log X$ puede estabilizar escala y r
 5. documentar cualquier exclusión y repetir el análisis con y sin el dato;
 6. considerar métodos robustos o modelos de colas si el valor es válido.
 
+## Giro conceptual: cuatro muestras con el mismo tamaño
+
+Supongamos ahora que extraemos cuatro muestras de 50 pozos de la misma población municipal. Sin conocer las coordenadas, comparamos media, mediana, CV, KDE y boxplots. Los resultados pueden diferir aun cuando las cuatro tengan el mismo $n$.
+
+No corresponde concluir automáticamente que la muestra con menor CV es la mejor. Podría provenir de un sector espacialmente restringido y homogéneo, mientras otra cubre unidades o ambientes diferentes y refleja mejor la heterogeneidad regional.
+
+Cuando revelamos la posición de los pozos, parte de las diferencias adquiere una interpretación nueva: no sólo cambiaron los valores seleccionados; cambió **qué sectores del sistema fueron observados**.
+
+El experimento reproducible siguiente construye cuatro estrategias sobre un campo sintético. Todas seleccionan 50 puntos, pero difieren en cobertura.
+
+```{python}
+#| label: fig-cuatro-muestras
+#| fig-cap: "Cuatro muestras de igual tamaño pueden representar de manera diferente un campo espacial heterogéneo."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2026)
+n_poblacion = 1000
+x = rng.uniform(0, 100, n_poblacion)
+y = rng.uniform(0, 100, n_poblacion)
+z = 8 + 0.13*x + 22*np.exp(-((x-72)**2 + (y-68)**2)/700)
+z += rng.normal(0, 2.5, n_poblacion)
+
+indices = {
+    "aleatoria": rng.choice(n_poblacion, 50, replace=False),
+    "sudoeste": rng.choice(np.flatnonzero((x < 50) & (y < 50)), 50, replace=False),
+    "noreste": rng.choice(np.flatnonzero((x > 50) & (y > 50)), 50, replace=False),
+    "preferencial": np.argsort(z)[-50:],
+}
+
+fig, axes = plt.subplots(2, 4, figsize=(15, 7), constrained_layout=True)
+vmin, vmax = z.min(), z.max()
+for j, (nombre, ind) in enumerate(indices.items()):
+    axes[0, j].scatter(x, y, c="lightgray", s=5)
+    m = axes[0, j].scatter(x[ind], y[ind], c=z[ind], s=28,
+                           cmap="viridis", vmin=vmin, vmax=vmax)
+    axes[0, j].set(title=nombre.capitalize(), xlabel="x", ylabel="y", aspect="equal")
+    axes[1, j].hist(z[ind], bins=np.linspace(vmin, vmax, 12),
+                    color="steelblue", edgecolor="white")
+    cv = 100*np.std(z[ind], ddof=1)/np.mean(z[ind])
+    axes[1, j].set(title=f"media={np.mean(z[ind]):.1f}; CV={cv:.0f}%",
+                   xlabel="Concentración sintética", ylabel="Frecuencia")
+
+fig.colorbar(m, ax=axes[0, :], label="Concentración sintética")
+plt.show()
+```
+
+La muestra preferencial ilustra un sesgo deliberado hacia valores altos. Las muestras sudoeste y noreste pueden ser internamente coherentes pero no representar el dominio completo. La aleatoria evita esa regla de selección, aunque una realización particular todavía puede dejar huecos espaciales.
+
+## De grupos a pares
+
+Comparar muestras por regiones es sólo un primer paso. La pregunta que abre la geoestadística es más elemental y más general:
+
+> ¿Tienden a parecerse dos observaciones individuales cuando están próximas?
+
+Para responderla debemos abandonar resúmenes que ignoran las coordenadas y estudiar pares. Para los pozos $i$ y $j$ podemos relacionar una separación
+
+$$
+h_{ij}=\lVert\mathbf{u}_i-\mathbf{u}_j\rVert
+$$
+
+con una medida de diferencia, por ejemplo $|z(\mathbf{u}_i)-z(\mathbf{u}_j)|$ o su cuadrado. No esperamos una relación determinista: dos pozos cercanos pueden diferir y dos lejanos pueden parecerse por azar. La pregunta se refiere al comportamiento promedio de muchos pares. Agruparlos por clases de distancia conducirá, más adelante, al variograma.
+
 ## Preguntas de revisión
 
 1. ¿Por qué curtosis alta no significa solamente un pico alto?

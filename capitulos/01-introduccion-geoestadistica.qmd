@@ -90,10 +90,31 @@ Antes de abrir un programa conviene completar una frase:
 
 Por ejemplo: queremos conocer la distribución de concentración de arsénico en pozos de abastecimiento de un municipio durante un período definido, para evaluar exposición y orientar nuevas mediciones, utilizando una muestra limitada por presupuesto y acceso.
 
+## Caso conductor: arsénico en aguas subterráneas
+
+El caso utilizado en los primeros capítulos representa un municipio bonaerense con 1000 pozos. La pregunta rectora es:
+
+> ¿Qué podemos aprender sobre esos 1000 pozos a partir de una cantidad limitada de muestras?
+
+La concentración observada no es un número aislado. Es la expresión de un sistema sedimentario e hidrogeológico heterogéneo. En una representación regional simplificada, el subsuelo puede incluir sedimentos postpampeanos, sedimentos pampeanos, las Arenas Puelches y, a mayor profundidad, unidades como la Formación Paraná. Esta sucesión no debe imaginarse como capas perfectamente horizontales y uniformes: existen cambios laterales de facies, variaciones de espesor, niveles menos permeables y conectividad hidráulica variable.
+
+La concentración de arsénico medida en un pozo puede depender de la interacción entre:
+
+- la **fuente geológica**: mineralogía, materiales volcaniclásticos y fases capaces de contener o adsorber As;
+- la **hidrogeología**: profundidad, unidad captada, permeabilidad, recarga, flujo y tiempo de residencia;
+- la **hidrogeoquímica**: pH, condiciones redox y reacciones agua–sedimento que controlan liberación, adsorción, transporte y permanencia en solución.
+
+Por eso debe evitarse una explicación lineal del tipo “el arsénico proviene del vidrio volcánico y nada más”. Los sedimentos pueden constituir una fuente geogénica, pero el valor finalmente medido resulta de procesos que interactúan.
+
+::: {.callout-note title="Figura conceptual pendiente"}
+Aquí debe incorporarse una columna hidroestratigráfica simplificada de la llanura bonaerense que muestre sedimentos postpampeanos, pampeanos, Arenas Puelches y Formación Paraná, junto con ejemplos de profundidades y soportes de captación. La figura requiere revisión geológica y una fuente cartográfica o estratigráfica citable antes de publicarse.
+:::
+
+Este contexto anticipa una idea decisiva: dos pozos que miden As en µg/L no necesariamente captan la misma unidad ni integran las mismas condiciones. La heterogeneidad estadística que veremos en histogramas y boxplots puede ser una expresión de heterogeneidad geológica, aunque un gráfico univariado por sí solo no demuestre el proceso responsable.
+
 ## Preguntas de revisión
 
 1. ¿Por qué una base con millones de observaciones puede no representar el sistema de interés?
 2. ¿Qué información se pierde si se conserva la columna de valores y se eliminan las coordenadas?
 3. Distinga inferencia de predicción usando un ejemplo de porosidad.
 4. ¿Por qué una simulación no debe interpretarse como “el mapa verdadero”?
-

@@ -68,6 +68,13 @@ donde $\mathbf{1}(\cdot)$ vale uno si la condición es verdadera y cero en caso 
 
 La ECDF conserva todos los datos, no requiere intervalos y permite leer cuantiles y proporciones bajo umbrales. Es una función escalonada: cada observación incrementa la curva en $1/n$ —o más si existen empates—.
 
+Puede leerse en dos direcciones:
+
+- dado un valor $x$, $\widehat F_n(x)$ proporciona la proporción acumulada;
+- dada una proporción $p$, el cuantil empírico busca el menor $x$ para el cual $\widehat F_n(x)\geq p$.
+
+Así, el percentil 25 es $Q_1$, el percentil 50 es la mediana y el percentil 75 es $Q_3$. Esta segunda lectura conecta la ECDF con la construcción del boxplot.
+
 ## Estimación de densidad por kernels
 
 La KDE reemplaza cada observación por una pequeña función suave y suma sus contribuciones:
@@ -84,6 +91,8 @@ K(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}.
 $$
 
 Un $h$ pequeño produce una curva irregular; uno grande puede fusionar modos reales. La KDE es una estimación, no una propiedad observada sin incertidumbre. Además, kernels simétricos pueden asignar densidad fuera del dominio físico —por ejemplo, concentraciones negativas— cerca de un límite.
+
+Usar un kernel gaussiano no equivale a suponer que los datos siguen una distribución normal. La forma final surge de sumar muchos kernels centrados en observaciones diferentes. El kernel describe cómo aporta cada dato a la estimación local; no impone por sí solo una distribución normal global.
 
 ## Ejemplo reproducible
 
