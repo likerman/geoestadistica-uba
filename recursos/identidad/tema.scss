@@ -96,6 +96,22 @@ a:hover {
   margin: 1rem 0 2rem;
 }
 
+.portada-inicial #title-block-header,
+.portada-inicial .datos-portada {
+  text-align: center;
+}
+
+.portada-inicial .quarto-title-meta {
+  justify-content: center;
+  text-align: center;
+}
+
+.portada-inicial .quarto-cover-image {
+  display: block;
+  width: 100%;
+  margin-inline: auto;
+}
+
 blockquote {
   border-left: 4px solid $geo-cobre;
   background-color: rgba(244, 243, 241, 0.72);

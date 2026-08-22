@@ -5,11 +5,14 @@ author: "Dr. Jeremías Likerman"
 date: "2026-08-14"
 date-format: long
 image: recursos/identidad/banner_youtube.png
+body-classes: portada-inicial
 ---
 
+::: {.datos-portada}
 **Materia:** Geoestadística
 
 **Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
+:::
 
 # Propósito
 
