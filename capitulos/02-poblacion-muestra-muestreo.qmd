@@ -115,6 +115,7 @@ El siguiente ejemplo construye concentraciones sintéticas con continuidad espac
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 
 rng = np.random.default_rng(2026)
 n = 80
@@ -128,7 +129,10 @@ arsenico_permutado = rng.permutation(arsenico)
 
 fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
 
-escala = dict(vmin=arsenico.min(), vmax=arsenico.max(), cmap="viridis")
+geo_cmap = LinearSegmentedColormap.from_list(
+    "geoestadistica", ["#C4D0DA", "#446681", "#1D4162", "#B56F3A"]
+)
+escala = dict(vmin=arsenico.min(), vmax=arsenico.max(), cmap=geo_cmap)
 m0 = axes[0].scatter(x, y, c=arsenico, s=45, **escala)
 axes[0].set_title("Patrón espacial original")
 axes[0].set(xlabel="x", ylabel="y", aspect="equal")
@@ -138,9 +142,9 @@ axes[1].set_title("Valores permutados")
 axes[1].set(xlabel="x", ylabel="y", aspect="equal")
 
 bins = np.linspace(arsenico.min(), arsenico.max(), 12)
-axes[2].hist(arsenico, bins=bins, alpha=0.65, label="Original")
+axes[2].hist(arsenico, bins=bins, color="#446681", alpha=0.65, label="Original")
 axes[2].hist(arsenico_permutado, bins=bins, histtype="step", linewidth=2,
-             label="Permutado")
+             color="#B56F3A", label="Permutado")
 axes[2].set(title="Distribuciones idénticas", xlabel="Concentración sintética",
             ylabel="Frecuencia")
 axes[2].legend()

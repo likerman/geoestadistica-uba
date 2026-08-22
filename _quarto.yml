@@ -3,12 +3,16 @@ project:
   output-dir: _book
 
 lang: es
+date-format: long
 
 book:
   title: "Manual de Geoestadística"
   subtitle: "Fundamentos teóricos y ejemplos geológicos"
   author: "Dr. Jeremías Likerman"
-  date: "2026"
+  date: "2026-08-14"
+  cover-image: recursos/identidad/portada.png
+  logo: recursos/identidad/logo.png
+  favicon: recursos/identidad/logo.png
   site-url: "https://likerman.github.io/geoestadistica-uba/"
   repo-url: "https://github.com/likerman/geoestadistica-uba"
   repo-actions: [edit, issue]
@@ -48,7 +52,9 @@ bibliography: referencias.bib
 
 format:
   html:
-    theme: cosmo
+    theme:
+      - cosmo
+      - recursos/identidad/tema.scss
     toc: true
     number-sections: true
     code-fold: true

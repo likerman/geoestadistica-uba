@@ -2,7 +2,9 @@
 title: "Manual de Geoestadística"
 subtitle: "Fundamentos teóricos y ejemplos geológicos"
 author: "Dr. Jeremías Likerman"
-date: "2026"
+date: "2026-08-14"
+date-format: long
+image: recursos/identidad/portada.png
 ---
 
 **Materia:** Geoestadística

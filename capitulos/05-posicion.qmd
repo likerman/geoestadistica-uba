@@ -126,8 +126,8 @@ medias = [np.mean(np.append(base, x)) for x in extremos]
 medianas = [np.median(np.append(base, x)) for x in extremos]
 
 plt.figure(figsize=(7, 4))
-plt.plot(extremos, medias, label="Media")
-plt.plot(extremos, medianas, label="Mediana")
+plt.plot(extremos, medias, color="#1D4162", label="Media")
+plt.plot(extremos, medianas, color="#B56F3A", label="Mediana")
 plt.xlabel("Valor de la observación incorporada")
 plt.ylabel("Medida de posición")
 plt.legend()

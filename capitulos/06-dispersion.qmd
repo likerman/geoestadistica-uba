@@ -142,9 +142,9 @@ for n in tamanos:
     estimador_n1.append(muestras.var(axis=1, ddof=1).mean())
 
 plt.figure(figsize=(7, 4))
-plt.axhline(sigma2, color="black", linestyle="--", label=r"$\sigma^2$")
-plt.plot(tamanos, estimador_n, "o-", label="divisor n")
-plt.plot(tamanos, estimador_n1, "o-", label="divisor n−1")
+plt.axhline(sigma2, color="#6D899F", linestyle="--", label=r"$\sigma^2$")
+plt.plot(tamanos, estimador_n, "o-", color="#B56F3A", label="divisor n")
+plt.plot(tamanos, estimador_n1, "o-", color="#1D4162", label="divisor n−1")
 plt.xlabel("Tamaño de muestra")
 plt.ylabel("Varianza promedio estimada")
 plt.legend()

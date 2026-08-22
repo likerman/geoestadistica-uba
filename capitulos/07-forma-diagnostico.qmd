@@ -103,10 +103,14 @@ rng = np.random.default_rng(2026)
 x = rng.lognormal(mean=np.log(15), sigma=0.55, size=50)
 
 fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
-axes[0].hist(x, bins="fd", edgecolor="white", alpha=0.75)
+axes[0].hist(x, bins="fd", color="#446681", edgecolor="white", alpha=0.75)
 axes[0].set(title="Histograma", xlabel="As sintético (µg/L)", ylabel="Frecuencia")
 
-axes[1].boxplot(x, vert=True, showmeans=True)
+axes[1].boxplot(x, vert=True, showmeans=True,
+                boxprops={"color": "#1D4162"},
+                medianprops={"color": "#B56F3A", "linewidth": 2},
+                whiskerprops={"color": "#446681"},
+                capprops={"color": "#446681"})
 axes[1].set(title="Boxplot", ylabel="As sintético (µg/L)", xticks=[])
 
 stats.probplot(x, dist="norm", plot=axes[2])
@@ -146,6 +150,7 @@ El experimento reproducible siguiente construye cuatro estrategias sobre un camp
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 
 rng = np.random.default_rng(2026)
 n_poblacion = 1000
@@ -163,13 +168,16 @@ indices = {
 
 fig, axes = plt.subplots(2, 4, figsize=(15, 7), constrained_layout=True)
 vmin, vmax = z.min(), z.max()
+geo_cmap = LinearSegmentedColormap.from_list(
+    "geoestadistica", ["#C4D0DA", "#446681", "#1D4162", "#B56F3A"]
+)
 for j, (nombre, ind) in enumerate(indices.items()):
     axes[0, j].scatter(x, y, c="lightgray", s=5)
     m = axes[0, j].scatter(x[ind], y[ind], c=z[ind], s=28,
-                           cmap="viridis", vmin=vmin, vmax=vmax)
+                           cmap=geo_cmap, vmin=vmin, vmax=vmax)
     axes[0, j].set(title=nombre.capitalize(), xlabel="x", ylabel="y", aspect="equal")
     axes[1, j].hist(z[ind], bins=np.linspace(vmin, vmax, 12),
-                    color="steelblue", edgecolor="white")
+                    color="#446681", edgecolor="white")
     cv = 100*np.std(z[ind], ddof=1)/np.mean(z[ind])
     axes[1, j].set(title=f"media={np.mean(z[ind]):.1f}; CV={cv:.0f}%",
                    xlabel="Concentración sintética", ylabel="Frecuencia")
