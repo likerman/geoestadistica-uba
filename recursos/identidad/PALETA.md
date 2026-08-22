@@ -24,4 +24,4 @@ Paleta proporcionada para el proyecto Geoestadística.
 | Acento | Gris cálido roca | `#BDB9B6` |
 | Acento principal | Cobre suave | `#B56F3A` |
 
-Los archivos `portada.png` y `logo.png` son copias de los recursos compartidos para su uso en la publicación del manual.
+Los archivos `banner_youtube.png`, `portada.png` y `logo.png` son copias de los recursos compartidos. El banner se utiliza como imagen principal del manual y el logo encabeza la barra lateral de navegación.

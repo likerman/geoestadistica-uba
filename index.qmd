@@ -4,14 +4,12 @@ subtitle: "Fundamentos teóricos y ejemplos geológicos"
 author: "Dr. Jeremías Likerman"
 date: "2026-08-14"
 date-format: long
-image: recursos/identidad/portada.png
+image: recursos/identidad/banner_youtube.png
 ---
 
 **Materia:** Geoestadística
 
 **Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
-
-![Identidad visual de Geoestadística](recursos/identidad/logo.png){.logo-manual fig-alt="Logotipo circular de Geoestadística con una letra G, curvas de nivel y puntos de muestreo."}
 
 # Propósito
 

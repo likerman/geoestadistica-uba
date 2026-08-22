@@ -10,7 +10,12 @@ book:
   subtitle: "Fundamentos teóricos y ejemplos geológicos"
   author: "Dr. Jeremías Likerman"
   date: "2026-08-14"
-  cover-image: recursos/identidad/portada.png
+  cover-image: recursos/identidad/banner_youtube.png
+  cover-image-alt: "Banner de Geoestadística de Ciencias Geológicas, FCEN, UBA"
+  sidebar:
+    logo: recursos/identidad/logo.png
+    logo-alt: "Logo de Geoestadística"
+    style: docked
   site-url: "https://likerman.github.io/geoestadistica-uba/"
   repo-url: "https://github.com/likerman/geoestadistica-uba"
   repo-actions: [edit, issue]
