@@ -1,0 +1,4 @@
+# Probabilidad y variables aleatorias
+
+Capítulo planificado. Introducirá el lenguaje probabilístico necesario para representar incertidumbre.
+

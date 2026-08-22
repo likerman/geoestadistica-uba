@@ -1,0 +1,9 @@
+/_book/
+/.quarto/
+/.jupyter_cache/
+__pycache__/
+*.py[cod]
+.Rhistory
+.RData
+.DS_Store
+

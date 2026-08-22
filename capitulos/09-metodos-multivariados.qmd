@@ -1,0 +1,4 @@
+# Métodos multivariados
+
+Capítulo planificado. Organizará ANOVA, agrupamiento, componentes principales y análisis discriminante según las preguntas que permiten responder.
+

@@ -1,0 +1,4 @@
+# Variograma
+
+Capítulo planificado. Desarrollará variograma experimental, modelos, efecto pepita, meseta, alcance y anisotropía.
+

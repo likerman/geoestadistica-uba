@@ -1,0 +1,4 @@
+# Correlación y regresión
+
+Capítulo planificado. Tratará relaciones bivariadas, supuestos y límites causales, antes de incorporar dependencia espacial.
+

@@ -1,0 +1,33 @@
+---
+title: "Manual de Geoestadística"
+---
+
+# Propósito
+
+Este manual desarrolla las ideas fundamentales de la geoestadística desde los primeros problemas de descripción de datos hasta la modelización de la dependencia espacial y la estimación por kriging.
+
+La pregunta que organiza el recorrido es sencilla: **¿qué cambia cuando, además del valor observado, importa dónde fue observado?** Antes de responderla necesitamos comprender qué puede —y qué no puede— decir la estadística clásica sobre una muestra.
+
+## Un caso conductor
+
+A lo largo del texto volveremos sobre concentraciones de arsénico medidas en pozos de agua subterránea de la provincia de Buenos Aires. El caso permite avanzar por capas:
+
+- describir una muestra de concentraciones;
+- estudiar su distribución y sus valores extremos;
+- comparar muestras y discutir representatividad;
+- incorporar las coordenadas de cada pozo;
+- reconocer continuidad, anisotropía y escalas espaciales;
+- estimar en lugares no muestreados y cuantificar incertidumbre.
+
+Los datos definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporar resultados numéricos al manual.
+
+## Alcance
+
+El libro combina tres niveles de lectura:
+
+- una narrativa conceptual, accesible sin seguir la clase;
+- formulaciones matemáticas con supuestos explícitos;
+- ejemplos reproducibles que conectan la teoría con problemas geológicos.
+
+No pretende reemplazar las fuentes bibliográficas especializadas. Su función es construir un camino coherente hacia ellas y conservar la lógica didáctica de la materia a medida que evoluciona.
+

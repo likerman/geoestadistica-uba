@@ -1,0 +1,4 @@
+# Kriging
+
+Capítulo planificado. Derivará el estimador, sus restricciones y su varianza, y discutirá validación y comunicación de incertidumbre.
+

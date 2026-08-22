@@ -1,0 +1,4 @@
+# De la variable aleatoria a la variable regionalizada
+
+Capítulo planificado. Introducirá soporte, dominio, estacionariedad, ergodicidad y dependencia espacial.
+

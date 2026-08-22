@@ -1,0 +1,60 @@
+# Datos, población y muestra
+
+## El problema antes de las fórmulas
+
+Supongamos que queremos caracterizar la concentración de arsénico en el agua subterránea de una región. No podemos medir simultáneamente cada punto del acuífero. Observamos un conjunto finito de pozos y, a partir de esas observaciones, intentamos decir algo sobre un sistema mucho más amplio.
+
+Esta distancia entre **lo que queremos conocer** y **lo que efectivamente medimos** organiza buena parte de la estadística.
+
+## Unidad de observación y variable
+
+La unidad de observación es la entidad sobre la cual se registra información. En el caso conductor será, en principio, un pozo. La variable de interés puede ser la concentración de arsénico, expresada por ejemplo en $\mu\text{g/L}$.
+
+Definir la unidad exige decisiones. Si un pozo fue muestreado varias veces, ¿cada análisis es una observación independiente o debemos resumirlos en un valor por pozo? No hay una respuesta puramente algebraica: depende de si estudiamos variabilidad espacial, temporal o ambas. Para introducir la variabilidad espacial trabajaremos inicialmente con **una observación representativa por pozo**.
+
+## Población y muestra
+
+Llamamos **población** al conjunto de unidades sobre el cual deseamos formular conclusiones. Una **muestra** es el subconjunto efectivamente observado.
+
+Estas definiciones sólo son útiles si delimitamos la población:
+
+- ¿todos los pozos existentes o todos los puntos posibles del acuífero?;
+- ¿qué región geográfica?;
+- ¿qué profundidad y unidad hidrogeológica?;
+- ¿qué período temporal?;
+
+Una muestra grande no corrige una población mal definida. Tampoco garantiza representatividad si el diseño de muestreo concentra observaciones en zonas accesibles o ya sospechadas como problemáticas.
+
+## Parámetro y estadístico
+
+Un **parámetro** describe una propiedad de la población. Suele representarse con letras griegas; por ejemplo, la media poblacional $\mu$ o la varianza poblacional $\sigma^2$.
+
+Un **estadístico** —también llamado estadígrafo— es una cantidad calculada exclusivamente a partir de la muestra. Por ejemplo, para observaciones $x_1,\ldots,x_n$, la media muestral es
+
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.
+$$
+
+El estadístico es observable; el parámetro que intentamos conocer generalmente no lo es. Dos muestras de la misma población pueden producir valores diferentes de $\bar{x}$. Esa variación entre muestras es la puerta de entrada a la inferencia.
+
+## ¿Qué se pierde al ignorar la localización?
+
+La lista de concentraciones permite calcular histogramas, cuantiles o una media. Sin embargo, si permutamos los valores entre las coordenadas de los pozos, todos esos resúmenes permanecen iguales y el patrón espacial puede cambiar por completo.
+
+Ese experimento mental muestra el límite central de la estadística no espacial: describe **qué valores** fueron observados, pero no necesariamente **cómo se organizan en el espacio**.
+
+::: {.callout-important title="Idea clave"}
+Una muestra espacial contiene al menos dos clases de información: los valores observados y sus localizaciones. La distribución marginal resume la primera; la geoestadística estudia además su dependencia espacial.
+:::
+
+## Preguntas de control
+
+1. ¿Cuál es la población si el objetivo es evaluar exposición humana y cuál sería si el objetivo es describir un acuífero?
+2. ¿Por qué varias mediciones del mismo pozo no equivalen automáticamente a varios pozos?
+3. ¿Qué propiedades de los datos no cambian al permutar valores entre localizaciones?
+4. ¿Puede una muestra de gran tamaño ser sesgada? Proponga un mecanismo geológico o logístico que lo produzca.
+
+## Puente al capítulo siguiente
+
+Una vez definida la muestra, necesitamos ver su distribución sin reducirla demasiado pronto a un único número. Histogramas, funciones de distribución empírica y estimaciones de densidad serán distintas respuestas a esa necesidad.
+

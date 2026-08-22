@@ -1,0 +1,4 @@
+# Muestreo e inferencia
+
+Capítulo planificado. Incluirá distribuciones muestrales, teorema central del límite, estimación e intervalos de confianza.
+

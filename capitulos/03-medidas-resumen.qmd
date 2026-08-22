@@ -1,0 +1,4 @@
+# Medidas de posición y dispersión
+
+Este capítulo desarrollará media, mediana, cuantiles, varianza, desviación estándar, la corrección $n-1$ y el coeficiente de variación, con énfasis en unidades, robustez e interpretación.
+

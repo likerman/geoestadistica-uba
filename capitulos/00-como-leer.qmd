@@ -1,0 +1,8 @@
+# Cómo leer este manual
+
+Los capítulos están ordenados según dependencias conceptuales, no como una colección de técnicas. Cada herramienta aparece porque responde a una limitación encontrada antes.
+
+Las cajas **Interpretación geológica** conectan una definición con decisiones reales. Las cajas **Cuidado** señalan supuestos o errores habituales. Los ejemplos reproducibles se mantienen separados del texto para poder actualizar datos o código sin alterar el argumento teórico.
+
+El manual y la materia avanzan juntos, pero cumplen funciones diferentes. Las diapositivas organizan una exposición oral; este libro desarrolla definiciones, demostraciones, matices y conexiones que no caben en una presentación.
+
