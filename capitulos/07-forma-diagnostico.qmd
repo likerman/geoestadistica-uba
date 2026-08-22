@@ -69,6 +69,14 @@ La regla $1.5\,\mathrm{IQR}$ es una convención descriptiva. No demuestra que un
 
 Un boxplot no muestra bien modalidad, tamaño de muestra ni huecos internos. Debe acompañarse con datos individuales, histograma, ECDF o densidad cuando esos rasgos importan.
 
+La posición relativa de la mediana dentro de la caja puede sugerir asimetría. Una medida robusta asociada es el coeficiente de Bowley:
+
+$$
+B=\frac{Q_3+Q_1-2Q_2}{Q_3-Q_1}.
+$$
+
+Como utiliza cuartiles, responde menos a extremos que la asimetría basada en el tercer momento. Tampoco resume modalidad ni reemplaza la inspección de la distribución.
+
 ## QQ-plot y normalidad
 
 Un QQ-plot compara cuantiles observados $x_{(i)}$ con cuantiles teóricos de una distribución. Para una normal, una elección habitual de posiciones es

@@ -57,6 +57,8 @@ $$
 
 Al aumentar el soporte suelen atenuarse extremos y reducirse la varianza. Comparar datos de soportes diferentes como si fueran equivalentes puede inducir conclusiones falsas.
 
+El cambio de soporte no es lo mismo que el error de medición. El primero cambia la escala física sobre la que se promedia el fenómeno; el segundo expresa discrepancia entre la medición y el valor que pretendíamos observar para ese soporte. Ambos pueden modificar la variabilidad, pero representan mecanismos distintos.
+
 ::: {.callout-warning title="Coordenada no equivale a soporte"}
 Dos análisis pueden compartir una coordenada y representar volúmenes o intervalos diferentes. Siempre deben documentarse geometría, tamaño y orientación del soporte.
 :::
@@ -108,4 +110,3 @@ El valor 14600 µg/L no debe borrarse sólo porque es grande. Primero hay que co
 2. ¿Una escala ordinal puede resumirse siempre mediante diferencias numéricas?
 3. Dé dos ejemplos de observaciones ubicadas en el mismo punto pero con soportes distintos.
 4. ¿Qué información debe acompañar a un valor informado como “menor que 1 µg/L”?
-

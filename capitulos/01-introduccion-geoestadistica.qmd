@@ -21,6 +21,8 @@ $$
 
 Cada flecha implica decisiones. ¿Qué se mide?, ¿dónde?, ¿con qué instrumento?, ¿qué observaciones se consideran comparables?, ¿qué modelo se admite?, ¿qué incertidumbre es tolerable? Un cálculo correcto no rescata una pregunta mal formulada ni un muestreo que excluye sistemáticamente una parte relevante del sistema.
 
+La pregunta epistemológica que antecede a todas ellas es: **¿cómo conocemos un sistema geológico que nunca observamos por completo?** Los datos no son el sistema. Son evidencia producida por un mecanismo de observación que selecciona lugares, tiempos, escalas y soportes. Confundir ambos niveles lleva a tratar como propiedad del fenómeno lo que quizá es una propiedad de cómo lo medimos.
+
 En geología, los datos suelen ser escasos respecto de la extensión y complejidad del dominio. Un testigo representa una fracción mínima de un yacimiento; un pozo observa una columna localizada dentro de un acuífero; una muestra de mano integra un volumen y una historia de selección. La información es parcial por construcción.
 
 ## ¿Qué agrega la geoestadística?
@@ -71,6 +73,8 @@ $$
 $$
 
 La cobertura puede ser irregular, los métodos pueden cambiar en el tiempo, la resolución puede ser inadecuada y las observaciones pueden concentrarse donde resulta más fácil o donde se esperaba encontrar una anomalía. El volumen no reemplaza el razonamiento sobre procedencia, soporte y sesgo.
+
+Cantidad de observaciones y cantidad de información no son idénticas. Miles de datos muy próximos pueden ser redundantes para ciertas escalas, mientras unas pocas observaciones bien distribuidas pueden revelar contrastes que el agrupamiento espacial ocultaba. El cómputo permite procesar bases más grandes, pero no corrige por sí mismo un proceso generador de datos sesgado.
 
 ## Inferencia, predicción y simulación
 

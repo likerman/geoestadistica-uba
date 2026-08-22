@@ -21,6 +21,15 @@ $$
 
 La media poblacional se representa con $\mu$. La media utiliza todos los valores y puede interpretarse como centro de gravedad. Es apropiada para cantidades aditivas en escala lineal, pero es sensible a extremos.
 
+Además, es el valor $c$ que minimiza la suma de desviaciones cuadráticas:
+
+$$
+\bar{x}=\underset{c}{\operatorname{argmin}}
+\sum_{i=1}^{n}(x_i-c)^2.
+$$
+
+Esta propiedad explica su vínculo con varianza, mínimos cuadrados y regresión. También explica por qué los extremos tienen mucha influencia: el criterio los eleva al cuadrado.
+
 Si una muestra de tamaño $n$ y media $\bar{x}_n$ incorpora un nuevo valor $x_{n+1}$,
 
 $$
@@ -40,6 +49,15 @@ $$
 
 Es útil cuando los cambios son multiplicativos o los órdenes de magnitud resultan más relevantes que las diferencias absolutas. No admite ceros ni valores negativos sin una justificación adicional.
 
+Si $Y=\log X$ es normal con media $\mu_Y$ y varianza $\sigma_Y^2$, entonces $X$ es lognormal. En ese modelo,
+
+$$
+\operatorname{Mediana}(X)=e^{\mu_Y},\qquad
+\mathbb{E}[X]=e^{\mu_Y+\sigma_Y^2/2}.
+$$
+
+Por ello, exponenciar la media de los logaritmos estima un centro geométrico, no la media aritmética en escala original.
+
 ## Media cuadrática
 
 La raíz media cuadrática o RMS es
@@ -49,6 +67,14 @@ x_{\mathrm{RMS}}=\sqrt{\frac{1}{n}\sum_{i=1}^n x_i^2}.
 $$
 
 Al elevar al cuadrado pondera más los valores grandes. Aparece en magnitudes energéticas, amplitudes y errores, pero no debe utilizarse como reemplazo automático de la media aritmética.
+
+La identidad
+
+$$
+\mathbb{E}[X^2]=\operatorname{Var}(X)+\mathbb{E}[X]^2
+$$
+
+muestra que el RMS combina nivel respecto del cero y dispersión. No es lo mismo que la desviación estándar, que mide dispersión alrededor de la media.
 
 ## Mediana
 
@@ -65,6 +91,15 @@ $$
 $$
 
 Es robusta frente a unos pocos valores extremos, pero utiliza principalmente el orden y no la magnitud detallada de todas las desviaciones.
+
+La mediana es además un minimizador de las desviaciones absolutas:
+
+$$
+\widetilde{x}\in\underset{c}{\operatorname{argmin}}
+\sum_{i=1}^{n}|x_i-c|.
+$$
+
+Así, media y mediana no compiten por el mismo criterio: una optimiza pérdidas cuadráticas y la otra pérdidas absolutas.
 
 ## Moda
 
@@ -108,4 +143,3 @@ La mediana no es “mejor” en términos absolutos. Es preferible cuando la pre
 2. ¿Por qué la media geométrica no puede aplicarse directamente a valores negativos?
 3. Demuestre la fórmula de actualización de la media.
 4. ¿Puede una distribución bimodal quedar bien representada por una única medida central?
-

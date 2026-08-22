@@ -31,6 +31,7 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 
 - Primera parte: presentación editable [`01_Introducción`](https://docs.google.com/presentation/d/17UW_iF2BHRdgfs9wFnIVtZRkuOeAX7GV1rKBKo2xpDg/edit), revisión `VR4C4iC86YcufA`, consultada el 21 de agosto de 2026.
 - Clase 03: [`Guion conceptual — diapositivas 95–152`](https://docs.google.com/document/d/1fR8zu30DK1aX_LXuXpZYuiLraimAGqDgYvZ7H8mxE0o/edit), revisión `AIroW37yAQ31kvVMjJEC58qtxa8Xf2JYj3Mn37aKMFGBPtWdLW513PNdNvUde5zsig5w6xenrMMCeB3La0roUmb4E40HQ2fdfJV0lPWB5Q`, consultada el 21 de agosto de 2026.
+- Clases 01–03: [`Guion conceptual completo — diapositivas 1–153`](https://docs.google.com/document/d/1X6Iz8--SCyHFw6sTqF-xFgwhJ36rKRav1oI4Ymw_emk/edit), revisión `AIroW36-IK5iZWuWE1HXfmfDTu-5QRDZKmRK3Ifch6jTlu1zPyLYYURt6GHDSXGPZRYP00UnD8sxPjau3jQpN8MNDto_wVhib3D1VLVanQ`, consultada el 21 de agosto de 2026.
 - Bibliografía: registrar aquí la edición y las páginas usadas al desarrollar cada capítulo.
 
 ## Control de datos del caso conductor

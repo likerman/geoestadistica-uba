@@ -12,6 +12,14 @@
 
 Una lista conserva cada observación, pero dificulta percibir estructura cuando $n$ crece. La distribución describe cómo se reparten los valores: qué regiones son frecuentes, cuánto ocupan las colas, si existen varios grupos y qué proporción queda por debajo de un umbral.
 
+Para una variable categórica con categorías $c_1,\ldots,c_k$, la distribución empírica se describe mediante
+
+$$
+\widehat p_j=\frac{n_j}{n},\qquad \sum_{j=1}^{k}\widehat p_j=1.
+$$
+
+Una representación natural es el gráfico de barras. A diferencia del histograma, cada barra representa una categoría y su ancho no codifica un intervalo numérico. Dejar espacio entre barras ayuda a no sugerir continuidad entre, por ejemplo, arenisca, pelita y conglomerado.
+
 ## Tablas de frecuencia
 
 Para clases $C_1,\ldots,C_k$, la frecuencia absoluta es
@@ -55,6 +63,19 @@ h=2\,\operatorname{IQR}(x)n^{-1/3}.
 $$
 
 Siempre conviene inspeccionar más de una resolución y justificar la elegida.
+
+### Tallo y hojas
+
+El gráfico de tallo y hojas separa cada valor en una parte principal —el tallo— y una cifra final —la hoja—. Conserva más detalle que un histograma y permite reconstruir las observaciones en muestras pequeñas. Su uso actual es principalmente pedagógico: hace visible que toda representación negocia entre síntesis y pérdida de información.
+
+Por ejemplo, para valores enteros 32, 35, 41, 44 y 47:
+
+```text
+3 | 2 5
+4 | 1 4 7
+```
+
+Debe indicarse siempre la clave: aquí `4 | 7` significa 47.
 
 ## Función de distribución empírica
 

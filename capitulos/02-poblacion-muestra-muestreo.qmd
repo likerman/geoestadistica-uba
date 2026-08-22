@@ -33,6 +33,8 @@ Estas definiciones sólo son útiles si delimitamos la población:
 
 Una muestra grande no corrige una población mal definida. Tampoco garantiza representatividad si el diseño de muestreo concentra observaciones en zonas accesibles o ya sospechadas como problemáticas.
 
+Definir la población equivale a definir el dominio de validez de nuestras conclusiones. Si combinamos observaciones generadas por procesos geológicos distintos, la distribución resultante puede ser una mezcla cuyos estadísticos no representen adecuadamente ninguno de los dominios por separado.
+
 ## Representatividad y diseño de muestreo
 
 Una muestra es representativa respecto de una pregunta cuando su mecanismo de selección permite aprender sobre la población definida sin excluir sistemáticamente partes relevantes de ella. No es una propiedad que pueda decidirse sólo mirando $n$.
@@ -43,6 +45,12 @@ Una muestra es representativa respecto de una pregunta cuando su mecanismo de se
 - **Muestreo por accesibilidad:** caminos, permisos, relieve o costos condicionan la selección. Puede producir sesgo aun sin intención explícita.
 
 En muchas campañas reales se combinan diseños. La tarea no consiste en etiquetar la muestra como “buena” o “mala”, sino en reconstruir cómo fue obtenida y qué consecuencias tiene para la pregunta.
+
+### Geometría del muestreo
+
+En un problema espacial no alcanza con saber cuántas observaciones hay. Su configuración determina qué distancias y direcciones aparecen entre pares. Si no existen pares para cierto rango de separación o azimut, será difícil aprender la continuidad correspondiente. Aumentar $n$ dentro de una zona ya densamente muestreada puede añadir redundancia sin mejorar la cobertura del dominio.
+
+Una ubicación rodeada por datos y otra situada fuera de la envolvente muestral tampoco están igualmente informadas. La primera corresponde a interpolación dentro de la cobertura; la segunda se aproxima a una extrapolación, normalmente más dependiente de los supuestos.
 
 ## Parámetro y estadístico
 
@@ -77,6 +85,18 @@ $$
 Una muestra pequeña puede haber capturado casualmente valores muy homogéneos. Al ampliar la cobertura pueden aparecer sectores diferentes y $s$ puede aumentar. Lo que esperamos mejorar con más observaciones, bajo el esquema clásico, es la **estabilidad de la estimación de la variabilidad**, no una disminución obligatoria de la variabilidad observada.
 
 En datos espaciales, además, muchas observaciones muy próximas pueden aportar menos información sobre el dominio completo que un número menor de observaciones bien distribuidas. El tamaño de muestra debe leerse junto con cobertura, diseño y dependencia.
+
+## Cálculo exacto e inferencia válida
+
+Supongamos que 30 muestras de un cuerpo mineralizado tienen una media de 1,05 g/t de Au. La aritmética puede ser exacta y, aun así, la frase “la ley del yacimiento es 1,05 g/t” estar injustificada. Faltaría preguntar:
+
+- qué volumen define el yacimiento;
+- dónde se tomaron las muestras;
+- qué soporte representa cada una;
+- si todas pertenecen al mismo dominio;
+- si la cantidad buscada es una media simple, volumétrica o ponderada por tonelaje.
+
+Un estadístico describe exactamente la muestra utilizada. Convertirlo en una afirmación sobre la población requiere un argumento adicional sobre diseño, soporte y dominio.
 
 ## ¿Qué se pierde al ignorar la localización?
 

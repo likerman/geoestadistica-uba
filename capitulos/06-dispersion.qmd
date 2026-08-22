@@ -30,6 +30,14 @@ $$
 
 Resume la amplitud del 50 % central y es resistente a extremos. Esa robustez también significa que ignora deliberadamente la magnitud detallada de las colas.
 
+Otra medida robusta es la desviación absoluta mediana,
+
+$$
+\operatorname{MAD}=\operatorname{Mediana}\left(|x_i-\widetilde{x}|\right).
+$$
+
+Para compararla aproximadamente con $\sigma$ bajo normalidad suele utilizarse $1.4826\,\mathrm{MAD}$. Ese factor depende del modelo normal y no convierte a MAD en una desviación estándar universal.
+
 ## De las desviaciones a la varianza
 
 Las desviaciones respecto de la media suman cero:
@@ -85,6 +93,14 @@ $$
 Recupera las unidades originales. Si $s=5$ m, no significa que cada dato esté exactamente a 5 m de la media; es una medida global de dispersión cuadrática.
 
 La interpretación mediante porcentajes alrededor de la media requiere un modelo. Para una distribución normal, aproximadamente 68 %, 95 % y 99,7 % caen dentro de una, dos y tres desviaciones estándar. No es una regla universal para cualquier distribución.
+
+Sin asumir normalidad, la desigualdad de Chebyshev establece, para $k>1$ y varianza finita,
+
+$$
+P\left(|X-\mu|\geq k\sigma\right)\leq\frac{1}{k^2}.
+$$
+
+Equivalentemente, al menos $1-1/k^2$ de la probabilidad queda dentro de $k$ desviaciones estándar. Es un límite general y conservador: para $k=2$ garantiza al menos 75 %, no el 95 % asociado aproximadamente a una normal.
 
 ### Más datos no implican menor desviación estándar
 
