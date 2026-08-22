@@ -96,9 +96,13 @@ a:hover {
   margin: 1rem 0 2rem;
 }
 
-.portada-inicial #title-block-header,
-.portada-inicial .datos-portada {
+.portada-inicial #title-block-header {
   text-align: center;
+}
+
+.portada-inicial #title-block-header h1.title,
+.portada-inicial #title-block-header .code-tools-button {
+  display: none;
 }
 
 .portada-inicial #quarto-document-content {

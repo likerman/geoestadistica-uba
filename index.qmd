@@ -8,12 +8,6 @@ image: recursos/identidad/banner_youtube.png
 body-classes: portada-inicial
 ---
 
-::: {.datos-portada}
-**Materia:** Geoestadística
-
-**Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
-:::
-
 # Propósito
 
 Este manual desarrolla las ideas fundamentales de la geoestadística desde los primeros problemas de descripción de datos hasta la modelización de la dependencia espacial y la estimación por kriging.
