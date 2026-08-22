@@ -14,6 +14,12 @@ Supongamos que queremos caracterizar la concentración de arsénico en el agua s
 
 Esta distancia entre **lo que queremos conocer** y **lo que efectivamente medimos** organiza buena parte de la estadística.
 
+![Del sistema geológico parcialmente observado a una decisión: los pozos A y B aportan registros, producción, muestras de núcleo e información sísmica; la ubicación propuesta para el pozo C exige integrar esas evidencias y representar lo que todavía no conocemos. Material de cátedra, diapositiva 13 de la presentación *01_Introducción*.](../recursos/figuras/01-estadistica-sistema-geologico.png){#fig-estadistica-sistema-geologico fig-alt="Corte geológico conceptual de un reservorio con dos pozos productores observados, registros de pozo, muestras de núcleo y un perfil sísmico; un tercer pozo propuesto representa una localización aún no observada. Debajo se relacionan ejemplos, población, representación, estadística descriptiva y medidas." width="100%"}
+
+La figura separa tres planos. El **sistema físico** es el reservorio heterogéneo; las mediciones de pozos, núcleos y sísmica constituyen observaciones parciales; histogramas, relaciones entre variables y variogramas son representaciones construidas a partir de ellas. La pregunta por el pozo C no se responde mirando un dato aislado: requiere definir qué población y qué variable estudiamos, cómo se obtuvieron las observaciones y qué supuestos permiten trasladar información hacia una localización no muestreada.
+
+Este razonamiento es igualmente válido para el caso del arsénico: cambiar el reservorio por un acuífero y la porosidad por concentración no elimina la distancia entre las observaciones disponibles y el dominio sobre el cual queremos concluir.
+
 ## Unidad de observación y variable
 
 La unidad de observación es la entidad sobre la cual se registra información. En el caso conductor será, en principio, un pozo. La variable de interés puede ser la concentración de arsénico, expresada por ejemplo en $\mu\text{g/L}$.
