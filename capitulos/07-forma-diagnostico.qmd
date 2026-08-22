@@ -10,7 +10,7 @@
 
 ## Momentos
 
-El momento poblacional de orden $k$ respecto del origen es
+El [momento](../glosario.qmd#glosario-momento) poblacional de orden $k$ respecto del origen es
 
 $$
 \mu'_k=\mathbb{E}[X^k],
@@ -26,7 +26,7 @@ El primer momento respecto del origen es la media. El primer momento central es 
 
 ## Asimetría
 
-La asimetría poblacional estandarizada es
+La [asimetría](../glosario.qmd#glosario-asimetria) poblacional estandarizada es
 
 $$
 \gamma_1=\frac{\mu_3}{\sigma^3}.
@@ -38,13 +38,13 @@ La simetría tampoco implica unimodalidad. Una distribución puede ser simétric
 
 ## Curtosis
 
-La curtosis estandarizada es
+La [curtosis](../glosario.qmd#glosario-curtosis) estandarizada es
 
 $$
 \beta_2=\frac{\mu_4}{\sigma^4}.
 $$
 
-Para una normal, $\beta_2=3$. Con frecuencia se informa el exceso de curtosis
+Para una normal, $\beta_2=3$. Con frecuencia se informa el [exceso de curtosis](../glosario.qmd#glosario-exceso-curtosis)
 
 $$
 \gamma_2=\beta_2-3,
@@ -54,14 +54,14 @@ de modo que la normal tiene $\gamma_2=0$. La curtosis se interpreta principalmen
 
 ## Boxplot
 
-El boxplot resume mediana, cuartiles y posibles valores atípicos. La caja va de $Q_1$ a $Q_3$ y tiene longitud IQR. En la convención de Tukey, las cercas son
+El [boxplot](../glosario.qmd#glosario-boxplot) resume mediana, cuartiles y posibles valores atípicos. La caja va de $Q_1$ a $Q_3$ y tiene longitud IQR. En la convención de Tukey, las cercas son
 
 $$
 L=Q_1-1.5\operatorname{IQR},\qquad
 U=Q_3+1.5\operatorname{IQR}.
 $$
 
-Los bigotes llegan hasta las observaciones más extremas dentro de las cercas. Los puntos exteriores se marcan individualmente.
+Los [bigotes](../glosario.qmd#glosario-bigote) llegan hasta las observaciones más extremas dentro de las [vallas de Tukey](../glosario.qmd#glosario-valla-tukey). Los puntos exteriores se marcan individualmente.
 
 ::: {.callout-warning title="Outlier ≠ error"}
 La regla $1.5\,\mathrm{IQR}$ es una convención descriptiva. No demuestra que una observación provenga de otro proceso ni autoriza a eliminarla.
@@ -79,7 +79,7 @@ Como utiliza cuartiles, responde menos a extremos que la asimetría basada en el
 
 ## QQ-plot y normalidad
 
-Un QQ-plot compara cuantiles observados $x_{(i)}$ con cuantiles teóricos de una distribución. Para una normal, una elección habitual de posiciones es
+Un [QQ-plot](../glosario.qmd#glosario-qqplot) compara cuantiles observados $x_{(i)}$ con cuantiles teóricos de una distribución. Para una normal, una elección habitual de posiciones es
 
 $$
 p_i=\frac{i-0.5}{n},\qquad q_i=\Phi^{-1}(p_i),

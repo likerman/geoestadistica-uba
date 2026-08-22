@@ -41,6 +41,7 @@ book:
         - capitulos/11-variograma.qmd
         - capitulos/12-kriging.qmd
     - capitulos/13-cierre.qmd
+    - glosario.qmd
     - referencias.qmd
 
 bibliography: referencias.bib

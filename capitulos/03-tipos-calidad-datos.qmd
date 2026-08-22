@@ -10,7 +10,7 @@
 
 ## Variable y dato
 
-Una **variable** es una propiedad que puede adoptar diferentes valores entre unidades de observación. Un **dato** es el valor registrado para una unidad particular. “Porosidad” es una variable; “18,4 % en la muestra M17” es un dato.
+Una **[variable](../glosario.qmd#glosario-variable)** es una propiedad que puede adoptar diferentes valores entre unidades de observación. Un **[dato](../glosario.qmd#glosario-dato)** es el valor registrado para una unidad particular. “Porosidad” es una variable; “18,4 % en la muestra M17” es un dato.
 
 El tipo de variable condiciona qué resúmenes y gráficos tienen sentido. Asignar números a categorías no las convierte automáticamente en cantidades.
 
@@ -47,7 +47,7 @@ Resultan de mediciones y, idealmente, pueden tomar cualquier valor dentro de un 
 
 ## Soporte: qué representa cada dato
 
-El soporte es el volumen, área, longitud o intervalo sobre el cual una observación integra información. No es lo mismo medir una ley en una muestra puntual, en un tramo de testigo de 1 m o en un bloque de 20 × 20 × 10 m.
+El [soporte](../glosario.qmd#glosario-soporte) es el volumen, área, longitud o intervalo sobre el cual una observación integra información. No es lo mismo medir una ley en una muestra puntual, en un tramo de testigo de 1 m o en un bloque de 20 × 20 × 10 m.
 
 Podemos representar una observación con soporte $V$ como un promedio volumétrico idealizado:
 
@@ -78,7 +78,7 @@ Una revisión mínima debe incluir:
 
 ## Dato atípico no significa dato erróneo
 
-Un valor extremo puede provenir de un error de transcripción, contaminación, cambio de unidad o falla instrumental. También puede representar mineralización, una facies poco frecuente o un proceso hidrogeoquímico real. La rareza estadística es una señal para investigar, no una autorización para eliminar.
+Un [valor atípico](../glosario.qmd#glosario-valor-atipico) puede provenir de un error de transcripción, contaminación, cambio de unidad o falla instrumental. También puede representar mineralización, una facies poco frecuente o un proceso hidrogeoquímico real. La rareza estadística es una señal para investigar, no una autorización para eliminar.
 
 ## Plantilla reproducible de auditoría
 

@@ -1,0 +1,383 @@
+# Glosario {.unnumbered}
+
+Este glosario reúne los términos centrales del manual. Las definiciones son deliberadamente compactas, pero distinguen conceptos que suelen confundirse. El equivalente inglés se incluye para facilitar la consulta bibliográfica.
+
+## A
+
+### Ancho de banda {#glosario-ancho-banda}
+
+**Inglés:** *bandwidth*. **Símbolo habitual:** $h$.
+
+Parámetro de suavizado de una estimación de densidad por kernels. Controla la escala horizontal de cada kernel: valores pequeños conservan variaciones locales y producen estimaciones más irregulares; valores grandes suavizan la densidad y pueden ocultar modos. No es una propiedad intrínseca de los datos y debe seleccionarse o justificarse. Véase [Distribuciones y representaciones gráficas](capitulos/04-distribuciones-graficos.qmd#estimación-de-densidad-por-kernels).
+
+### Anisotropía {#glosario-anisotropia}
+
+**Inglés:** *anisotropy*.
+
+Dependencia de una propiedad o estructura espacial respecto de la dirección. En geoestadística implica que la continuidad, el alcance o la variabilidad pueden diferir entre vectores de separación con distinta orientación. No debe inferirse únicamente de la forma visual de un mapa; requiere analizar pares, direcciones y soporte.
+
+### Asimetría {#glosario-asimetria}
+
+**Inglés:** *skewness*. **Símbolo poblacional frecuente:** $\gamma_1$.
+
+Propiedad que describe falta de simetría de una distribución. El coeficiente basado en momentos es $\gamma_1=\mu_3/\sigma^3$. Un valor positivo suele asociarse con una cola derecha más extensa, pero un coeficiente cercano a cero no demuestra simetría. Véase [Forma de la distribución](capitulos/07-forma-diagnostico.qmd#asimetría).
+
+## B
+
+### Bigote de un boxplot {#glosario-bigote}
+
+**Inglés:** *whisker*.
+
+Segmento que se extiende desde una caja hasta el valor observado más extremo admitido por la convención utilizada. En el boxplot de Tukey llega hasta la observación más extrema situada dentro de las vallas $Q_1-1.5\,IQR$ y $Q_3+1.5\,IQR$; las vallas no son, en general, los extremos de los bigotes.
+
+### Boxplot {#glosario-boxplot}
+
+**Inglés:** *boxplot* o *box-and-whisker plot*.
+
+Representación basada en mediana, cuartiles, intervalo intercuartílico y una regla para bigotes y puntos externos. Facilita comparar posición y dispersión robustas entre grupos, pero no muestra adecuadamente modalidad, densidad ni tamaño muestral. Véase [Boxplot](capitulos/07-forma-diagnostico.qmd#boxplot).
+
+## C
+
+### Campo aleatorio {#glosario-campo-aleatorio}
+
+**Inglés:** *random field* o *stochastic field*. **Notación habitual:** $\{Z(\mathbf{u}):\mathbf{u}\in D\}$.
+
+Familia de variables aleatorias indexadas por una localización espacial $\mathbf{u}$ perteneciente a un dominio $D$. Proporciona un modelo probabilístico para una cantidad que varía en el espacio. La aleatoriedad representa variabilidad e incertidumbre; no afirma que los procesos geológicos generadores carezcan de causas físicas.
+
+### Coeficiente de variación {#glosario-cv}
+
+**Inglés:** *coefficient of variation*. **Símbolo:** $CV$.
+
+Razón entre desviación estándar y media, habitualmente expresada como porcentaje: $CV=100s/\bar{x}$. Mide dispersión relativa y es apropiado principalmente para variables en escala de razón, con cero significativo y media suficientemente alejada de cero. Es invariante ante cambios multiplicativos de unidad, pero no ante traslaciones. Véase [Coeficiente de variación](capitulos/06-dispersion.qmd#coeficiente-de-variación).
+
+### Continuidad espacial {#glosario-continuidad-espacial}
+
+**Inglés:** *spatial continuity*.
+
+Comportamiento sistemático de la semejanza o disimilitud entre valores al cambiar su separación espacial. Puede depender de distancia, dirección y soporte. No significa que todo par cercano sea semejante; se refiere al comportamiento estadístico de conjuntos de pares.
+
+### Cuantil {#glosario-cuantil}
+
+**Inglés:** *quantile*. **Notación frecuente:** $Q(p)$.
+
+Valor asociado con una probabilidad acumulada $p$. Una definición general es $Q(p)=\inf\{x:F(x)\ge p\}$. En muestras finitas existen distintas convenciones de interpolación, por lo que programas diferentes pueden devolver valores ligeramente distintos. Véase [Cuantiles](capitulos/05-posicion.qmd#cuantiles).
+
+### Curtosis {#glosario-curtosis}
+
+**Inglés:** *kurtosis*. **Símbolo de Pearson:** $\beta_2$.
+
+Cuarto momento central estandarizado, $\beta_2=\mu_4/\sigma^4$. Es especialmente sensible al peso de las colas y a observaciones alejadas. Para una normal, la curtosis de Pearson es 3 y el exceso de curtosis $\gamma_2=\beta_2-3$ es 0. No debe reducirse a la “altura del pico”. Véase [Curtosis](capitulos/07-forma-diagnostico.qmd#curtosis).
+
+## D
+
+### Dato {#glosario-dato}
+
+**Inglés:** *datum*; plural, *data*.
+
+Valor registrado para una variable sobre una unidad de observación, mediante un procedimiento y un soporte determinados. Un dato espacial incluye al menos valor y localización, además de metadatos necesarios para interpretarlo. No es sinónimo del sistema físico observado.
+
+### Densidad de probabilidad {#glosario-densidad}
+
+**Inglés:** *probability density function*. **Notación habitual:** $f(x)$.
+
+Función no negativa cuya integral sobre un intervalo da la probabilidad de que una variable aleatoria continua caiga en él y cuya integral total es uno. La altura $f(x)$ no es, por sí sola, una probabilidad; la probabilidad corresponde a un área.
+
+### Dependencia espacial {#glosario-dependencia-espacial}
+
+**Inglés:** *spatial dependence*.
+
+Relación estadística entre valores observados en localizaciones distintas que cambia con el vector de separación. Puede caracterizarse mediante covarianza, correlación espacial o variograma, bajo supuestos explícitos. Incluye distancia y potencialmente dirección.
+
+### Desviación estándar {#glosario-desviacion-estandar}
+
+**Inglés:** *standard deviation*. **Símbolos:** $\sigma$ para población, $s$ para muestra.
+
+Raíz cuadrada de la varianza. Expresa dispersión cuadrática en las mismas unidades de la variable. No es la distancia de cada dato a la media y los porcentajes situados dentro de múltiplos de ella dependen de la distribución. Véase [Desviación estándar](capitulos/06-dispersion.qmd#desviación-estándar).
+
+### Distribución {#glosario-distribucion}
+
+**Inglés:** *distribution*.
+
+Descripción de cómo se reparte una variable entre sus posibles valores o categorías. En una muestra puede representarse mediante frecuencias o una distribución empírica; en un modelo probabilístico especifica probabilidades. Ningún estadístico aislado sustituye toda la información de una distribución.
+
+### Dominio {#glosario-dominio}
+
+**Inglés:** *domain*.
+
+Conjunto espacial, geológico y conceptual sobre el cual se considera definida una variable y dentro del cual se pretende interpretar o modelar su comportamiento. Delimitarlo determina el alcance de las conclusiones. Un dominio geoestadístico suele buscar una región en la que ciertos supuestos de continuidad y comportamiento sean razonables.
+
+## E
+
+### ECDF {#glosario-ecdf}
+
+**Inglés:** *empirical cumulative distribution function*. **Notación:** $\widehat F_n(x)$.
+
+Función de distribución acumulada empírica: $\widehat F_n(x)=n^{-1}\sum_i\mathbf{1}(x_i\le x)$. Para un valor $x$ informa la proporción observada menor o igual; en sentido inverso permite obtener cuantiles. Es escalonada y no requiere agrupar datos en intervalos. Véase [ECDF](capitulos/04-distribuciones-graficos.qmd#función-de-distribución-empírica).
+
+### Error estándar {#glosario-error-estandar}
+
+**Inglés:** *standard error*.
+
+Desviación estándar de la distribución muestral de un estimador. Cuantifica cuánto variaría el estimador entre muestras hipotéticas bajo un modelo. No es la desviación estándar de los datos ni un error instrumental.
+
+### Estadígrafo {#glosario-estadigrafo}
+
+**Inglés:** *statistic*. Sinónimo usado en este manual: **estadístico muestral**.
+
+Función calculada exclusivamente a partir de una muestra, como $\bar{x}$, $s^2$ o la mediana muestral. Su valor puede cambiar entre muestras de la misma población. Se utiliza para describir la muestra y, bajo condiciones, estimar parámetros.
+
+### Estimador {#glosario-estimador}
+
+**Inglés:** *estimator*.
+
+Regla o función de los datos destinada a estimar una cantidad desconocida. Antes de observar la muestra es una variable aleatoria; después produce una estimación concreta. Sus propiedades —sesgo, varianza y error cuadrático medio, entre otras— dependen del modelo y del mecanismo de muestreo.
+
+### Exceso de curtosis {#glosario-exceso-curtosis}
+
+**Inglés:** *excess kurtosis*. **Símbolo:** $\gamma_2$.
+
+Curtosis de Pearson menos tres: $\gamma_2=\beta_2-3$. Esta convención hace que una distribución normal tenga valor cero. Debe indicarse explícitamente para no confundirla con la curtosis de Pearson.
+
+## F
+
+### Frecuencia absoluta {#glosario-frecuencia-absoluta}
+
+**Inglés:** *absolute frequency*. **Símbolo frecuente:** $f_j$ o $n_j$.
+
+Número de observaciones que pertenecen a una categoría o intervalo determinado.
+
+### Frecuencia relativa {#glosario-frecuencia-relativa}
+
+**Inglés:** *relative frequency*. **Símbolo frecuente:** $r_j$ o $\widehat p_j$.
+
+Proporción de observaciones en una categoría o intervalo: $n_j/n$. Las frecuencias relativas de una partición completa suman uno.
+
+## G
+
+### Geoestadística {#glosario-geoestadistica}
+
+**Inglés:** *geostatistics*.
+
+Rama de la estadística espacial que modela variables distribuidas en el espacio o espacio-tiempo, considerando localización, soporte, continuidad y dependencia. Incluye herramientas descriptivas, modelado de variogramas, estimación y simulación bajo incertidumbre.
+
+### Grados de libertad {#glosario-grados-libertad}
+
+**Inglés:** *degrees of freedom*.
+
+Número de cantidades que pueden variar independientemente después de imponer restricciones o estimar parámetros. Al calcular desviaciones respecto de $\bar{x}$, su suma debe ser cero; por eso sólo $n-1$ desviaciones son libres. Véase [Por qué dividir por n−1](capitulos/06-dispersion.qmd#por-qué-dividir-por-n-1).
+
+## H
+
+### Histograma {#glosario-histograma}
+
+**Inglés:** *histogram*.
+
+Representación de una variable cuantitativa mediante intervalos contiguos. Puede mostrar frecuencias, proporciones o densidad. Su forma depende del ancho y origen de los intervalos; con anchos desiguales debe interpretarse el área de cada barra. Véase [Histograma](capitulos/04-distribuciones-graficos.qmd#histograma).
+
+## I
+
+### Inferencia {#glosario-inferencia}
+
+**Inglés:** *inference*.
+
+Proceso de formular conclusiones sobre una población, parámetros o relaciones no completamente observados utilizando una muestra y un conjunto explícito de supuestos. No debe confundirse con descripción de los datos ni con predicción de una observación particular.
+
+### Intervalo intercuartílico {#glosario-iqr}
+
+**Inglés:** *interquartile range*. **Símbolo:** $IQR$.
+
+Diferencia $Q_3-Q_1$. Mide la amplitud del 50 % central de una distribución y es relativamente resistente a valores extremos. No describe la magnitud detallada de las colas.
+
+## K
+
+### KDE {#glosario-kde}
+
+**Inglés:** *kernel density estimation*.
+
+Estimación no paramétrica y suavizada de una densidad, construida sumando kernels centrados en cada observación. Depende de la función kernel y, principalmente, del ancho de banda. Usar kernels gaussianos no implica que la distribución global sea normal. Véase [KDE](capitulos/04-distribuciones-graficos.qmd#estimación-de-densidad-por-kernels).
+
+### Kernel {#glosario-kernel}
+
+**Inglés:** *kernel*.
+
+Función no negativa, generalmente simétrica y de integral uno, utilizada para distribuir localmente la contribución de una observación en una KDE. Su elección suele tener menos impacto que el ancho de banda.
+
+### Kriging {#glosario-kriging}
+
+**Inglés:** *kriging*.
+
+Familia de estimadores lineales espaciales que asignan pesos utilizando la geometría de los datos y un modelo de dependencia, bajo restricciones específicas. Según la variante, busca insesgamiento y mínima varianza dentro de una clase de estimadores. No es sinónimo genérico de interpolación.
+
+## L
+
+### Localización {#glosario-localizacion}
+
+**Inglés:** *location*. **Notación habitual:** $\mathbf{u}$ o $\mathbf{s}$.
+
+Posición espacial asociada a una observación. Puede incluir coordenadas horizontales, elevación, profundidad y tiempo. Su interpretación requiere sistema de referencia y relación con el soporte.
+
+## M
+
+### Media aritmética {#glosario-media}
+
+**Inglés:** *arithmetic mean*. **Símbolos:** $\mu$ para población, $\bar{x}$ para muestra.
+
+Suma de los valores dividida por su cantidad. Es centro de balance y minimiza la suma de desviaciones cuadráticas. Utiliza todos los valores y es sensible a extremos. Véase [Media aritmética](capitulos/05-posicion.qmd#media-aritmética).
+
+### Media geométrica {#glosario-media-geometrica}
+
+**Inglés:** *geometric mean*. **Símbolo frecuente:** $G$.
+
+Para valores positivos, $G=(\prod_i x_i)^{1/n}=\exp(n^{-1}\sum_i\log x_i)$. Resume un centro multiplicativo. No equivale en general a la media aritmética ni admite directamente ceros o negativos.
+
+### Mediana {#glosario-mediana}
+
+**Inglés:** *median*. **Símbolo frecuente:** $\widetilde{x}$.
+
+Cuantil de probabilidad 0,5. Divide los datos ordenados en dos mitades y minimiza la suma de desviaciones absolutas. Es resistente a unos pocos extremos, pero no utiliza toda su magnitud.
+
+### Moda {#glosario-moda}
+
+**Inglés:** *mode*.
+
+Categoría más frecuente o localización de un máximo de una función de frecuencia o densidad. En variables continuas su estimación depende del agrupamiento o suavizado y puede haber una, varias o ninguna moda claramente identificable.
+
+### Momento {#glosario-momento}
+
+**Inglés:** *moment*.
+
+Esperanza de una potencia de una variable o de su desviación respecto de un origen. Los momentos respecto del origen son $\mathbb E[X^k]$ y los centrales $\mathbb E[(X-\mu)^k]$. Los primeros cuatro se relacionan con media, varianza, asimetría y curtosis, pero existen momentos de órdenes superiores y no todas las distribuciones los tienen finitos.
+
+### Muestra {#glosario-muestra}
+
+**Inglés:** *sample*.
+
+Conjunto de unidades efectivamente observadas mediante un mecanismo de selección. Su capacidad para representar una población depende de diseño, cobertura, soporte, calidad y dependencia, no solamente de su tamaño $n$.
+
+### Muestreo preferencial {#glosario-muestreo-preferencial}
+
+**Inglés:** *preferential sampling*.
+
+Diseño en el que la probabilidad o intensidad de observación está relacionada con el fenómeno de interés. Perforar con mayor frecuencia donde se esperan leyes altas puede hacer que la distribución muestral sobre-represente la mineralización.
+
+## O
+
+### Observación {#glosario-observacion}
+
+**Inglés:** *observation*.
+
+Registro obtenido para una unidad de observación. Puede comprender valor, localización, soporte, tiempo, método y metadatos. Varias mediciones de una misma unidad no constituyen necesariamente unidades independientes.
+
+### Outlier {#glosario-outlier}
+
+**Español:** valor atípico u observación atípica.
+
+Observación alejada respecto de un patrón o criterio descriptivo. La etiqueta depende del método y no establece la causa: puede reflejar error, contaminación, otra población o un proceso geológico real. *Outlier* no equivale a error.
+
+## P
+
+### Parámetro {#glosario-parametro}
+
+**Inglés:** *parameter*.
+
+Cantidad fija —aunque generalmente desconocida— que caracteriza una población o modelo, como $\mu$, $\sigma^2$ o un percentil poblacional. Se distingue de un estadígrafo, que se calcula sobre una muestra y varía entre muestras.
+
+### Población {#glosario-poblacion}
+
+**Inglés:** *population*.
+
+Conjunto de unidades, valores o resultados potenciales sobre el cual se pretende concluir. Debe delimitarse por espacio, tiempo, soporte, proceso y pregunta. En geociencias puede ser finita —por ejemplo, 1000 pozos definidos— o conceptualizada mediante un modelo.
+
+### Predicción {#glosario-prediccion}
+
+**Inglés:** *prediction*.
+
+Estimación de una cantidad aún no observada, como el valor en una localización sin muestra. Se diferencia de estimar un parámetro global: una buena estimación de la media poblacional no resuelve automáticamente una predicción local.
+
+## Q
+
+### QQ-plot {#glosario-qqplot}
+
+**Inglés:** *quantile–quantile plot*.
+
+Gráfico que compara cuantiles observados con cuantiles de una distribución teórica o de otra muestra. Una relación aproximadamente lineal indica compatibilidad en forma, no una prueba definitiva de que el modelo sea verdadero.
+
+## R
+
+### Rango {#glosario-rango}
+
+**Inglés:** *range*.
+
+Diferencia entre máximo y mínimo. Depende sólo de dos observaciones, es sensible a extremos y tiende a aumentar con el tamaño de muestra.
+
+### Representatividad {#glosario-representatividad}
+
+**Inglés:** *representativeness*.
+
+Grado en que el mecanismo de observación y la muestra permiten aprender sobre la población definida respecto de una pregunta. No es sinónimo de tamaño muestral y debe evaluarse considerando probabilidades de inclusión, cobertura espacial, soporte y sesgos.
+
+### RMS {#glosario-rms}
+
+**Inglés:** *root mean square*.
+
+Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel respecto del cero y dispersión; no es equivalente a desviación estándar.
+
+## S
+
+### Sesgo {#glosario-sesgo}
+
+**Inglés:** *bias*.
+
+Diferencia sistemática entre el valor esperado de un estimador y la cantidad objetivo, o, en sentido más amplio, distorsión sistemática introducida por observación, selección o medición. Aumentar $n$ puede reducir variabilidad muestral sin eliminar un sesgo persistente.
+
+### Simulación condicional {#glosario-simulacion-condicional}
+
+**Inglés:** *conditional simulation*.
+
+Generación de realizaciones espaciales alternativas compatibles con datos, distribución y modelo de dependencia especificados. Busca representar variabilidad y escenarios posibles; no tiene el mismo objetivo que una estimación espacial suavizada.
+
+### Soporte {#glosario-soporte}
+
+**Inglés:** *support*.
+
+Geometría, tamaño y orientación del volumen, área, longitud o intervalo sobre el cual una medición integra una propiedad. Cambiar el soporte puede modificar distribución y varianza aunque la localización nominal sea la misma.
+
+## V
+
+### Valor atípico {#glosario-valor-atipico}
+
+Véase [Outlier](#glosario-outlier).
+
+### Variable {#glosario-variable}
+
+**Inglés:** *variable*.
+
+Propiedad que puede adoptar distintos valores entre unidades de observación. Su escala —nominal, ordinal, discreta o continua— determina qué comparaciones, operaciones y representaciones conservan significado.
+
+### Variable regionalizada {#glosario-variable-regionalizada}
+
+**Inglés:** *regionalized variable*.
+
+Función que describe una propiedad distribuida en el espacio y exhibe simultáneamente variación local y organización espacial. En el enfoque geoestadístico suele interpretarse como una realización de un campo aleatorio.
+
+### Varianza {#glosario-varianza}
+
+**Inglés:** *variance*. **Símbolos:** $\sigma^2$ para población, $s^2$ para muestra.
+
+Esperanza o promedio corregido de desviaciones cuadráticas respecto de la media. Mide dispersión en unidades al cuadrado y es sensible a extremos. Bajo el esquema clásico, $s^2=(n-1)^{-1}\sum_i(x_i-\bar{x})^2$ es insesgada para $\sigma^2$.
+
+### Variograma {#glosario-variograma}
+
+**Inglés:** *variogram*. **Símbolo:** $2\gamma(\mathbf h)$; para la semivarianza se usa $\gamma(\mathbf h)$.
+
+Función que caracteriza la variabilidad de incrementos entre localizaciones separadas por un vector $\mathbf h$. Bajo condiciones apropiadas, $2\gamma(\mathbf h)=\operatorname{Var}[Z(\mathbf u+\mathbf h)-Z(\mathbf u)]$. En el uso aplicado suele llamarse variograma a la semivarianza; el manual indicará la convención.
+
+### Valla de Tukey {#glosario-valla-tukey}
+
+**Inglés:** *Tukey fence*.
+
+Límite convencional $Q_1-1.5\,IQR$ o $Q_3+1.5\,IQR$ usado para señalar observaciones externas en un boxplot. No es necesariamente un valor observado ni una frontera física o probabilística universal.
+
+## Convenciones de enlaces
+
+El texto enlaza la primera aparición sustantiva de cada término por capítulo. Las repeticiones inmediatas se dejan sin enlace para preservar legibilidad. Al incorporar nuevos capítulos se ampliará este glosario antes de publicar el contenido como estable.

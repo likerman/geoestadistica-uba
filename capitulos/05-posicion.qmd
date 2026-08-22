@@ -13,7 +13,7 @@ Una medida de posición resume dónde se ubican los valores, pero ninguna descri
 
 ## Media aritmética
 
-Para una muestra $x_1,\ldots,x_n$,
+La [media aritmética](../glosario.qmd#glosario-media) de una muestra $x_1,\ldots,x_n$ es
 
 $$
 \bar{x}=\frac{1}{n}\sum_{i=1}^n x_i.
@@ -40,7 +40,7 @@ La fórmula muestra por qué el efecto de una observación individual disminuye 
 
 ## Media geométrica
 
-Para valores estrictamente positivos,
+La [media geométrica](../glosario.qmd#glosario-media-geometrica), para valores estrictamente positivos, es
 
 $$
 G=\left(\prod_{i=1}^{n}x_i\right)^{1/n}
@@ -60,7 +60,7 @@ Por ello, exponenciar la media de los logaritmos estima un centro geométrico, n
 
 ## Media cuadrática
 
-La raíz media cuadrática o RMS es
+La raíz media cuadrática o [RMS](../glosario.qmd#glosario-rms) es
 
 $$
 x_{\mathrm{RMS}}=\sqrt{\frac{1}{n}\sum_{i=1}^n x_i^2}.
@@ -78,7 +78,7 @@ muestra que el RMS combina nivel respecto del cero y dispersión. No es lo mismo
 
 ## Mediana
 
-Ordenados los datos $x_{(1)}\leq\cdots\leq x_{(n)}$, la mediana divide la muestra en dos mitades. Si $n$ es impar,
+Ordenados los datos $x_{(1)}\leq\cdots\leq x_{(n)}$, la [mediana](../glosario.qmd#glosario-mediana) divide la muestra en dos mitades. Si $n$ es impar,
 
 $$
 \widetilde{x}=x_{((n+1)/2)},
@@ -103,11 +103,11 @@ Así, media y mediana no compiten por el mismo criterio: una optimiza pérdidas 
 
 ## Moda
 
-La moda es el valor o categoría más frecuente. Es natural para variables categóricas. En variables continuas depende del agrupamiento o del método usado para estimar densidad; por eso una “moda” obtenida de un histograma puede cambiar al modificar los intervalos.
+La [moda](../glosario.qmd#glosario-moda) es el valor o categoría más frecuente. Es natural para variables categóricas. En variables continuas depende del agrupamiento o del método usado para estimar densidad; por eso una moda obtenida de un histograma puede cambiar al modificar los intervalos.
 
 ## Cuantiles
 
-El cuantil de orden $p$, $Q(p)$, es un valor tal que una proporción $p$ de la distribución queda aproximadamente por debajo. $Q(0.25)=Q_1$, $Q(0.50)=Q_2$ o mediana y $Q(0.75)=Q_3$.
+El [cuantil](../glosario.qmd#glosario-cuantil) de orden $p$, $Q(p)$, es un valor tal que una proporción $p$ de la distribución queda aproximadamente por debajo. $Q(0.25)=Q_1$, $Q(0.50)=Q_2$ o mediana y $Q(0.75)=Q_3$.
 
 Distintos programas utilizan convenciones de interpolación ligeramente diferentes para muestras pequeñas. Al comunicar resultados conviene registrar el método si la diferencia puede afectar decisiones.
 

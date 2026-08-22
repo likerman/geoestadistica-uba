@@ -14,7 +14,7 @@ Los conjuntos $10,10,10,10,10$ y $2,6,10,14,18$ tienen media 10, pero no describ
 
 ## Rango e intervalo intercuartílico
 
-El rango es
+El [rango](../glosario.qmd#glosario-rango) es
 
 $$
 R=x_{\max}-x_{\min}.
@@ -22,7 +22,7 @@ $$
 
 Es inmediato, pero depende sólo de dos observaciones y aumenta en promedio con el tamaño de muestra.
 
-El intervalo intercuartílico es
+El [intervalo intercuartílico](../glosario.qmd#glosario-iqr) es
 
 $$
 \operatorname{IQR}=Q_3-Q_1.
@@ -48,7 +48,7 @@ $$
 
 El promedio simple de desviaciones no mide dispersión. Elevarlas al cuadrado evita la cancelación y penaliza desviaciones grandes.
 
-La varianza poblacional es
+La [varianza](../glosario.qmd#glosario-varianza) poblacional es
 
 $$
 \sigma^2=\frac{1}{N}\sum_{i=1}^{N}(x_i-\mu)^2,
@@ -71,7 +71,7 @@ $$
 
 para cualquier constante $a$. Por ello, las desviaciones respecto de $\bar{x}$ tienden a ser menores que las desviaciones respecto de la media poblacional desconocida $\mu$.
 
-Además, una vez conocidas $n-1$ desviaciones, la última queda fijada porque deben sumar cero. Existen $n-1$ grados de libertad. Bajo muestreo independiente e idénticamente distribuido,
+Además, una vez conocidas $n-1$ desviaciones, la última queda fijada porque deben sumar cero. Existen $n-1$ [grados de libertad](../glosario.qmd#glosario-grados-libertad). Bajo muestreo independiente e idénticamente distribuido,
 
 $$
 \mathbb{E}\!\left[\sum_{i=1}^{n}(X_i-\bar X)^2\right]
@@ -85,6 +85,8 @@ La corrección hace insesgada a la **varianza** muestral. La desviación estánd
 :::
 
 ## Desviación estándar
+
+La [desviación estándar](../glosario.qmd#glosario-desviacion-estandar) se obtiene como
 
 $$
 s=\sqrt{s^2}.
@@ -109,6 +111,8 @@ La desviación estándar describe heterogeneidad de los valores, no incertidumbr
 Más adelante distinguiremos $s$, que resume dispersión entre observaciones, del error estándar de la media, que cuantifica variabilidad de $\bar X$ entre muestras bajo un modelo. Confundirlos lleva a esperar erróneamente que la dispersión de los datos desaparezca al aumentar $n$.
 
 ## Coeficiente de variación
+
+El [coeficiente de variación](../glosario.qmd#glosario-cv) es
 
 $$
 CV=\frac{s}{\bar{x}}\times100\%.

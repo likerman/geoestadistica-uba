@@ -22,7 +22,7 @@ Definir la unidad exige decisiones. Si un pozo fue muestreado varias veces, ¿ca
 
 ## Población y muestra
 
-Llamamos **población** al conjunto de unidades sobre el cual deseamos formular conclusiones. Una **muestra** es el subconjunto efectivamente observado.
+Llamamos **[población](../glosario.qmd#glosario-poblacion)** al conjunto de unidades sobre el cual deseamos formular conclusiones. Una **[muestra](../glosario.qmd#glosario-muestra)** es el subconjunto efectivamente observado.
 
 Estas definiciones sólo son útiles si delimitamos la población:
 
@@ -31,7 +31,7 @@ Estas definiciones sólo son útiles si delimitamos la población:
 - ¿qué profundidad y unidad hidrogeológica?;
 - ¿qué período temporal?;
 
-Una muestra grande no corrige una población mal definida. Tampoco garantiza representatividad si el diseño de muestreo concentra observaciones en zonas accesibles o ya sospechadas como problemáticas.
+Una muestra grande no corrige una población mal definida. Tampoco garantiza [representatividad](../glosario.qmd#glosario-representatividad) si el diseño de muestreo concentra observaciones en zonas accesibles o ya sospechadas como problemáticas.
 
 Definir la población equivale a definir el dominio de validez de nuestras conclusiones. Si combinamos observaciones generadas por procesos geológicos distintos, la distribución resultante puede ser una mezcla cuyos estadísticos no representen adecuadamente ninguno de los dominios por separado.
 
@@ -41,7 +41,7 @@ Una muestra es representativa respecto de una pregunta cuando su mecanismo de se
 
 - **Muestreo regular:** cubre el dominio mediante una grilla o separación aproximadamente constante. Facilita cobertura, pero puede interactuar con periodicidades del fenómeno.
 - **Muestreo aleatorio:** cada unidad tiene una probabilidad de selección conocida. Favorece inferencia basada en diseño, aunque puede dejar vacíos espaciales.
-- **Muestreo preferencial:** la probabilidad de observar depende directa o indirectamente del fenómeno. Perforar donde se espera mineralización es un caso típico.
+- **[Muestreo preferencial](../glosario.qmd#glosario-muestreo-preferencial):** la probabilidad de observar depende directa o indirectamente del fenómeno. Perforar donde se espera mineralización es un caso típico.
 - **Muestreo por accesibilidad:** caminos, permisos, relieve o costos condicionan la selección. Puede producir sesgo aun sin intención explícita.
 
 En muchas campañas reales se combinan diseños. La tarea no consiste en etiquetar la muestra como “buena” o “mala”, sino en reconstruir cómo fue obtenida y qué consecuencias tiene para la pregunta.
@@ -54,9 +54,9 @@ Una ubicación rodeada por datos y otra situada fuera de la envolvente muestral 
 
 ## Parámetro y estadístico
 
-Un **parámetro** describe una propiedad de la población. Suele representarse con letras griegas; por ejemplo, la media poblacional $\mu$ o la varianza poblacional $\sigma^2$.
+Un **[parámetro](../glosario.qmd#glosario-parametro)** describe una propiedad de la población. Suele representarse con letras griegas; por ejemplo, la media poblacional $\mu$ o la varianza poblacional $\sigma^2$.
 
-Un **estadístico** —también llamado estadígrafo— es una cantidad calculada exclusivamente a partir de la muestra. Por ejemplo, para observaciones $x_1,\ldots,x_n$, la media muestral es
+Un **[estadístico](../glosario.qmd#glosario-estadigrafo)** —también llamado estadígrafo— es una cantidad calculada exclusivamente a partir de la muestra. Por ejemplo, para observaciones $x_1,\ldots,x_n$, la media muestral es
 
 $$
 \bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i.

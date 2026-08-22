@@ -12,7 +12,7 @@ Al finalizar este capítulo, el lector debería poder:
 
 ## De una medición a una decisión
 
-La estadística no es solamente un conjunto de fórmulas. Es una forma organizada de aprender a partir de observaciones:
+La estadística no es solamente un conjunto de fórmulas. Es una forma organizada de aprender a partir de [observaciones](../glosario.qmd#glosario-observacion):
 
 $$
 \text{recolectar}\longrightarrow\text{organizar}\longrightarrow
@@ -27,13 +27,13 @@ En geología, los datos suelen ser escasos respecto de la extensión y complejid
 
 ## ¿Qué agrega la geoestadística?
 
-La estadística clásica estudia la variabilidad de los valores. La geoestadística estudia, además, cómo esa variabilidad se organiza en el espacio. Una observación espacial puede representarse como
+La estadística clásica estudia la variabilidad de los valores. La [geoestadística](../glosario.qmd#glosario-geoestadistica) estudia, además, cómo esa variabilidad se organiza en el espacio. Una observación espacial puede representarse como
 
 $$
 \bigl(\mathbf{u}_i,z(\mathbf{u}_i)\bigr),
 $$
 
-donde $\mathbf{u}_i$ es la localización y $z(\mathbf{u}_i)$ el valor observado. En dos dimensiones, $\mathbf{u}_i=(x_i,y_i)$; en tres, puede incluir elevación o profundidad.
+donde $\mathbf{u}_i$ es la [localización](../glosario.qmd#glosario-localizacion) y $z(\mathbf{u}_i)$ el valor observado. En dos dimensiones, $\mathbf{u}_i=(x_i,y_i)$; en tres, puede incluir elevación o profundidad.
 
 Dos conjuntos con exactamente los mismos valores pueden tener patrones espaciales completamente distintos. Por eso, media, varianza e histograma son necesarios, pero insuficientes para responder preguntas como:
 
@@ -52,9 +52,9 @@ Cuatro ideas atraviesan el manual:
 
 **Contexto espacial.** Una coordenada no basta: necesitamos dominio geológico, unidad estratigráfica, profundidad, fecha, método analítico y relación con estructuras o procesos.
 
-**Relaciones espaciales.** Las observaciones próximas no necesariamente son independientes. La similitud puede depender de distancia y dirección.
+**Relaciones espaciales.** Las observaciones próximas no necesariamente son independientes. La [dependencia espacial](../glosario.qmd#glosario-dependencia-espacial) puede cambiar con la distancia y la dirección.
 
-**Escala.** Un patrón visible a escala regional puede desaparecer a escala de afloramiento. Cambiar resolución o volumen muestreado cambia la variabilidad observada.
+**Escala.** Un patrón visible a escala regional puede desaparecer a escala de afloramiento. Cambiar resolución o [soporte](../glosario.qmd#glosario-soporte) cambia la variabilidad observada.
 
 **Incertidumbre.** Entre muestras existen zonas no observadas. La geoestadística no elimina esa falta de información: intenta representarla mediante supuestos explícitos y medidas cuantitativas.
 
@@ -80,9 +80,9 @@ Cantidad de observaciones y cantidad de información no son idénticas. Miles de
 
 Conviene separar tres objetivos:
 
-- **Inferencia:** aprender propiedades de una población o de un modelo a partir de una muestra.
-- **Predicción:** estimar una variable en una localización o volumen no observado.
-- **Simulación:** producir realizaciones alternativas compatibles con datos y modelo para representar escenarios posibles.
+- **[Inferencia](../glosario.qmd#glosario-inferencia):** aprender propiedades de una población o de un modelo a partir de una muestra.
+- **[Predicción](../glosario.qmd#glosario-prediccion):** estimar una variable en una localización o volumen no observado.
+- **[Simulación condicional](../glosario.qmd#glosario-simulacion-condicional):** producir realizaciones alternativas compatibles con datos y modelo para representar escenarios posibles.
 
 Una predicción suavizada y una simulación pueden compartir datos y variograma, pero responden preguntas diferentes. La primera busca estimar; la segunda, reproducir variabilidad y evaluar consecuencias de escenarios alternativos.
 

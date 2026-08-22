@@ -10,7 +10,7 @@
 
 ## De una lista a una distribución
 
-Una lista conserva cada observación, pero dificulta percibir estructura cuando $n$ crece. La distribución describe cómo se reparten los valores: qué regiones son frecuentes, cuánto ocupan las colas, si existen varios grupos y qué proporción queda por debajo de un umbral.
+Una lista conserva cada observación, pero dificulta percibir estructura cuando $n$ crece. La [distribución](../glosario.qmd#glosario-distribucion) describe cómo se reparten los valores: qué regiones son frecuentes, cuánto ocupan las colas, si existen varios grupos y qué proporción queda por debajo de un umbral.
 
 Para una variable categórica con categorías $c_1,\ldots,c_k$, la distribución empírica se describe mediante
 
@@ -22,13 +22,13 @@ Una representación natural es el gráfico de barras. A diferencia del histogram
 
 ## Tablas de frecuencia
 
-Para clases $C_1,\ldots,C_k$, la frecuencia absoluta es
+Para clases $C_1,\ldots,C_k$, la [frecuencia absoluta](../glosario.qmd#glosario-frecuencia-absoluta) es
 
 $$
 f_j=\#\{x_i:x_i\in C_j\}.
 $$
 
-La frecuencia relativa y la acumulada son
+La [frecuencia relativa](../glosario.qmd#glosario-frecuencia-relativa) y la acumulada son
 
 $$
 r_j=\frac{f_j}{n},\qquad F_j=\sum_{\ell=1}^{j}f_\ell.
@@ -38,7 +38,7 @@ Las tres responden preguntas diferentes: ¿cuántos?, ¿qué proporción? y ¿cu
 
 ## Histograma
 
-Un histograma divide el eje de la variable en intervalos o *bins*. Si todos tienen el mismo ancho, la altura puede representar frecuencia o proporción. Si los anchos difieren, comparar alturas directamente es engañoso: debe usarse densidad para que el **área** represente probabilidad.
+Un [histograma](../glosario.qmd#glosario-histograma) divide el eje de la variable en intervalos o *bins*. Si todos tienen el mismo ancho, la altura puede representar frecuencia o proporción. Si los anchos difieren, comparar alturas directamente es engañoso: debe usarse [densidad](../glosario.qmd#glosario-densidad) para que el **área** represente probabilidad.
 
 Para un intervalo $B_j$ de ancho $a_j$,
 
@@ -79,7 +79,7 @@ Debe indicarse siempre la clave: aquí `4 | 7` significa 47.
 
 ## Función de distribución empírica
 
-La ECDF responde directamente qué proporción de observaciones es menor o igual que un valor $x$:
+La [ECDF](../glosario.qmd#glosario-ecdf) responde directamente qué proporción de observaciones es menor o igual que un valor $x$:
 
 $$
 \widehat F_n(x)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i\leq x),
@@ -98,14 +98,14 @@ Así, el percentil 25 es $Q_1$, el percentil 50 es la mediana y el percentil 75 
 
 ## Estimación de densidad por kernels
 
-La KDE reemplaza cada observación por una pequeña función suave y suma sus contribuciones:
+La [KDE](../glosario.qmd#glosario-kde) reemplaza cada observación por un pequeño [kernel](../glosario.qmd#glosario-kernel) y suma sus contribuciones:
 
 $$
 \widehat f_h(x)=\frac{1}{nh}\sum_{i=1}^{n}
 K\!\left(\frac{x-x_i}{h}\right).
 $$
 
-$K$ es el kernel y $h$ el ancho de banda (*bandwidth*). Con kernel gaussiano,
+$K$ es el kernel y $h$ el [ancho de banda](../glosario.qmd#glosario-ancho-banda) (*bandwidth*). Con kernel gaussiano,
 
 $$
 K(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}.
