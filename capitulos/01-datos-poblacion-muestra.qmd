@@ -43,6 +43,53 @@ La lista de concentraciones permite calcular histogramas, cuantiles o una media.
 
 Ese experimento mental muestra el límite central de la estadística no espacial: describe **qué valores** fueron observados, pero no necesariamente **cómo se organizan en el espacio**.
 
+### Experimento reproducible: los mismos valores, otro patrón espacial
+
+El siguiente ejemplo construye concentraciones sintéticas con continuidad espacial y luego permuta esos mismos valores entre las localizaciones. El histograma, la media y la desviación estándar no cambian; el mapa sí.
+
+```{python}
+#| label: fig-permutacion-espacial
+#| fig-cap: "Los mismos valores producen patrones espaciales diferentes cuando se reasignan entre localizaciones."
+#| layout-ncol: 3
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2026)
+n = 80
+x = rng.uniform(0, 100, n)
+y = rng.uniform(0, 100, n)
+
+# Campo sintético suave más una componente aleatoria.
+arsenico = 20 + 35 * np.exp(-((x - 70)**2 + (y - 65)**2) / 900)
+arsenico += rng.normal(0, 3, n)
+arsenico_permutado = rng.permutation(arsenico)
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
+
+escala = dict(vmin=arsenico.min(), vmax=arsenico.max(), cmap="viridis")
+m0 = axes[0].scatter(x, y, c=arsenico, s=45, **escala)
+axes[0].set_title("Patrón espacial original")
+axes[0].set(xlabel="x", ylabel="y", aspect="equal")
+
+axes[1].scatter(x, y, c=arsenico_permutado, s=45, **escala)
+axes[1].set_title("Valores permutados")
+axes[1].set(xlabel="x", ylabel="y", aspect="equal")
+
+bins = np.linspace(arsenico.min(), arsenico.max(), 12)
+axes[2].hist(arsenico, bins=bins, alpha=0.65, label="Original")
+axes[2].hist(arsenico_permutado, bins=bins, histtype="step", linewidth=2,
+             label="Permutado")
+axes[2].set(title="Distribuciones idénticas", xlabel="Concentración sintética",
+            ylabel="Frecuencia")
+axes[2].legend()
+
+fig.colorbar(m0, ax=axes[:2], label="Concentración sintética")
+plt.show()
+```
+
+La permutación no modifica el conjunto de valores. En consecuencia, conserva exactamente todos los estadísticos que no utilizan coordenadas. Sin embargo, destruye la agrupación de valores altos. Esta diferencia será formalizada más adelante mediante medidas de dependencia espacial y el variograma.
+
 ::: {.callout-important title="Idea clave"}
 Una muestra espacial contiene al menos dos clases de información: los valores observados y sus localizaciones. La distribución marginal resume la primera; la geoestadística estudia además su dependencia espacial.
 :::
@@ -57,4 +104,3 @@ Una muestra espacial contiene al menos dos clases de información: los valores o
 ## Puente al capítulo siguiente
 
 Una vez definida la muestra, necesitamos ver su distribución sin reducirla demasiado pronto a un único número. Histogramas, funciones de distribución empírica y estimaciones de densidad serán distintas respuestas a esa necesidad.
-

@@ -7,7 +7,11 @@ lang: es
 book:
   title: "Manual de Geoestadística"
   subtitle: "Fundamentos teóricos y ejemplos geológicos"
-  author: "En desarrollo para la materia Geoestadística"
+  author: "Dr. Jeremías Likerman"
+  date: "2026"
+  site-url: "https://likerman.github.io/geoestadistica-uba/"
+  repo-url: "https://github.com/likerman/geoestadistica-uba"
+  repo-actions: [edit, issue]
   chapters:
     - index.qmd
     - capitulos/00-como-leer.qmd
@@ -43,10 +47,11 @@ format:
     number-sections: true
     code-fold: true
     code-tools: true
+    code-copy: true
+    link-external-newwindow: true
   pdf:
     documentclass: scrreprt
     number-sections: true
 
 execute:
   freeze: auto
-

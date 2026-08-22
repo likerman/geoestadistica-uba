@@ -1,6 +1,13 @@
 ---
 title: "Manual de Geoestadística"
+subtitle: "Fundamentos teóricos y ejemplos geológicos"
+author: "Dr. Jeremías Likerman"
+date: "2026"
 ---
+
+**Materia:** Geoestadística
+
+**Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
 
 # Propósito
 
@@ -21,6 +28,10 @@ A lo largo del texto volveremos sobre concentraciones de arsénico medidas en po
 
 Los datos definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporar resultados numéricos al manual.
 
+## Reproducibilidad
+
+Las figuras que representen resultados numéricos se generarán, siempre que sea posible, mediante código Python incluido junto al texto. Los bloques están pensados para ejecutarse en Jupyter o Google Colab utilizando bibliotecas de uso extendido. Cuando una ilustración requiera diseño manual o una fuente externa todavía no disponible, el texto mostrará un marcador explícito con su propósito y contenido esperado.
+
 ## Alcance
 
 El libro combina tres niveles de lectura:
@@ -30,4 +41,3 @@ El libro combina tres niveles de lectura:
 - ejemplos reproducibles que conectan la teoría con problemas geológicos.
 
 No pretende reemplazar las fuentes bibliográficas especializadas. Su función es construir un camino coherente hacia ellas y conservar la lógica didáctica de la materia a medida que evoluciona.
-

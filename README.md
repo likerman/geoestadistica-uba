@@ -1,6 +1,12 @@
-# Manual de Geoestadística
+# Geoestadística UBA
 
-Manual teórico con ejemplos prácticos, desarrollado progresivamente a partir de la materia **Geoestadística**.
+Manual teórico con ejemplos prácticos, desarrollado progresivamente a partir de la materia **Geoestadística** durante 2026.
+
+**Autor:** Dr. Jeremías Likerman
+
+**Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
+
+[Libro web](https://likerman.github.io/geoestadistica-uba/) · [Repositorio](https://github.com/likerman/geoestadistica-uba)
 
 El texto busca ser autosuficiente: sigue la secuencia conceptual del curso, pero no presupone que quien lee haya visto las clases ni reproduce las diapositivas. Los ejemplos geológicos introducen cada herramienta a partir de un problema concreto.
 
@@ -31,6 +37,16 @@ Para generar la versión publicable:
 quarto render
 ```
 
+GitHub Actions genera y publica automáticamente el libro web cuando se actualiza la rama `main`.
+
+## Ejemplos en Python
+
+El entorno mínimo utiliza NumPy, pandas, Matplotlib, Seaborn y SciPy. Puede instalarse con:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
 ## Criterio editorial
 
 Cada capítulo debe distinguir con claridad:
@@ -42,3 +58,6 @@ Cada capítulo debe distinguir con claridad:
 5. los errores frecuentes;
 6. el vínculo con la geoestadística.
 
+## Licencias
+
+El texto, las figuras originales y el material docente se publican bajo [CC BY-NC-SA 4.0](LICENSE-CONTENT). El código fuente de los ejemplos se publica bajo [licencia MIT](LICENSE-CODE).
