@@ -11,8 +11,6 @@ book:
   author: "Dr. Jeremías Likerman"
   date: "2026-08-14"
   cover-image: recursos/identidad/portada.png
-  logo: recursos/identidad/logo.png
-  favicon: recursos/identidad/logo.png
   site-url: "https://likerman.github.io/geoestadistica-uba/"
   repo-url: "https://github.com/likerman/geoestadistica-uba"
   repo-actions: [edit, issue]

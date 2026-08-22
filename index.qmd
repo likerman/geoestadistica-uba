@@ -11,6 +11,8 @@ image: recursos/identidad/portada.png
 
 **Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
 
+![Identidad visual de Geoestadística](recursos/identidad/logo.png){.logo-manual fig-alt="Logotipo circular de Geoestadística con una letra G, curvas de nivel y puntos de muestreo."}
+
 # Propósito
 
 Este manual desarrolla las ideas fundamentales de la geoestadística desde los primeros problemas de descripción de datos hasta la modelización de la dependencia espacial y la estimación por kriging.
