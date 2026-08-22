@@ -74,6 +74,14 @@ Cuatro ideas atraviesan el manual:
 
 La geoestadística moderna combina ideas de procesos estocásticos con problemas de evaluación de recursos. Los trabajos de D. G. Krige en minería mostraron que la configuración espacial de las muestras afectaba la estimación de leyes. Georges Matheron formalizó después la teoría de variables regionalizadas y el kriging. Con el desarrollo computacional, estas ideas se extendieron a petróleo, hidrogeología, ambiente, suelos, agricultura y ciencias del sistema terrestre [@alperin_2013, pp. 1–3; @isaaks_srivastava_1989, cap. 1].
 
+::: {#fig-pioneros-geoestadistica layout-ncol=2}
+![**Danie G. Krige (1919–2013).** Ingeniero de minas sudafricano cuyos trabajos empíricos sobre evaluación de leyes y reservas dieron origen al enfoque que Matheron denominó *kriging*. Fuente: [National Academy of Engineering](https://www.nae.edu/190431/DANIE-G-KRIGE-19192013). Fotografía de terceros; no está incluida en la licencia general del manual.](../recursos/figuras/danie-krige.webp){fig-alt="Retrato en blanco y negro de Danie G. Krige, con traje, corbata y anteojos."}
+
+![**Georges Matheron (1930–2000).** Ingeniero y matemático francés que sistematizó la teoría de variables regionalizadas y formalizó gran parte de la geoestadística moderna. Fotografía: Salani, 1998, vía [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Georges_Matheron.jpg), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).](../recursos/figuras/georges-matheron.jpg){fig-alt="Fotografía en blanco y negro de Georges Matheron sentado ante un escritorio, con documentos y anteojos sobre la mesa."}
+
+Dos trayectorias complementarias en el origen de la geoestadística moderna: la experiencia minera de Krige y la formalización teórica de Matheron.
+:::
+
 La historia importa porque recuerda que las herramientas no nacieron como una colección abstracta: respondieron a problemas de decisión bajo información espacial incompleta.
 
 ## Datos abundantes no son datos completos
