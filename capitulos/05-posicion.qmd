@@ -1,0 +1,111 @@
+# Medidas de posición
+
+## Objetivos
+
+- calcular e interpretar media, mediana, moda y cuantiles;
+- distinguir parámetro y estadístico en la notación;
+- reconocer sensibilidad a valores extremos;
+- elegir una medida central en función del proceso y la pregunta.
+
+## Centro no significa dato típico en todos los sentidos
+
+Una medida de posición resume dónde se ubican los valores, pero ninguna describe por sí sola toda la distribución. Dos muestras con igual media pueden diferir en dispersión, asimetría, multimodalidad y patrón espacial.
+
+## Media aritmética
+
+Para una muestra $x_1,\ldots,x_n$,
+
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^n x_i.
+$$
+
+La media poblacional se representa con $\mu$. La media utiliza todos los valores y puede interpretarse como centro de gravedad. Es apropiada para cantidades aditivas en escala lineal, pero es sensible a extremos.
+
+Si una muestra de tamaño $n$ y media $\bar{x}_n$ incorpora un nuevo valor $x_{n+1}$,
+
+$$
+\bar{x}_{n+1}=\bar{x}_n+\frac{x_{n+1}-\bar{x}_n}{n+1}.
+$$
+
+La fórmula muestra por qué el efecto de una observación individual disminuye cuando $n$ aumenta. No demuestra, sin embargo, que una muestra grande sea representativa.
+
+## Media geométrica
+
+Para valores estrictamente positivos,
+
+$$
+G=\left(\prod_{i=1}^{n}x_i\right)^{1/n}
+=\exp\left(\frac{1}{n}\sum_{i=1}^n\ln x_i\right).
+$$
+
+Es útil cuando los cambios son multiplicativos o los órdenes de magnitud resultan más relevantes que las diferencias absolutas. No admite ceros ni valores negativos sin una justificación adicional.
+
+## Media cuadrática
+
+La raíz media cuadrática o RMS es
+
+$$
+x_{\mathrm{RMS}}=\sqrt{\frac{1}{n}\sum_{i=1}^n x_i^2}.
+$$
+
+Al elevar al cuadrado pondera más los valores grandes. Aparece en magnitudes energéticas, amplitudes y errores, pero no debe utilizarse como reemplazo automático de la media aritmética.
+
+## Mediana
+
+Ordenados los datos $x_{(1)}\leq\cdots\leq x_{(n)}$, la mediana divide la muestra en dos mitades. Si $n$ es impar,
+
+$$
+\widetilde{x}=x_{((n+1)/2)},
+$$
+
+y si $n$ es par,
+
+$$
+\widetilde{x}=\frac{x_{(n/2)}+x_{(n/2+1)}}{2}.
+$$
+
+Es robusta frente a unos pocos valores extremos, pero utiliza principalmente el orden y no la magnitud detallada de todas las desviaciones.
+
+## Moda
+
+La moda es el valor o categoría más frecuente. Es natural para variables categóricas. En variables continuas depende del agrupamiento o del método usado para estimar densidad; por eso una “moda” obtenida de un histograma puede cambiar al modificar los intervalos.
+
+## Cuantiles
+
+El cuantil de orden $p$, $Q(p)$, es un valor tal que una proporción $p$ de la distribución queda aproximadamente por debajo. $Q(0.25)=Q_1$, $Q(0.50)=Q_2$ o mediana y $Q(0.75)=Q_3$.
+
+Distintos programas utilizan convenciones de interpolación ligeramente diferentes para muestras pequeñas. Al comunicar resultados conviene registrar el método si la diferencia puede afectar decisiones.
+
+## Ejemplo: estabilidad y sensibilidad
+
+```{python}
+#| label: fig-media-mediana-extremo
+#| fig-cap: "Respuesta de la media y la mediana al aumentar un valor extremo."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+base = np.array([8, 10, 12, 14, 16], dtype=float)
+extremos = np.linspace(16, 80, 80)
+medias = [np.mean(np.append(base, x)) for x in extremos]
+medianas = [np.median(np.append(base, x)) for x in extremos]
+
+plt.figure(figsize=(7, 4))
+plt.plot(extremos, medias, label="Media")
+plt.plot(extremos, medianas, label="Mediana")
+plt.xlabel("Valor de la observación incorporada")
+plt.ylabel("Medida de posición")
+plt.legend()
+plt.grid(alpha=0.25)
+plt.show()
+```
+
+La mediana no es “mejor” en términos absolutos. Es preferible cuando la pregunta demanda un centro resistente a extremos; la media conserva propiedades algebraicas importantes y representa directamente el balance de cantidades aditivas.
+
+## Preguntas de revisión
+
+1. ¿Qué medida usaría para describir una variable fuertemente asimétrica y por qué?
+2. ¿Por qué la media geométrica no puede aplicarse directamente a valores negativos?
+3. Demuestre la fórmula de actualización de la media.
+4. ¿Puede una distribución bimodal quedar bien representada por una única medida central?
+

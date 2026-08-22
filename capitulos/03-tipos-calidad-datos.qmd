@@ -1,0 +1,111 @@
+# Tipos, calidad y preparación de datos
+
+## Objetivos
+
+- distinguir variables cualitativas y cuantitativas;
+- reconocer escalas nominales, ordinales, discretas y continuas;
+- identificar unidad de observación y soporte;
+- documentar unidades, censura, datos faltantes y duplicados;
+- evitar operaciones matemáticas incompatibles con el tipo de variable.
+
+## Variable y dato
+
+Una **variable** es una propiedad que puede adoptar diferentes valores entre unidades de observación. Un **dato** es el valor registrado para una unidad particular. “Porosidad” es una variable; “18,4 % en la muestra M17” es un dato.
+
+El tipo de variable condiciona qué resúmenes y gráficos tienen sentido. Asignar números a categorías no las convierte automáticamente en cantidades.
+
+## Variables cualitativas
+
+Las variables cualitativas describen categorías.
+
+### Nominales
+
+Sus categorías no poseen un orden intrínseco. Litología, facies o tipo de mineral son ejemplos. Si codificamos arenisca = 1, pelita = 2 y caliza = 3, los números funcionan como etiquetas: no tendría sentido afirmar que caliza es “tres veces” arenisca ni calcular la media de los códigos.
+
+### Ordinales
+
+Poseen orden, pero las distancias entre niveles no son necesariamente iguales. Un grado de meteorización bajo, medio y alto puede codificarse como 1, 2 y 3, pero el salto de bajo a medio no tiene por qué equivaler al de medio a alto.
+
+## Variables cuantitativas
+
+### Discretas
+
+Surgen habitualmente de conteos y toman valores separados: número de fracturas por metro, cantidad de fósiles o número de eventos sísmicos en un intervalo.
+
+### Continuas
+
+Resultan de mediciones y, idealmente, pueden tomar cualquier valor dentro de un intervalo: porosidad, ley de oro, elevación, permeabilidad o concentración. La precisión del instrumento produce un conjunto finito de valores registrados, pero no cambia la naturaleza conceptual de la variable.
+
+| Variable geológica | Tipo | Observación |
+|---|---|---|
+| Litología | cualitativa nominal | categorías sin orden |
+| Grado de meteorización | cualitativa ordinal | existe orden |
+| Número de fracturas | cuantitativa discreta | conteo |
+| Edad isotópica | cuantitativa continua | medición con incertidumbre |
+| Espesor | cuantitativa continua | depende de dirección y soporte |
+| Concentración de As | cuantitativa continua | puede estar censurada por detección |
+
+## Soporte: qué representa cada dato
+
+El soporte es el volumen, área, longitud o intervalo sobre el cual una observación integra información. No es lo mismo medir una ley en una muestra puntual, en un tramo de testigo de 1 m o en un bloque de 20 × 20 × 10 m.
+
+Podemos representar una observación con soporte $V$ como un promedio volumétrico idealizado:
+
+$$
+Z_V(\mathbf{u})=\frac{1}{|V|}\int_V Z(\mathbf{u}+\mathbf{v})\,d\mathbf{v}.
+$$
+
+Al aumentar el soporte suelen atenuarse extremos y reducirse la varianza. Comparar datos de soportes diferentes como si fueran equivalentes puede inducir conclusiones falsas.
+
+::: {.callout-warning title="Coordenada no equivale a soporte"}
+Dos análisis pueden compartir una coordenada y representar volúmenes o intervalos diferentes. Siempre deben documentarse geometría, tamaño y orientación del soporte.
+:::
+
+## Calidad antes del análisis
+
+Una revisión mínima debe incluir:
+
+1. **identificadores:** unicidad y correspondencia con la unidad observada;
+2. **unidades:** consistencia y conversiones documentadas;
+3. **coordenadas:** sistema de referencia, orden de ejes y dominio válido;
+4. **duplicados:** distinguir réplica analítica, duplicado de campo y repetición temporal;
+5. **faltantes:** no confundir ausencia con cero;
+6. **límites de detección:** preservar la condición de censura;
+7. **rangos físicamente posibles:** detectar errores sin borrar automáticamente anomalías;
+8. **metadatos:** método, laboratorio, fecha, profundidad y soporte.
+
+## Dato atípico no significa dato erróneo
+
+Un valor extremo puede provenir de un error de transcripción, contaminación, cambio de unidad o falla instrumental. También puede representar mineralización, una facies poco frecuente o un proceso hidrogeoquímico real. La rareza estadística es una señal para investigar, no una autorización para eliminar.
+
+## Plantilla reproducible de auditoría
+
+```{python}
+import pandas as pd
+
+datos = pd.DataFrame({
+    "pozo": ["P001", "P002", "P003", "P003"],
+    "as_ug_l": [8.2, 14.6, None, 14600],
+    "x_m": [100, 250, 400, 400],
+    "y_m": [800, 760, 710, 710],
+})
+
+auditoria = {
+    "filas": len(datos),
+    "id_duplicados": int(datos["pozo"].duplicated().sum()),
+    "as_faltantes": int(datos["as_ug_l"].isna().sum()),
+    "as_negativos": int((datos["as_ug_l"] < 0).sum()),
+}
+
+pd.Series(auditoria, name="resultado")
+```
+
+El valor 14600 µg/L no debe borrarse sólo porque es grande. Primero hay que comprobar si corresponde a una unidad diferente, un error decimal o una observación real.
+
+## Preguntas de revisión
+
+1. ¿Por qué no debe calcularse la media de códigos litológicos?
+2. ¿Una escala ordinal puede resumirse siempre mediante diferencias numéricas?
+3. Dé dos ejemplos de observaciones ubicadas en el mismo punto pero con soportes distintos.
+4. ¿Qué información debe acompañar a un valor informado como “menor que 1 µg/L”?
+

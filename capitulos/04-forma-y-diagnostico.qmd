@@ -1,4 +1,0 @@
-# Forma de la distribución y diagnóstico
-
-Este capítulo desarrollará asimetría, curtosis, boxplots, QQ-plots, normalidad, valores atípicos y transformaciones, evitando convertir los diagnósticos gráficos en pruebas automáticas.
-

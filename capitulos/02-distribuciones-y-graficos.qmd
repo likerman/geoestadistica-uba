@@ -1,4 +1,0 @@
-# Distribuciones y representaciones gráficas
-
-Este capítulo desarrollará histogramas, densidad, función de distribución empírica y KDE. Comparará qué pregunta responde cada representación, cómo intervienen las decisiones de escala y por qué ningún gráfico es neutral.
-

@@ -41,3 +41,7 @@ El libro combina tres niveles de lectura:
 - ejemplos reproducibles que conectan la teoría con problemas geológicos.
 
 No pretende reemplazar las fuentes bibliográficas especializadas. Su función es construir un camino coherente hacia ellas y conservar la lógica didáctica de la materia a medida que evoluciona.
+
+## Teoría y práctica
+
+El orden de los temas sigue la cronología de Geoestadística UBA. Los ejemplos computacionales adoptan la filosofía de los libros prácticos reproducibles: código visible, datos accesibles o generados de manera transparente, semillas fijas y una interpretación junto a cada resultado. Esta decisión está inspirada, entre otros recursos educativos abiertos, por el enfoque de @pyrcz_2024, pero el desarrollo, los ejemplos y la secuencia de este manual son propios de la materia.

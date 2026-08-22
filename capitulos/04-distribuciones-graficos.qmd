@@ -1,0 +1,140 @@
+# Distribuciones y representaciones gráficas
+
+## Objetivos
+
+- construir tablas de frecuencias absolutas, relativas y acumuladas;
+- interpretar histogramas de frecuencia, proporción y densidad;
+- explicar el efecto del ancho y origen de los intervalos;
+- calcular e interpretar una función de distribución empírica;
+- comprender una estimación de densidad por kernels y su ancho de banda.
+
+## De una lista a una distribución
+
+Una lista conserva cada observación, pero dificulta percibir estructura cuando $n$ crece. La distribución describe cómo se reparten los valores: qué regiones son frecuentes, cuánto ocupan las colas, si existen varios grupos y qué proporción queda por debajo de un umbral.
+
+## Tablas de frecuencia
+
+Para clases $C_1,\ldots,C_k$, la frecuencia absoluta es
+
+$$
+f_j=\#\{x_i:x_i\in C_j\}.
+$$
+
+La frecuencia relativa y la acumulada son
+
+$$
+r_j=\frac{f_j}{n},\qquad F_j=\sum_{\ell=1}^{j}f_\ell.
+$$
+
+Las tres responden preguntas diferentes: ¿cuántos?, ¿qué proporción? y ¿cuántos —o qué proporción— hasta aquí?
+
+## Histograma
+
+Un histograma divide el eje de la variable en intervalos o *bins*. Si todos tienen el mismo ancho, la altura puede representar frecuencia o proporción. Si los anchos difieren, comparar alturas directamente es engañoso: debe usarse densidad para que el **área** represente probabilidad.
+
+Para un intervalo $B_j$ de ancho $a_j$,
+
+$$
+\widehat f_j=\frac{f_j}{n\,a_j}.
+$$
+
+Entonces el área de la barra es
+
+$$
+\widehat f_j a_j=\frac{f_j}{n},
+$$
+
+y la suma de todas las áreas es uno.
+
+### El gráfico depende de decisiones
+
+Muy pocos intervalos ocultan estructura; demasiados muestran fluctuaciones muestrales como si fueran rasgos del proceso. Además del ancho importa el origen de los cortes. Reglas como Sturges o Freedman–Diaconis ofrecen puntos de partida, no una solución universal. Esta última propone
+
+$$
+h=2\,\operatorname{IQR}(x)n^{-1/3}.
+$$
+
+Siempre conviene inspeccionar más de una resolución y justificar la elegida.
+
+## Función de distribución empírica
+
+La ECDF responde directamente qué proporción de observaciones es menor o igual que un valor $x$:
+
+$$
+\widehat F_n(x)=\frac{1}{n}\sum_{i=1}^{n}\mathbf{1}(x_i\leq x),
+$$
+
+donde $\mathbf{1}(\cdot)$ vale uno si la condición es verdadera y cero en caso contrario.
+
+La ECDF conserva todos los datos, no requiere intervalos y permite leer cuantiles y proporciones bajo umbrales. Es una función escalonada: cada observación incrementa la curva en $1/n$ —o más si existen empates—.
+
+## Estimación de densidad por kernels
+
+La KDE reemplaza cada observación por una pequeña función suave y suma sus contribuciones:
+
+$$
+\widehat f_h(x)=\frac{1}{nh}\sum_{i=1}^{n}
+K\!\left(\frac{x-x_i}{h}\right).
+$$
+
+$K$ es el kernel y $h$ el ancho de banda (*bandwidth*). Con kernel gaussiano,
+
+$$
+K(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}.
+$$
+
+Un $h$ pequeño produce una curva irregular; uno grande puede fusionar modos reales. La KDE es una estimación, no una propiedad observada sin incertidumbre. Además, kernels simétricos pueden asignar densidad fuera del dominio físico —por ejemplo, concentraciones negativas— cerca de un límite.
+
+## Ejemplo reproducible
+
+```{python}
+#| label: fig-hist-ecdf-kde
+#| fig-cap: "Tres representaciones complementarias de una muestra sintética de concentraciones."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import gaussian_kde
+
+rng = np.random.default_rng(2026)
+as_ug_l = rng.lognormal(mean=np.log(15), sigma=0.55, size=50)
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
+
+axes[0].hist(as_ug_l, bins="fd", density=True, alpha=0.65,
+             edgecolor="white")
+axes[0].set(title="Histograma de densidad", xlabel="As (µg/L)", ylabel="Densidad")
+
+x_ord = np.sort(as_ug_l)
+p = np.arange(1, len(x_ord) + 1) / len(x_ord)
+axes[1].step(x_ord, p, where="post")
+axes[1].axvline(10, color="tomato", linestyle="--", label="10 µg/L")
+axes[1].set(title="ECDF", xlabel="As (µg/L)", ylabel="Proporción acumulada")
+axes[1].legend()
+
+malla = np.linspace(0, as_ug_l.max() * 1.1, 300)
+for factor, etiqueta in [(0.5, "h pequeño"), (1.0, "h automático"),
+                         (2.0, "h grande")]:
+    kde = gaussian_kde(as_ug_l, bw_method=lambda k: k.scotts_factor() * factor)
+    axes[2].plot(malla, kde(malla), label=etiqueta)
+axes[2].set(title="Sensibilidad de la KDE", xlabel="As (µg/L)", ylabel="Densidad")
+axes[2].legend()
+
+plt.show()
+```
+
+Los tres gráficos no compiten. El histograma comunica recuentos por intervalos; la ECDF responde preguntas de umbral; la KDE facilita una lectura suave de la forma, condicionada por $h$.
+
+## Errores frecuentes
+
+- interpretar el número de barras como número de poblaciones;
+- comparar alturas cuando los intervalos tienen anchos diferentes;
+- dibujar KDE para datos nominales;
+- confundir una curva suave con mayor certeza;
+- omitir el tamaño de muestra.
+
+## Preguntas de revisión
+
+1. ¿Por qué el área y no siempre la altura representa frecuencia relativa?
+2. ¿Qué gráfico usaría para responder qué porcentaje de pozos está bajo 10 µg/L?
+3. ¿Qué ocurre con la KDE cuando $h\rightarrow0$?
+4. ¿Por qué dos histogramas de los mismos datos pueden sugerir formas diferentes?

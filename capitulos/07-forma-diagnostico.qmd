@@ -1,0 +1,130 @@
+# Forma de la distribución y diagnóstico
+
+## Objetivos
+
+- relacionar momentos centrales con dispersión, asimetría y curtosis;
+- distinguir simetría, modalidad y peso de colas;
+- construir e interpretar boxplots y QQ-plots;
+- investigar valores atípicos sin confundirlos con errores;
+- comprender qué significa —y qué no— asumir normalidad.
+
+## Momentos
+
+El momento poblacional de orden $k$ respecto del origen es
+
+$$
+\mu'_k=\mathbb{E}[X^k],
+$$
+
+y el momento central de orden $k$,
+
+$$
+\mu_k=\mathbb{E}\!\left[(X-\mu)^k\right].
+$$
+
+El primer momento respecto del origen es la media. El primer momento central es cero. El segundo momento central es la varianza. Las potencias impares conservan dirección; las pares miden magnitud sin signo y enfatizan progresivamente los extremos.
+
+## Asimetría
+
+La asimetría poblacional estandarizada es
+
+$$
+\gamma_1=\frac{\mu_3}{\sigma^3}.
+$$
+
+$\gamma_1>0$ suele asociarse con una cola derecha larga, común en leyes y concentraciones; $\gamma_1<0$, con cola izquierda. Un valor cercano a cero no garantiza simetría: formas asimétricas diferentes pueden compensar el tercer momento.
+
+La simetría tampoco implica unimodalidad. Una distribución puede ser simétrica y bimodal, por ejemplo al mezclar dos poblaciones con centros separados.
+
+## Curtosis
+
+La curtosis estandarizada es
+
+$$
+\beta_2=\frac{\mu_4}{\sigma^4}.
+$$
+
+Para una normal, $\beta_2=3$. Con frecuencia se informa el exceso de curtosis
+
+$$
+\gamma_2=\beta_2-3,
+$$
+
+de modo que la normal tiene $\gamma_2=0$. La curtosis se interpreta principalmente como sensibilidad al peso de las colas y a valores extremos, no simplemente como “altura del pico”. Conviene informar si se usa curtosis o exceso de curtosis y qué corrección muestral aplica el programa.
+
+## Boxplot
+
+El boxplot resume mediana, cuartiles y posibles valores atípicos. La caja va de $Q_1$ a $Q_3$ y tiene longitud IQR. En la convención de Tukey, las cercas son
+
+$$
+L=Q_1-1.5\operatorname{IQR},\qquad
+U=Q_3+1.5\operatorname{IQR}.
+$$
+
+Los bigotes llegan hasta las observaciones más extremas dentro de las cercas. Los puntos exteriores se marcan individualmente.
+
+::: {.callout-warning title="Outlier ≠ error"}
+La regla $1.5\,\mathrm{IQR}$ es una convención descriptiva. No demuestra que una observación provenga de otro proceso ni autoriza a eliminarla.
+:::
+
+Un boxplot no muestra bien modalidad, tamaño de muestra ni huecos internos. Debe acompañarse con datos individuales, histograma, ECDF o densidad cuando esos rasgos importan.
+
+## QQ-plot y normalidad
+
+Un QQ-plot compara cuantiles observados $x_{(i)}$ con cuantiles teóricos de una distribución. Para una normal, una elección habitual de posiciones es
+
+$$
+p_i=\frac{i-0.5}{n},\qquad q_i=\Phi^{-1}(p_i),
+$$
+
+y se grafican los pares $(q_i,x_{(i)})$. Una relación aproximadamente lineal es compatible con normalidad; curvaturas sistemáticas indican asimetría, colas diferentes o mezcla de poblaciones.
+
+El QQ-plot no “prueba” que los datos sean normales. Con muestras pequeñas tiene poca resolución y con muestras enormes detecta desviaciones irrelevantes. La pregunta correcta es si el modelo normal resulta adecuado para el objetivo y la escala considerados.
+
+## Diagnóstico gráfico reproducible
+
+```{python}
+#| label: fig-diagnostico-forma
+#| fig-cap: "Histograma, boxplot y QQ-plot de una muestra asimétrica sintética."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+rng = np.random.default_rng(2026)
+x = rng.lognormal(mean=np.log(15), sigma=0.55, size=50)
+
+fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
+axes[0].hist(x, bins="fd", edgecolor="white", alpha=0.75)
+axes[0].set(title="Histograma", xlabel="As sintético (µg/L)", ylabel="Frecuencia")
+
+axes[1].boxplot(x, vert=True, showmeans=True)
+axes[1].set(title="Boxplot", ylabel="As sintético (µg/L)", xticks=[])
+
+stats.probplot(x, dist="norm", plot=axes[2])
+axes[2].set_title("QQ-plot normal")
+plt.show()
+
+print(f"Asimetría muestral: {stats.skew(x, bias=False):.2f}")
+print(f"Exceso de curtosis: {stats.kurtosis(x, fisher=True, bias=False):.2f}")
+```
+
+## Transformaciones
+
+Para variables positivas y asimétricas, $Y=\log X$ puede estabilizar escala y reducir asimetría. Pero transformar no es un ritual para “normalizar”. Cambia la interpretación: diferencias en logaritmos corresponden a razones en escala original. Además, volver mediante $\exp(\bar Y)$ produce una media geométrica, no la media aritmética de $X$.
+
+## Flujo para investigar un valor extremo
+
+1. verificar transcripción, unidades y método;
+2. revisar duplicados, blanco y control analítico;
+3. inspeccionar contexto geológico y espacial;
+4. evaluar influencia sobre los resultados;
+5. documentar cualquier exclusión y repetir el análisis con y sin el dato;
+6. considerar métodos robustos o modelos de colas si el valor es válido.
+
+## Preguntas de revisión
+
+1. ¿Por qué curtosis alta no significa solamente un pico alto?
+2. ¿Qué rasgo importante puede ocultar un boxplot?
+3. ¿Cómo se vería una cola derecha pesada en un QQ-plot normal?
+4. ¿Qué cambia conceptualmente al analizar $\log X$ en lugar de $X$?

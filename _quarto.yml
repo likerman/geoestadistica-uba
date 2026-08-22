@@ -17,20 +17,25 @@ book:
     - capitulos/00-como-leer.qmd
     - part: "I. Del dato a la descripción"
       chapters:
-        - capitulos/01-datos-poblacion-muestra.qmd
-        - capitulos/02-distribuciones-y-graficos.qmd
-        - capitulos/03-medidas-resumen.qmd
-        - capitulos/04-forma-y-diagnostico.qmd
-    - part: "II. Incertidumbre e inferencia"
+        - capitulos/01-introduccion-geoestadistica.qmd
+        - capitulos/02-poblacion-muestra-muestreo.qmd
+        - capitulos/03-tipos-calidad-datos.qmd
+    - part: "II. Estadística descriptiva"
+      chapters:
+        - capitulos/04-distribuciones-graficos.qmd
+        - capitulos/05-posicion.qmd
+        - capitulos/06-dispersion.qmd
+        - capitulos/07-forma-diagnostico.qmd
+    - part: "III. Incertidumbre e inferencia"
       chapters:
         - capitulos/05-probabilidad.qmd
         - capitulos/06-muestreo-e-inferencia.qmd
         - capitulos/07-hipotesis.qmd
-    - part: "III. Relaciones entre variables"
+    - part: "IV. Relaciones entre variables"
       chapters:
         - capitulos/08-correlacion-regresion.qmd
         - capitulos/09-metodos-multivariados.qmd
-    - part: "IV. Dependencia espacial"
+    - part: "V. Dependencia espacial"
       chapters:
         - capitulos/10-variable-regionalizada.qmd
         - capitulos/11-variograma.qmd

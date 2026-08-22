@@ -1,0 +1,99 @@
+# Introducción a la estadística y la geoestadística
+
+## Objetivos
+
+Al finalizar este capítulo, el lector debería poder:
+
+- reconocer la estadística como un proceso que conecta datos y decisiones;
+- distinguir una descripción estadística de una pregunta espacial;
+- explicar por qué proximidad, dirección, escala y soporte son relevantes;
+- identificar inferencia, predicción y simulación como objetivos diferentes;
+- formular un problema geológico antes de elegir una técnica.
+
+## De una medición a una decisión
+
+La estadística no es solamente un conjunto de fórmulas. Es una forma organizada de aprender a partir de observaciones:
+
+$$
+\text{recolectar}\longrightarrow\text{organizar}\longrightarrow
+\text{analizar}\longrightarrow\text{interpretar}\longrightarrow\text{decidir}.
+$$
+
+Cada flecha implica decisiones. ¿Qué se mide?, ¿dónde?, ¿con qué instrumento?, ¿qué observaciones se consideran comparables?, ¿qué modelo se admite?, ¿qué incertidumbre es tolerable? Un cálculo correcto no rescata una pregunta mal formulada ni un muestreo que excluye sistemáticamente una parte relevante del sistema.
+
+En geología, los datos suelen ser escasos respecto de la extensión y complejidad del dominio. Un testigo representa una fracción mínima de un yacimiento; un pozo observa una columna localizada dentro de un acuífero; una muestra de mano integra un volumen y una historia de selección. La información es parcial por construcción.
+
+## ¿Qué agrega la geoestadística?
+
+La estadística clásica estudia la variabilidad de los valores. La geoestadística estudia, además, cómo esa variabilidad se organiza en el espacio. Una observación espacial puede representarse como
+
+$$
+\bigl(\mathbf{u}_i,z(\mathbf{u}_i)\bigr),
+$$
+
+donde $\mathbf{u}_i$ es la localización y $z(\mathbf{u}_i)$ el valor observado. En dos dimensiones, $\mathbf{u}_i=(x_i,y_i)$; en tres, puede incluir elevación o profundidad.
+
+Dos conjuntos con exactamente los mismos valores pueden tener patrones espaciales completamente distintos. Por eso, media, varianza e histograma son necesarios, pero insuficientes para responder preguntas como:
+
+- ¿se parecen más dos observaciones cercanas que dos lejanas?;
+- ¿la continuidad es igual en todas las direcciones?;
+- ¿qué valor cabe esperar en una ubicación no muestreada?;
+- ¿con qué incertidumbre se realiza esa predicción?;
+
+::: {.callout-important title="Principio central"}
+En datos espaciales importa cuánto vale una observación y también dónde está. Permutar valores entre localizaciones conserva toda la estadística univariada, pero puede destruir la continuidad espacial.
+:::
+
+## Contexto, relaciones, escala e incertidumbre
+
+Cuatro ideas atraviesan el manual:
+
+**Contexto espacial.** Una coordenada no basta: necesitamos dominio geológico, unidad estratigráfica, profundidad, fecha, método analítico y relación con estructuras o procesos.
+
+**Relaciones espaciales.** Las observaciones próximas no necesariamente son independientes. La similitud puede depender de distancia y dirección.
+
+**Escala.** Un patrón visible a escala regional puede desaparecer a escala de afloramiento. Cambiar resolución o volumen muestreado cambia la variabilidad observada.
+
+**Incertidumbre.** Entre muestras existen zonas no observadas. La geoestadística no elimina esa falta de información: intenta representarla mediante supuestos explícitos y medidas cuantitativas.
+
+## Breve desarrollo histórico
+
+La geoestadística moderna combina ideas de procesos estocásticos con problemas de evaluación de recursos. Los trabajos de D. G. Krige en minería mostraron que la configuración espacial de las muestras afectaba la estimación de leyes. Georges Matheron formalizó después la teoría de variables regionalizadas y el kriging. Con el desarrollo computacional, estas ideas se extendieron a petróleo, hidrogeología, ambiente, suelos, agricultura y ciencias del sistema terrestre.
+
+La historia importa porque recuerda que las herramientas no nacieron como una colección abstracta: respondieron a problemas de decisión bajo información espacial incompleta.
+
+## Datos abundantes no son datos completos
+
+Satélites, sensores, pozos, geoquímica, geofísica y modelos digitales producen grandes volúmenes de datos. Sin embargo,
+
+$$
+\text{muchos datos}\;\not\Rightarrow\;\text{datos representativos}.
+$$
+
+La cobertura puede ser irregular, los métodos pueden cambiar en el tiempo, la resolución puede ser inadecuada y las observaciones pueden concentrarse donde resulta más fácil o donde se esperaba encontrar una anomalía. El volumen no reemplaza el razonamiento sobre procedencia, soporte y sesgo.
+
+## Inferencia, predicción y simulación
+
+Conviene separar tres objetivos:
+
+- **Inferencia:** aprender propiedades de una población o de un modelo a partir de una muestra.
+- **Predicción:** estimar una variable en una localización o volumen no observado.
+- **Simulación:** producir realizaciones alternativas compatibles con datos y modelo para representar escenarios posibles.
+
+Una predicción suavizada y una simulación pueden compartir datos y variograma, pero responden preguntas diferentes. La primera busca estimar; la segunda, reproducir variabilidad y evaluar consecuencias de escenarios alternativos.
+
+## El problema debe preceder al método
+
+Antes de abrir un programa conviene completar una frase:
+
+> Queremos conocer **[variable]** sobre **[dominio y soporte]** para responder **[pregunta]**, utilizando **[observaciones]**, bajo **[restricciones]**.
+
+Por ejemplo: queremos conocer la distribución de concentración de arsénico en pozos de abastecimiento de un municipio durante un período definido, para evaluar exposición y orientar nuevas mediciones, utilizando una muestra limitada por presupuesto y acceso.
+
+## Preguntas de revisión
+
+1. ¿Por qué una base con millones de observaciones puede no representar el sistema de interés?
+2. ¿Qué información se pierde si se conserva la columna de valores y se eliminan las coordenadas?
+3. Distinga inferencia de predicción usando un ejemplo de porosidad.
+4. ¿Por qué una simulación no debe interpretarse como “el mapa verdadero”?
+

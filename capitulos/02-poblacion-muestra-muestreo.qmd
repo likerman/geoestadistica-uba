@@ -1,4 +1,12 @@
-# Datos, población y muestra
+# Población, muestra y muestreo
+
+## Objetivos
+
+- delimitar una población de acuerdo con la pregunta;
+- distinguir población, muestra, parámetro y estadístico;
+- evaluar representatividad y sesgo de selección;
+- comparar diseños regular, aleatorio y preferencial;
+- separar inferencia sobre una población de predicción local.
 
 ## El problema antes de las fórmulas
 
@@ -25,6 +33,17 @@ Estas definiciones sólo son útiles si delimitamos la población:
 
 Una muestra grande no corrige una población mal definida. Tampoco garantiza representatividad si el diseño de muestreo concentra observaciones en zonas accesibles o ya sospechadas como problemáticas.
 
+## Representatividad y diseño de muestreo
+
+Una muestra es representativa respecto de una pregunta cuando su mecanismo de selección permite aprender sobre la población definida sin excluir sistemáticamente partes relevantes de ella. No es una propiedad que pueda decidirse sólo mirando $n$.
+
+- **Muestreo regular:** cubre el dominio mediante una grilla o separación aproximadamente constante. Facilita cobertura, pero puede interactuar con periodicidades del fenómeno.
+- **Muestreo aleatorio:** cada unidad tiene una probabilidad de selección conocida. Favorece inferencia basada en diseño, aunque puede dejar vacíos espaciales.
+- **Muestreo preferencial:** la probabilidad de observar depende directa o indirectamente del fenómeno. Perforar donde se espera mineralización es un caso típico.
+- **Muestreo por accesibilidad:** caminos, permisos, relieve o costos condicionan la selección. Puede producir sesgo aun sin intención explícita.
+
+En muchas campañas reales se combinan diseños. La tarea no consiste en etiquetar la muestra como “buena” o “mala”, sino en reconstruir cómo fue obtenida y qué consecuencias tiene para la pregunta.
+
 ## Parámetro y estadístico
 
 Un **parámetro** describe una propiedad de la población. Suele representarse con letras griegas; por ejemplo, la media poblacional $\mu$ o la varianza poblacional $\sigma^2$.
@@ -36,6 +55,14 @@ $$
 $$
 
 El estadístico es observable; el parámetro que intentamos conocer generalmente no lo es. Dos muestras de la misma población pueden producir valores diferentes de $\bar{x}$. Esa variación entre muestras es la puerta de entrada a la inferencia.
+
+| Población | Muestra |
+|---|---|
+| media $\mu$ | media $\bar{x}$ |
+| varianza $\sigma^2$ | varianza $s^2$ |
+| desviación estándar $\sigma$ | desviación estándar $s$ |
+
+El parámetro es fijo para una población definida, aunque sea desconocido. El estadístico cambia de una muestra a otra.
 
 ## ¿Qué se pierde al ignorar la localización?
 
