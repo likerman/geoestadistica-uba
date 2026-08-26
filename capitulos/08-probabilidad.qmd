@@ -1,4 +1,713 @@
-# Probabilidad y variables aleatorias
+# Probabilidad, distribuciones y modelos
 
-Capítulo planificado. Introducirá el lenguaje probabilístico necesario para representar incertidumbre.
+## Objetivos
 
+Al finalizar este capítulo, el lector debería poder:
+
+- distinguir una proporción observada de una probabilidad bajo un modelo;
+- diferenciar variable aleatoria, realización, evento y valor observado;
+- interpretar densidades y funciones de distribución acumulada;
+- relacionar histograma, KDE, ECDF, PDF y CDF sin confundir sus significados;
+- utilizar la distribución normal como modelo de referencia, no como forma obligatoria;
+- estandarizar valores e interpretar puntuaciones $z$;
+- calcular probabilidades de cola y de intervalo;
+- obtener cuantiles e interpretar un QQ-plot como diagnóstico del modelo;
+- explicar por qué una cuenta correcta puede producir una respuesta poco útil si el modelo es inadecuado.
+
+## De describir lo observado a modelar lo posible
+
+Hasta aquí describimos una muestra mediante gráficos y estadísticos. Esas herramientas responden preguntas sobre los datos que efectivamente tenemos. Sin embargo, muchos problemas geológicos se refieren a algo que todavía no observamos: un pozo aún no muestreado, una nueva perforación o una concentración futura.
+
+La transición conceptual es
+
+$$
+\text{datos observados}
+\longrightarrow
+\text{distribución empírica}
+\longrightarrow
+\text{modelo probabilístico}
+\longrightarrow
+\text{probabilidades y cuantiles}.
+$$
+
+Un modelo probabilístico no descubre automáticamente el mecanismo geológico ni reproduce cada irregularidad de la muestra. Es una representación matemática deliberadamente simplificada. Su utilidad depende de la pregunta, de los datos, de los supuestos y de las consecuencias de equivocarse [@davis_2002; @mckillup_dyar_2010].
+
+::: {.callout-important title="Idea central"}
+Las probabilidades no salen directamente de los datos. Se calculan bajo un modelo cuyos parámetros pueden conocerse, suponerse o estimarse. Las respuestas heredan sus supuestos.
+:::
+
+## Datos de trabajo
+
+Usaremos la muestra aleatoria reproducible de 50 pozos del caso sintético. Los valores no representan mediciones reales ni deben utilizarse para evaluar exposición. Se mantienen constantes entre capítulos para que cada concepto nuevo pueda compararse con los anteriores.
+
+```{python}
+#| label: datos-probabilidad
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+PALETA = {
+    "oscuro": "#1D4162", "medio": "#446681", "gris": "#6D899F",
+    "palido": "#C4D0DA", "cobre": "#B56F3A", "neutro": "#F4F3F1",
+}
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+muestra = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+n = muestra.size
+media = muestra.mean()
+sd = muestra.std(ddof=1)
+```
+
+En esta realización, $n=50$, $\bar x\approx17.52\ \mu\text{g/L}$ y $s\approx8.47\ \mu\text{g/L}$. Son [estadísticos muestrales](../glosario.qmd#glosario-estadigrafo), no parámetros poblacionales conocidos.
+
+## Variable aleatoria, realización y evento
+
+Sea $X$ la concentración de arsénico de un pozo seleccionado mediante un mecanismo definido. Antes de observarlo, $X$ es una **[variable aleatoria](../glosario.qmd#glosario-variable-aleatoria)**. Después de medir un pozo concreto obtenemos una realización, por ejemplo $x=17.3\ \mu\text{g/L}$.
+
+La aleatoriedad no afirma que la concentración carezca de causas. Mineralogía, flujo, pH, condiciones redox, profundidad y diseño del pozo pueden intervenir físicamente. El modelo aleatorio representa nuestra incertidumbre antes de conocer qué valor se observará.
+
+Un **[evento](../glosario.qmd#glosario-evento)** es una proposición sobre los posibles valores de $X$. Por ejemplo:
+
+$$
+A=\{X\leq10\},\qquad B=\{X>30\},\qquad C=\{10<X\leq20\}.
+$$
+
+La definición del evento precede al cálculo. “¿Superará un umbral?” y “¿quedará dentro de un intervalo?” son preguntas diferentes y requieren áreas diferentes de una distribución.
+
+## Probabilidad
+
+La **[probabilidad](../glosario.qmd#glosario-probabilidad)** asigna a cada evento $A$ un número $P(A)$ entre cero y uno. En el marco axiomático:
+
+$$
+0\leq P(A)\leq1,\qquad P(\Omega)=1,
+$$
+
+y para eventos mutuamente excluyentes $A_1,A_2,\ldots$,
+
+$$
+P\!\left(\bigcup_j A_j\right)=\sum_j P(A_j).
+$$
+
+En la muestra podemos contar la proporción que satisface $A$:
+
+$$
+\widehat p_A=\frac{1}{n}\sum_{i=1}^{n}\mathbf 1(x_i\in A).
+$$
+
+$\widehat p_A$ es una proporción observada. Puede usarse para estimar $P(A)$, pero no debe presentarse como la probabilidad poblacional exacta. Otra muestra puede producir una proporción diferente.
+
+## Variable continua y densidad
+
+Una concentración suele modelarse como **[variable continua](../glosario.qmd#glosario-variable-continua)**. En un modelo continuo, la probabilidad de un valor puntual es cero:
+
+$$
+P(X=x)=0.
+$$
+
+Esto no significa que sea imposible registrar exactamente `20.0` con un instrumento. Significa que, en el modelo matemático continuo, la probabilidad se asigna a intervalos y un punto aislado tiene ancho nulo.
+
+Una **[función de densidad de probabilidad](../glosario.qmd#glosario-densidad)** $f$ satisface
+
+$$
+f(x)\geq0,\qquad \int_{-\infty}^{\infty}f(x)\,dx=1.
+$$
+
+La probabilidad de un intervalo es el área correspondiente:
+
+$$
+P(a<X\leq b)=\int_a^b f(x)\,dx.
+$$
+
+La altura $f(x)$ no es una probabilidad. Tiene unidades inversas a las de $X$: si $X$ se mide en $\mu\text{g/L}$, la densidad se expresa en $(\mu\text{g/L})^{-1}$. Por eso una densidad puede superar uno sin violar las reglas de probabilidad; lo que debe sumar uno es el área.
+
+```{python}
+#| label: fig-densidad-area
+#| fig-cap: "La altura de una densidad y la probabilidad de un intervalo son objetos distintos: la probabilidad corresponde al área sombreada."
+#| fig-alt: "Curva normal de densidad con una línea vertical que marca una altura y un área sombreada entre 10 y 20 microgramos por litro."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+mu, sigma = 17.52, 8.47
+x = np.linspace(mu - 4*sigma, mu + 4*sigma, 500)
+f = stats.norm.pdf(x, loc=mu, scale=sigma)
+a, b = 10, 20
+
+fig, ax = plt.subplots(figsize=(9, 4.8))
+ax.plot(x, f, color="#1D4162", linewidth=2.5)
+zona = (x >= a) & (x <= b)
+ax.fill_between(x[zona], 0, f[zona], color="#B56F3A", alpha=0.38,
+                label=r"Área $=P(10<X\leq20)$")
+ax.vlines(mu, 0, stats.norm.pdf(mu, mu, sigma), color="#6D899F",
+          linestyle="--", label=r"Altura $f(\mu)$")
+ax.set(xlabel="Concentración de As (µg/L)", ylabel="Densidad")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+## Función de distribución acumulada
+
+La **[función de distribución acumulada](../glosario.qmd#glosario-cdf)** o CDF es
+
+$$
+F(x)=P(X\leq x).
+$$
+
+Si existe una densidad,
+
+$$
+F(x)=\int_{-\infty}^{x}f(t)\,dt.
+$$
+
+Toda CDF es no decreciente, tiende a cero hacia $-\infty$ y a uno hacia $+\infty$. Permite calcular colas e intervalos:
+
+$$
+P(X>x)=1-F(x),\qquad P(a<X\leq b)=F(b)-F(a).
+$$
+
+```{python}
+#| label: fig-pdf-cdf
+#| fig-cap: "Correspondencia entre el área acumulada bajo una PDF y el valor de la CDF en el mismo umbral."
+#| fig-alt: "Dos paneles: arriba una densidad normal con área sombreada a la izquierda de 20; abajo una función acumulada con el punto F de 20 señalado."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+mu, sigma, umbral = 17.52, 8.47, 20
+x = np.linspace(mu - 4*sigma, mu + 4*sigma, 500)
+pdf = stats.norm.pdf(x, mu, sigma)
+cdf = stats.norm.cdf(x, mu, sigma)
+p = stats.norm.cdf(umbral, mu, sigma)
+
+fig, axes = plt.subplots(2, 1, figsize=(8.5, 7), sharex=True,
+                         constrained_layout=True)
+axes[0].plot(x, pdf, color="#1D4162", linewidth=2.3)
+mask = x <= umbral
+axes[0].fill_between(x[mask], 0, pdf[mask], color="#B56F3A", alpha=0.38)
+axes[0].axvline(umbral, color="#6D899F", linestyle="--")
+axes[0].set(ylabel="Densidad", title="PDF: acumulamos área")
+axes[1].plot(x, cdf, color="#446681", linewidth=2.3)
+axes[1].scatter([umbral], [p], color="#B56F3A", zorder=3)
+axes[1].hlines(p, x.min(), umbral, color="#B56F3A", linestyle=":")
+axes[1].vlines(umbral, 0, p, color="#6D899F", linestyle="--")
+axes[1].annotate(f"F(20) = {p:.2f}", (umbral, p), xytext=(8, -24),
+                 textcoords="offset points")
+axes[1].set(xlabel="Concentración de As (µg/L)", ylabel="Probabilidad acumulada",
+            ylim=(0, 1.02), title="CDF: expresamos el área acumulada")
+for ax in axes:
+    ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+## ECDF, KDE, PDF y CDF
+
+Estas cuatro expresiones se parecen visualmente, pero no son intercambiables:
+
+| Objeto | Construcción | Pregunta principal |
+|---|---|---|
+| [ECDF](../glosario.qmd#glosario-ecdf) | cuenta datos observados | ¿qué proporción muestral es $\leq x$? |
+| [KDE](../glosario.qmd#glosario-kde) | suaviza la muestra mediante kernels | ¿dónde se concentra la muestra según un ancho de banda? |
+| [PDF](../glosario.qmd#glosario-pdf) | densidad de un modelo | ¿cómo se distribuye la probabilidad por unidad de $x$? |
+| [CDF](../glosario.qmd#glosario-cdf) | acumula probabilidad del modelo | ¿cuál es $P(X\leq x)$? |
+
+La ECDF es una estimación directa de la CDF. Una KDE es una estimación suavizada de densidad. Integrar una KDE produce una CDF estimada suavizada, pero ninguna de estas operaciones convierte la distribución poblacional desconocida en una certeza [@alperin_2013; @isaaks_srivastava_1989, cap. 2].
+
+```{python}
+#| label: fig-empirico-modelo
+#| fig-cap: "Dos rutas desde una muestra: estimación empírica directa mediante ECDF y estimación suavizada mediante KDE; ambas se comparan con un modelo normal de referencia."
+#| fig-alt: "Cuatro paneles con histograma y KDE, ECDF, densidad normal de referencia y comparación entre ECDF y CDF normal."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+mu, sigma = xobs.mean(), xobs.std(ddof=1)
+malla = np.linspace(0, max(50, xobs.max()*1.08), 500)
+kde = stats.gaussian_kde(xobs)
+xord = np.sort(xobs)
+ecdf = np.arange(1, len(xord)+1)/len(xord)
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
+axes[0, 0].hist(xobs, bins="fd", density=True, color="#C4D0DA", edgecolor="white")
+axes[0, 0].plot(malla, kde(malla), color="#1D4162", linewidth=2.2)
+axes[0, 0].set(title="Muestra: histograma + KDE", ylabel="Densidad")
+axes[0, 1].step(xord, ecdf, where="post", color="#446681", linewidth=2.2)
+axes[0, 1].set(title="ECDF: proporción observada", ylabel="Proporción acumulada")
+axes[1, 0].plot(malla, stats.norm.pdf(malla, mu, sigma), color="#B56F3A", linewidth=2.2)
+axes[1, 0].set(title="PDF normal de referencia", ylabel="Densidad")
+axes[1, 1].step(xord, ecdf, where="post", color="#446681", linewidth=2, label="ECDF")
+axes[1, 1].plot(malla, stats.norm.cdf(malla, mu, sigma), color="#B56F3A",
+                linewidth=2.2, label="CDF normal")
+axes[1, 1].set(title="Acumulación empírica y teórica",
+                ylabel="Proporción / probabilidad acumulada")
+axes[1, 1].legend(frameon=False)
+for ax in axes.flat:
+    ax.set_xlabel("As sintético (µg/L)")
+    ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+## Distribuciones teóricas
+
+Una **[distribución teórica](../glosario.qmd#glosario-distribucion-teorica)** combina
+
+$$
+\text{variable aleatoria}+\text{familia matemática}+\text{parámetros}.
+$$
+
+Elegir una familia no equivale a describir perfectamente cada dato. Significa asumir una forma suficientemente útil para calcular probabilidades, cuantiles o consecuencias. Para variables positivas y asimétricas pueden considerarse modelos lognormales, gamma u otros; para conteos aparecen modelos discretos. La elección debe responder al soporte, al mecanismo y al objetivo, no a la comodidad algebraica.
+
+## Distribución normal
+
+Decimos que
+
+$$
+X\sim\mathcal N(\mu,\sigma^2)
+$$
+
+si su densidad es
+
+$$
+f(x)=\frac{1}{\sigma\sqrt{2\pi}}
+\exp\!\left[-\frac{(x-\mu)^2}{2\sigma^2}\right],
+\qquad -\infty<x<\infty.
+$$
+
+$\mu$ controla la posición y $\sigma$ la escala. La distribución es simétrica, unimodal y satisface media = mediana = moda. Su asimetría es cero, su curtosis de Pearson es tres y su exceso de curtosis es cero.
+
+```{python}
+#| label: fig-parametros-normal
+#| fig-cap: "Efectos separados de los parámetros de una distribución normal: la media traslada la curva y la desviación estándar modifica su dispersión."
+#| fig-alt: "Dos paneles de curvas normales; el primero compara distintas medias con igual desviación y el segundo distintas desviaciones con igual media."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+x = np.linspace(-8, 12, 600)
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.5), constrained_layout=True)
+colores = ["#6D899F", "#1D4162", "#B56F3A"]
+for mu, color in zip([-2, 2, 6], colores):
+    axes[0].plot(x, stats.norm.pdf(x, mu, 1.5), color=color,
+                 linewidth=2.2, label=fr"$\mu={mu},\ \sigma=1.5$")
+axes[0].set_title("Cambiar μ traslada")
+for sigma, color in zip([0.8, 1.8, 3.0], colores):
+    axes[1].plot(x, stats.norm.pdf(x, 2, sigma), color=color,
+                 linewidth=2.2, label=fr"$\mu=2,\ \sigma={sigma}$")
+axes[1].set_title("Cambiar σ dispersa")
+for ax in axes:
+    ax.set(xlabel="x", ylabel="Densidad")
+    ax.legend(frameon=False)
+    ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+### Regla 68–95–99,7
+
+Para una distribución normal:
+
+$$
+P(\mu-\sigma<X<\mu+\sigma)\approx0.6827,
+$$
+
+$$
+P(\mu-2\sigma<X<\mu+2\sigma)\approx0.9545,
+$$
+
+$$
+P(\mu-3\sigma<X<\mu+3\sigma)\approx0.9973.
+$$
+
+Estos porcentajes no son una propiedad universal. Aplicarlos automáticamente a datos asimétricos confunde la desviación estándar —una medida de escala— con una ley probabilística específica.
+
+```{python}
+#| label: fig-regla-empirica
+#| fig-cap: "Regla 68–95–99,7 de la distribución normal. Cada banda incluye el área acumulada entre múltiplos simétricos de la desviación estándar."
+#| fig-alt: "Tres paneles de una curva normal con las áreas entre una, dos y tres desviaciones estándar sombreadas y rotuladas 68.27, 95.45 y 99.73 por ciento."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+z = np.linspace(-4, 4, 800)
+f = stats.norm.pdf(z)
+fig, axes = plt.subplots(1, 3, figsize=(13, 3.8), sharey=True,
+                         constrained_layout=True)
+for ax, k in zip(axes, [1, 2, 3]):
+    ax.plot(z, f, color="#1D4162", linewidth=2.2)
+    dentro = np.abs(z) <= k
+    ax.fill_between(z[dentro], 0, f[dentro], color="#B56F3A", alpha=0.42)
+    prob = stats.norm.cdf(k) - stats.norm.cdf(-k)
+    ax.set(title=fr"$μ\pm{k}\sigma$: {100*prob:.2f}%", xlabel="z",
+           xlim=(-4, 4))
+    ax.axvline(-k, color="#6D899F", linestyle=":")
+    ax.axvline(k, color="#6D899F", linestyle=":")
+    ax.spines[["top", "right"]].set_visible(False)
+axes[0].set_ylabel("Densidad normal estándar")
+plt.show()
+```
+
+### ¿Es razonable para la concentración de arsénico?
+
+La normal es útil como primera referencia, pero presenta límites físicos y empíricos:
+
+- admite valores negativos;
+- es simétrica;
+- fija su comportamiento de colas una vez elegidos $\mu$ y $\sigma$;
+- puede representar mal variables positivas fuertemente asimétricas.
+
+La muestra sintética tiene asimetría positiva. Ajustar una normal con la misma media y desviación estándar garantiza coincidencia aproximada de dos resúmenes, no de la forma completa.
+
+```{python}
+#| label: fig-as-vs-normal
+#| fig-cap: "Muestra sintética de arsénico y modelo normal con la misma media y desviación estándar. Coincidir en centro y escala no garantiza coincidir en forma ni en colas."
+#| fig-alt: "Histograma y densidad suavizada asimétrica de arsénico comparados con una curva normal; la normal se extiende hacia concentraciones negativas."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+mu, sigma = xobs.mean(), xobs.std(ddof=1)
+malla = np.linspace(mu-4*sigma, max(xobs.max()*1.1, mu+4*sigma), 600)
+kde = stats.gaussian_kde(xobs)
+
+fig, ax = plt.subplots(figsize=(9.5, 5))
+ax.hist(xobs, bins="fd", density=True, color="#C4D0DA", edgecolor="white",
+        label="Histograma")
+positiva = malla >= 0
+ax.plot(malla[positiva], kde(malla[positiva]), color="#1D4162",
+        linewidth=2.5, label="KDE observada")
+ax.plot(malla, stats.norm.pdf(malla, mu, sigma), color="#B56F3A",
+        linewidth=2.5, label="Normal con igual media y SD")
+ax.axvspan(malla.min(), 0, color="#6D899F", alpha=0.12,
+           label="Soporte negativo del modelo")
+ax.set(xlabel="As sintético (µg/L)", ylabel="Densidad")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+## Estandarización
+
+Para una variable normal con parámetros conocidos, definimos
+
+$$
+Z=\frac{X-\mu}{\sigma}.
+$$
+
+$Z$ expresa distancia a la media en unidades de desviación estándar. Si $X\sim\mathcal N(\mu,\sigma^2)$, entonces
+
+$$
+Z\sim\mathcal N(0,1).
+$$
+
+**[Estandarizar](../glosario.qmd#glosario-estandarizacion)** cambia origen y escala; no cambia la forma de la distribución. Por lo tanto, estandarizar datos asimétricos produce datos estandarizados asimétricos. No los “vuelve normales”. Cuando $\mu$ y $\sigma$ se reemplazan por $\bar x$ y $s$, obtenemos puntuaciones respecto de la muestra, no de parámetros conocidos.
+
+```{python}
+#| label: fig-estandarizacion
+#| fig-cap: "La estandarización conserva la forma y expresa cada valor como distancia a la media en unidades de desviación estándar."
+#| fig-alt: "Dos histogramas de la misma muestra, uno en microgramos por litro y otro en puntuaciones z, con idéntica forma."
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+zobs = (xobs - xobs.mean())/xobs.std(ddof=1)
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.3), constrained_layout=True)
+axes[0].hist(xobs, bins="fd", color="#446681", edgecolor="white")
+axes[0].axvline(xobs.mean(), color="#B56F3A", linestyle="--")
+axes[0].set(title="Escala original", xlabel="As sintético (µg/L)", ylabel="Frecuencia")
+axes[1].hist(zobs, bins="fd", color="#446681", edgecolor="white")
+axes[1].axvline(0, color="#B56F3A", linestyle="--")
+axes[1].set(title="Escala estandarizada", xlabel="z", ylabel="Frecuencia")
+for ax in axes:
+    ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+## De una puntuación z a una probabilidad
+
+La CDF de la normal estándar se denota
+
+$$
+\Phi(z)=P(Z\leq z).
+$$
+
+De ella se derivan tres geometrías básicas:
+
+$$
+P(Z\leq z)=\Phi(z),\qquad
+P(Z>z)=1-\Phi(z),
+$$
+
+$$
+P(a<Z\leq b)=\Phi(b)-\Phi(a).
+$$
+
+En escala original:
+
+$$
+P(X\leq x)=\Phi\!\left(\frac{x-\mu}{\sigma}\right).
+$$
+
+### Tres ejemplos con la muestra sintética
+
+Construiremos un modelo normal descriptivo sustituyendo $\mu$ y $\sigma$ por $\bar x=17.52$ y $s=8.47\ \mu\text{g/L}$. Esto permite estudiar el procedimiento, pero no convierte esos valores en parámetros verdaderos ni demuestra normalidad.
+
+$$
+P(X\leq10)=\Phi\!\left(\frac{10-17.52}{8.47}\right)\approx0.19,
+$$
+
+$$
+P(X>30)=1-\Phi\!\left(\frac{30-17.52}{8.47}\right)\approx0.07,
+$$
+
+$$
+P(10<X\leq20)=
+\Phi\!\left(\frac{20-17.52}{8.47}\right)
+-\Phi\!\left(\frac{10-17.52}{8.47}\right)\approx0.43.
+$$
+
+```{python}
+#| label: fig-probabilidades-normal
+#| fig-cap: "Tres geometrías de probabilidad bajo el modelo normal ajustado: cola izquierda, cola derecha e intervalo."
+#| fig-alt: "Tres curvas normales con áreas sombreadas para X menor o igual a 10, X mayor a 30 y X entre 10 y 20 microgramos por litro."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+mu, sigma = xobs.mean(), xobs.std(ddof=1)
+x = np.linspace(mu-4*sigma, mu+4*sigma, 600)
+f = stats.norm.pdf(x, mu, sigma)
+eventos = [
+    (x <= 10, r"$P(X\leq10)$", stats.norm.cdf(10, mu, sigma)),
+    (x > 30, r"$P(X>30)$", stats.norm.sf(30, mu, sigma)),
+    ((x > 10) & (x <= 20), r"$P(10<X\leq20)$",
+     stats.norm.cdf(20, mu, sigma)-stats.norm.cdf(10, mu, sigma)),
+]
+fig, axes = plt.subplots(1, 3, figsize=(14, 4), sharey=True, constrained_layout=True)
+for ax, (mask, etiqueta, p) in zip(axes, eventos):
+    ax.plot(x, f, color="#1D4162", linewidth=2.2)
+    ax.fill_between(x[mask], 0, f[mask], color="#B56F3A", alpha=0.42)
+    ax.set(title=f"{etiqueta} = {p:.2f}", xlabel="As sintético (µg/L)")
+    ax.spines[["top", "right"]].set_visible(False)
+axes[0].set_ylabel("Densidad")
+plt.show()
+```
+
+## Modelo frente a observado
+
+Las proporciones observadas en los 50 datos son 0.10, 0.14 y 0.64 para los tres eventos. El modelo normal produce aproximadamente 0.19, 0.07 y 0.43. Las diferencias no demuestran un error de cálculo: muestran que la forma normal ajustada no reproduce de igual manera todas las regiones de la distribución.
+
+```{python}
+#| label: fig-modelo-observado
+#| fig-cap: "Proporciones observadas y probabilidades del modelo normal para tres eventos. Una cuenta correcta puede diferir de la muestra porque depende de la forma asumida."
+#| fig-alt: "Gráfico de barras agrupadas que compara observado y modelo normal para concentraciones menores o iguales a 10, mayores a 30 y entre 10 y 20."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+mu, sigma = xobs.mean(), xobs.std(ddof=1)
+etiquetas = ["X ≤ 10", "X > 30", "10 < X ≤ 20"]
+observado = np.array([np.mean(xobs <= 10), np.mean(xobs > 30),
+                     np.mean((xobs > 10) & (xobs <= 20))])
+modelo = np.array([stats.norm.cdf(10, mu, sigma), stats.norm.sf(30, mu, sigma),
+                   stats.norm.cdf(20, mu, sigma)-stats.norm.cdf(10, mu, sigma)])
+pos, ancho = np.arange(3), 0.36
+fig, ax = plt.subplots(figsize=(9, 5))
+b1 = ax.bar(pos-ancho/2, observado, ancho, color="#446681", label="Proporción observada")
+b2 = ax.bar(pos+ancho/2, modelo, ancho, color="#B56F3A", label="Modelo normal")
+ax.bar_label(b1, labels=[f"{100*v:.0f}%" for v in observado], padding=3)
+ax.bar_label(b2, labels=[f"{100*v:.0f}%" for v in modelo], padding=3)
+ax.set(xticks=pos, xticklabels=etiquetas, ylabel="Proporción / probabilidad", ylim=(0, 0.76))
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+::: {.callout-important title="Cálculo correcto, modelo imperfecto"}
+La coherencia matemática sólo garantiza que la respuesta es correcta **bajo el modelo**. La utilidad científica exige evaluar si el modelo representa suficientemente bien la región relevante para la decisión.
+:::
+
+## Cuantiles: invertir la pregunta
+
+La CDF responde: dado $x$, ¿qué probabilidad queda acumulada? Un **[cuantil](../glosario.qmd#glosario-cuantil)** responde la pregunta inversa: dado $p$, ¿qué valor deja al menos esa probabilidad acumulada?
+
+$$
+Q(p)=F^{-1}(p)=\inf\{x:F(x)\geq p\},\qquad0<p<1.
+$$
+
+Para una normal,
+
+$$
+Q_X(p)=\mu+\sigma\Phi^{-1}(p).
+$$
+
+En el modelo ajustado, el cuantil 0.90 es aproximadamente $28.38\ \mu\text{g/L}$. En la muestra, una convención usual produce aproximadamente $32.15\ \mu\text{g/L}$. La discrepancia refleja variabilidad muestral y falta de ajuste en la cola derecha.
+
+```{python}
+#| label: fig-cdf-cuantil
+#| fig-cap: "Lecturas directa e inversa de una CDF: de un valor a su probabilidad acumulada y de una probabilidad al cuantil correspondiente."
+#| fig-alt: "Función acumulada normal con flechas que muestran la lectura desde x hacia F de x y desde p igual a 0.9 hacia el cuantil."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+mu, sigma = xobs.mean(), xobs.std(ddof=1)
+x = np.linspace(mu-4*sigma, mu+4*sigma, 600)
+p = 0.90
+q = stats.norm.ppf(p, mu, sigma)
+fig, ax = plt.subplots(figsize=(8.5, 5))
+ax.plot(x, stats.norm.cdf(x, mu, sigma), color="#1D4162", linewidth=2.5)
+ax.hlines(p, x.min(), q, color="#B56F3A", linestyle="--")
+ax.vlines(q, 0, p, color="#B56F3A", linestyle="--")
+ax.scatter([q], [p], color="#B56F3A", zorder=3)
+ax.annotate(fr"$p={p:.2f}\;\longrightarrow\;Q(p)={q:.1f}$ µg/L", (q, p),
+            xytext=(-170, -42), textcoords="offset points",
+            arrowprops={"arrowstyle": "->", "color": "#B56F3A"})
+ax.set(xlabel="Concentración de As (µg/L)", ylabel="F(x)", ylim=(0, 1.02))
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+## QQ-plot: cuantiles observados frente a teóricos
+
+Un **[QQ-plot](../glosario.qmd#glosario-qqplot)** compara los datos ordenados $x_{(1)}\leq\cdots\leq x_{(n)}$ con cuantiles de un modelo teórico. Una explicación pedagógica utiliza
+
+$$
+p_i\approx\frac{i-0.5}{n},\qquad q_i=\Phi^{-1}(p_i),
+$$
+
+y grafica $(q_i,x_{(i)})$. Los programas pueden utilizar otras **[posiciones de graficación](../glosario.qmd#glosario-posicion-graficacion)** —SciPy emplea una aproximación asociada con Filliben—, por lo que los valores exactos pueden variar ligeramente.
+
+### Por qué los cuantiles teóricos aparecen acotados
+
+La normal tiene soporte $(-\infty,+\infty)$, pero una muestra finita sólo necesita $n$ posiciones. Con $n=50$, la aproximación anterior usa probabilidades entre 0.01 y 0.99:
+
+$$
+\Phi^{-1}(0.01)\approx-2.33,\qquad \Phi^{-1}(0.99)\approx2.33.
+$$
+
+No se utilizan cero y uno porque sus cuantiles normales son infinitos. Al aumentar $n$, las posiciones extremas se acercan a cero y uno, y los cuantiles teóricos representados se alejan del centro.
+
+### Un caso control y los datos de arsénico
+
+Una muestra generada desde una normal no produce una recta perfecta: hay variabilidad muestral. Lo esperable es una nube aproximadamente lineal sin curvaturas persistentes. En cambio, desviaciones sistemáticas —especialmente en las colas— indican incompatibilidades de forma.
+
+```{python}
+#| label: fig-qq-control-as
+#| fig-cap: "QQ-plots normales de una muestra simulada desde el modelo de referencia y de la muestra sintética de arsénico. La variabilidad aleatoria produce imperfecciones; la curvatura sistemática revela diferencias de forma."
+#| fig-alt: "Dos QQ-plots: una muestra normal simulada próxima a una recta y una muestra de arsénico con desviación ascendente en la cola superior."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+xobs = datos.loc[datos["muestra_aleatoria_50"], "as_ug_l"].to_numpy()
+mu, sigma = xobs.mean(), xobs.std(ddof=1)
+rng = np.random.default_rng(2026)
+xnormal = rng.normal(mu, sigma, size=xobs.size)
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), constrained_layout=True)
+for ax, valores, titulo in [(axes[0], xnormal, "Caso control: muestra normal"),
+                            (axes[1], xobs, "Muestra sintética de As")]:
+    (teoricos, ordenados), (pendiente, intercepto, r) = stats.probplot(valores, dist="norm")
+    ax.scatter(teoricos, ordenados, color="#446681", s=28)
+    ax.plot(teoricos, intercepto + pendiente*np.asarray(teoricos),
+            color="#B56F3A", linewidth=2)
+    ax.set(title=f"{titulo}\n$R^2={r**2:.3f}$",
+           xlabel="Cuantiles teóricos normales", ylabel="Valores ordenados")
+    ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+El $R^2$ es sólo un resumen visual auxiliar. No existe un umbral universal que convierta el QQ-plot en una decisión automática. La interpretación debe atender a dónde aparecen las desviaciones y a qué parte de la distribución importa para el problema.
+
+## Diagnóstico integrado del modelo
+
+No conviene reducir la adecuación de un modelo a “pasa” o “no pasa” una única prueba. Un diagnóstico sólido combina:
+
+1. **mecanismo y soporte:** ¿el modelo es físicamente plausible?;
+2. **histograma y KDE:** ¿describe centro, modalidad, asimetría y colas?;
+3. **ECDF y CDF:** ¿acumula probabilidad de manera compatible?;
+4. **asimetría y curtosis:** ¿qué resúmenes de forma difieren?;
+5. **QQ-plot:** ¿las discrepancias son aleatorias o sistemáticas?;
+6. **consecuencias:** ¿las diferencias afectan la probabilidad o el cuantil decisivo?
+
+Para concentraciones positivas, la cola negativa de una normal puede ser irrelevante si $\mu/\sigma$ es muy grande y sólo interesa el centro, o decisiva si se simulan valores, se calculan cuantiles bajos o la masa negativa es apreciable. La adecuación siempre es relativa a un uso.
+
+## Lo espacial todavía está ausente
+
+Todo este capítulo estudia la distribución marginal de $X$: considera los valores, pero no la posición de los pozos. Permutar las concentraciones entre coordenadas no cambia histograma, ECDF, normal ajustada ni QQ-plot.
+
+Por eso una probabilidad marginal como $P(X>30)$ no responde cuál es la probabilidad de superar 30 en una localización específica. Esa pregunta requerirá continuidad, vecindad, dominio y dependencia espacial.
+
+## Puente hacia la inferencia
+
+Si repetimos una campaña de 50 pozos, también cambian $\bar X$, $s$, las proporciones y los cuantiles muestrales. El siguiente problema será estudiar la distribución de un estadístico entre muestras posibles:
+
+$$
+\text{muestreo repetido}\longrightarrow\text{distribución muestral}
+\longrightarrow\text{TCL}\longrightarrow\text{error estándar}
+\longrightarrow\text{intervalos de confianza}.
+$$
+
+La distribución de los datos y la distribución muestral de un estimador son objetos diferentes.
+
+## Errores frecuentes
+
+- presentar una proporción muestral como probabilidad poblacional exacta;
+- interpretar la altura de una densidad como probabilidad;
+- llamar PDF teórica a una KDE;
+- confundir ECDF con CDF del modelo;
+- asumir que toda variable continua es normal;
+- aplicar 68–95–99,7 a cualquier distribución;
+- creer que estandarizar vuelve normales los datos;
+- olvidar que una normal admite valores negativos;
+- interpretar un QQ-plot como prueba definitiva;
+- confundir una muestra normal simulada con una transformación de los datos reales;
+- trasladar una probabilidad marginal a una localización específica sin modelo espacial.
+
+## Preguntas de revisión
+
+1. ¿Por qué $P(X=20)=0$ no significa que nunca pueda registrarse 20.0?
+2. ¿Qué diferencia conceptual existe entre una ECDF y una CDF normal?
+3. ¿Por qué una densidad puede superar uno?
+4. ¿Qué conserva y qué modifica una estandarización?
+5. ¿Cómo se calcula una probabilidad de cola derecha usando $\Phi$?
+6. ¿Qué pregunta responde un cuantil 0.90?
+7. ¿Por qué un QQ-plot normal no debe formar una recta perfecta?
+8. ¿Cómo puede ser correcta una cuenta y poco útil su resultado?
+
+## Ejercicios de profundización
+
+1. Recalcule los tres eventos usando una distribución lognormal ajustada. Compare probabilidades y justifique qué regiones cambian más.
+2. Genere muestras normales de tamaños 15, 50, 200 y 2000. Compare el rango de cuantiles teóricos y la variabilidad del QQ-plot.
+3. Cambie un único valor alto y estudie su efecto sobre $\bar x$, $s$, $P(X>30)$ y el QQ-plot.
+4. Compare el cuantil 0.90 empírico con los cuantiles normales usando `ddof=0` y `ddof=1`.
+5. Permute las concentraciones entre coordenadas. Verifique que los gráficos de este capítulo permanecen iguales y explique qué información espacial se destruyó.

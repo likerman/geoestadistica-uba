@@ -66,7 +66,7 @@ Siempre conviene inspeccionar más de una resolución y justificar la elegida.
 
 ### El histograma también tiene incertidumbre
 
-Las barras describen la muestra observada, no una distribución poblacional conocida. Con $n$ pequeño, cambios modestos en las observaciones pueden alterar picos, huecos y colas aparentes. Comparar varios anchos de clase, mostrar los datos individuales y utilizar una ECDF ayuda a distinguir rasgos persistentes de artefactos de agrupamiento.
+Las barras describen la muestra observada, no una distribución poblacional conocida. Con $n$ pequeño, cambios modestos en las observaciones pueden alterar picos, huecos y colas aparentes. Comparar varios anchos de clase, mostrar los datos individuales y utilizar una ECDF ayuda a distinguir rasgos persistentes de artefactos de agrupamiento. La interpretación probabilística del área se desarrolla en [Variable continua y densidad](08-probabilidad.qmd#variable-continua-y-densidad).
 
 Si se comparan grupos con tamaños distintos, las frecuencias absolutas pueden resultar engañosas. Las proporciones o densidades permiten comparar forma, pero no deben ocultar el tamaño muestral: conviene informar $n$ junto a cada gráfico.
 
@@ -93,7 +93,7 @@ $$
 
 donde $\mathbf{1}(\cdot)$ vale uno si la condición es verdadera y cero en caso contrario.
 
-La ECDF conserva todos los datos, no requiere intervalos y permite leer cuantiles y proporciones bajo umbrales. Es una función escalonada: cada observación incrementa la curva en $1/n$ —o más si existen empates—.
+La ECDF conserva todos los datos, no requiere intervalos y permite leer cuantiles y proporciones bajo umbrales. Es una función escalonada: cada observación incrementa la curva en $1/n$ —o más si existen empates—. No debe confundirse con la CDF de un modelo; ambas se comparan en [ECDF, KDE, PDF y CDF](08-probabilidad.qmd#ecdf-kde-pdf-y-cdf).
 
 Puede leerse en dos direcciones:
 

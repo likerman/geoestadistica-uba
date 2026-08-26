@@ -38,6 +38,12 @@ Representación basada en mediana, cuartiles, intervalo intercuartílico y una r
 
 ## C
 
+### CDF {#glosario-cdf}
+
+**Inglés:** *cumulative distribution function*. **Notación habitual:** $F(x)$.
+
+Función de distribución acumulada definida por $F(x)=P(X\leq x)$. Es no decreciente, toma valores entre cero y uno y contiene toda la información probabilística de una variable aleatoria. En variables continuas con densidad, $F(x)=\int_{-\infty}^{x}f(t)\,dt$. Véase [Función de distribución acumulada](capitulos/08-probabilidad.qmd#función-de-distribución-acumulada).
+
 ### Campo aleatorio {#glosario-campo-aleatorio}
 
 **Inglés:** *random field* o *stochastic field*. **Notación habitual:** $\{Z(\mathbf{u}):\mathbf{u}\in D\}$.
@@ -100,6 +106,12 @@ Raíz cuadrada de la varianza. Expresa dispersión cuadrática en las mismas uni
 
 Descripción de cómo se reparte una variable entre sus posibles valores o categorías. En una muestra puede representarse mediante frecuencias o una distribución empírica; en un modelo probabilístico especifica probabilidades. Ningún estadístico aislado sustituye toda la información de una distribución.
 
+### Distribución teórica {#glosario-distribucion-teorica}
+
+**Inglés:** *theoretical distribution* o *probability distribution*.
+
+Modelo matemático que asigna probabilidades a los posibles valores de una variable aleatoria mediante una familia y sus parámetros. Es una representación sujeta a supuestos, no una reproducción literal de la muestra ni una propiedad garantizada del sistema físico. Véase [Distribuciones teóricas](capitulos/08-probabilidad.qmd#distribuciones-teóricas).
+
 ### Dominio {#glosario-dominio}
 
 **Inglés:** *domain*.
@@ -113,6 +125,12 @@ Conjunto espacial, geológico y conceptual sobre el cual se considera definida u
 **Inglés:** *empirical cumulative distribution function*. **Notación:** $\widehat F_n(x)$.
 
 Función de distribución acumulada empírica: $\widehat F_n(x)=n^{-1}\sum_i\mathbf{1}(x_i\le x)$. Para un valor $x$ informa la proporción observada menor o igual; en sentido inverso permite obtener cuantiles. Es escalonada y no requiere agrupar datos en intervalos. Véase [ECDF](capitulos/04-distribuciones-graficos.qmd#función-de-distribución-empírica).
+
+### Estandarización {#glosario-estandarizacion}
+
+**Inglés:** *standardization*.
+
+Transformación afín que resta un centro y divide por una escala; en el caso clásico, $Z=(X-\mu)/\sigma$. Expresa valores en unidades de desviación estándar y conserva la forma de la distribución. Por sí sola no elimina asimetría ni convierte datos en normales.
 
 ### Error estándar {#glosario-error-estandar}
 
@@ -137,6 +155,12 @@ Regla o función de los datos destinada a estimar una cantidad desconocida. Ante
 **Inglés:** *estimate*.
 
 Valor numérico producido por un estimador después de observar una muestra. Si $\bar X$ es el estimador de $\mu$, el número $\bar x=18.4$ calculado con datos concretos es una estimación. No debe confundirse la regla aleatoria con su resultado.
+
+### Evento {#glosario-evento}
+
+**Inglés:** *event*.
+
+Conjunto de resultados posibles de un experimento aleatorio o, equivalentemente, proposición sobre una variable aleatoria a la que puede asignarse probabilidad. Por ejemplo, $\{X>30\}$ es el evento de superar el umbral 30. Debe definirse antes de calcular su probabilidad.
 
 ### Esperanza matemática {#glosario-esperanza}
 
@@ -171,6 +195,12 @@ Proporción de observaciones en una categoría o intervalo: $n_j/n$. Las frecuen
 **Inglés:** *geostatistics*.
 
 Rama de la estadística espacial que modela variables distribuidas en el espacio o espacio-tiempo, considerando localización, soporte, continuidad y dependencia. Incluye herramientas descriptivas, modelado de variogramas, estimación y simulación bajo incertidumbre.
+
+### Gráfico de violín {#glosario-grafico-violin}
+
+**Inglés:** *violin plot*.
+
+Representación que refleja una estimación de densidad alrededor de un eje y puede incorporar mediana, cuartiles u observaciones. El ancho muestra densidad estimada, no tamaño muestral ni probabilidad puntual. Su apariencia depende del ancho de banda. Véase [Gráfico de violín](capitulos/07-forma-diagnostico.qmd#gráfico-de-violín).
 
 ### Grados de libertad {#glosario-grados-libertad}
 
@@ -294,11 +324,29 @@ Observación alejada respecto de un patrón o criterio descriptivo. La etiqueta 
 
 Cantidad fija —aunque generalmente desconocida— que caracteriza una población o modelo, como $\mu$, $\sigma^2$ o un percentil poblacional. Se distingue de un estadígrafo, que se calcula sobre una muestra y varía entre muestras.
 
+### PDF {#glosario-pdf}
+
+**Inglés:** *probability density function*. **Notación habitual:** $f(x)$.
+
+Función de densidad de probabilidad de un modelo continuo. Su integral sobre un intervalo es una probabilidad y su integral total es uno. No debe confundirse con una KDE, que estima una densidad a partir de datos.
+
 ### Población {#glosario-poblacion}
 
 **Inglés:** *population*.
 
 Conjunto de unidades, valores o resultados potenciales sobre el cual se pretende concluir. Debe delimitarse por espacio, tiempo, soporte, proceso y pregunta. En geociencias puede ser finita —por ejemplo, 1000 pozos definidos— o conceptualizada mediante un modelo.
+
+### Posición de graficación {#glosario-posicion-graficacion}
+
+**Inglés:** *plotting position*.
+
+Probabilidad acumulada asignada a una observación ordenada para construir gráficos de probabilidad o QQ-plots. Fórmulas como $(i-0.5)/n$ evitan los extremos cero y uno; existen otras convenciones y ninguna convierte la posición en una probabilidad observada exacta.
+
+### Probabilidad {#glosario-probabilidad}
+
+**Inglés:** *probability*. **Notación habitual:** $P(A)$.
+
+Medida entre cero y uno asignada a un evento dentro de un modelo probabilístico. Satisface $P(\Omega)=1$ y aditividad para eventos mutuamente excluyentes. Una frecuencia relativa observada puede estimarla, pero no es idéntica a la probabilidad poblacional.
 
 ### Predicción {#glosario-prediccion}
 
@@ -361,6 +409,12 @@ Geometría, tamaño y orientación del volumen, área, longitud o intervalo sobr
 **Inglés:** *random variable*.
 
 Función que asigna un valor numérico a cada resultado posible de un mecanismo aleatorio. Se representa habitualmente con mayúscula, por ejemplo $X$; un valor observado se representa con minúscula, $x$. Una variable aleatoria queda caracterizada probabilísticamente por su distribución.
+
+### Variable continua {#glosario-variable-continua}
+
+**Inglés:** *continuous variable*.
+
+Variable cuantitativa modelada sobre un continuo de valores. En un modelo probabilístico continuo, los intervalos pueden tener probabilidad positiva mientras cada punto aislado tiene probabilidad cero; el redondeo de un instrumento no altera por sí mismo esta idealización.
 
 ### Valor atípico {#glosario-valor-atipico}
 

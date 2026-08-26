@@ -4,7 +4,7 @@
 
 - relacionar momentos centrales con dispersión, asimetría y curtosis;
 - distinguir simetría, modalidad y peso de colas;
-- construir e interpretar boxplots y QQ-plots;
+- construir e interpretar boxplots y gráficos de violín;
 - investigar valores atípicos sin confundirlos con errores;
 - comprender qué significa —y qué no— asumir normalidad.
 
@@ -89,26 +89,20 @@ $$
 
 Como utiliza cuartiles, responde menos a extremos que la asimetría basada en el tercer momento. Tampoco resume modalidad ni reemplaza la inspección de la distribución.
 
-## QQ-plot y normalidad
+## Gráfico de violín
 
-Un [QQ-plot](../glosario.qmd#glosario-qqplot) compara cuantiles observados $x_{(i)}$ con cuantiles teóricos de una distribución. Para una normal, una elección habitual de posiciones es
+El **[gráfico de violín](../glosario.qmd#glosario-grafico-violin)** refleja una KDE respecto de un eje. Su ancho representa densidad estimada, no cantidad ni probabilidad puntual. Puede revelar asimetría o multimodalidad que un boxplot oculta, pero su forma depende del ancho de banda y puede sugerir estructura inexistente cuando $n$ es pequeño.
 
-$$
-p_i=\frac{i-0.5}{n},\qquad q_i=\Phi^{-1}(p_i),
-$$
+No existe una convención única para sus elementos internos: algunos programas muestran mediana y cuartiles; otros, media o un pequeño boxplot. Por eso conviene explicitar la configuración y, cuando sea posible, superponer las observaciones e informar $n$.
 
-y se grafican los pares $(q_i,x_{(i)})$. Una relación aproximadamente lineal es compatible con normalidad; curvaturas sistemáticas indican asimetría, colas diferentes o mezcla de poblaciones [@isaaks_srivastava_1989, pp. 13–16].
+El QQ-plot requiere primero definir cuantiles y una distribución teórica. Por eso su construcción e interpretación se desarrollan en [Probabilidad, distribuciones y modelos](08-probabilidad.qmd#qq-plot-cuantiles-observados-frente-a-teóricos).
 
-El QQ-plot no “prueba” que los datos sean normales. Con muestras pequeñas tiene poca resolución y con muestras enormes detecta desviaciones irrelevantes. La pregunta correcta es si el modelo normal resulta adecuado para el objetivo y la escala considerados.
-
-La evaluación debería combinar mecanismo generador, gráficos y consecuencias del supuesto. Un test formal produce evidencia contra una hipótesis bajo condiciones específicas, pero no mide por sí solo si la desviación afecta una media, un intervalo, una predicción o una decisión geológica.
-
-## Diagnóstico gráfico reproducible
+## Diagnóstico descriptivo reproducible
 
 ```{python}
 #| label: fig-diagnostico-forma
-#| fig-cap: "Histograma, boxplot y QQ-plot de una muestra asimétrica sintética."
-#| fig-alt: "Histograma con cola derecha, boxplot con valores altos y QQ-plot curvado de una muestra lognormal sintética."
+#| fig-cap: "Histograma, gráfico de violín con observaciones y boxplot de una muestra asimétrica sintética. Cada representación conserva y oculta rasgos diferentes."
+#| fig-alt: "Histograma con cola derecha, violín ancho en valores bajos con puntos individuales y boxplot con valores altos de una muestra lognormal sintética."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -121,15 +115,22 @@ fig, axes = plt.subplots(1, 3, figsize=(14, 4), constrained_layout=True)
 axes[0].hist(x, bins="fd", color="#446681", edgecolor="white", alpha=0.75)
 axes[0].set(title="Histograma", xlabel="As sintético (µg/L)", ylabel="Frecuencia")
 
-axes[1].boxplot(x, vert=True, showmeans=True,
+vp = axes[1].violinplot(x, showmedians=True, showextrema=False)
+for cuerpo in vp["bodies"]:
+    cuerpo.set_facecolor("#446681")
+    cuerpo.set_edgecolor("#1D4162")
+    cuerpo.set_alpha(0.55)
+vp["cmedians"].set_color("#B56F3A")
+jitter = rng.normal(1, 0.025, size=x.size)
+axes[1].scatter(jitter, x, s=12, color="#1D4162", alpha=0.55)
+axes[1].set(title="Violín + datos", ylabel="As sintético (µg/L)", xticks=[])
+
+axes[2].boxplot(x, vert=True, showmeans=True,
                 boxprops={"color": "#1D4162"},
                 medianprops={"color": "#B56F3A", "linewidth": 2},
                 whiskerprops={"color": "#446681"},
                 capprops={"color": "#446681"})
-axes[1].set(title="Boxplot", ylabel="As sintético (µg/L)", xticks=[])
-
-stats.probplot(x, dist="norm", plot=axes[2])
-axes[2].set_title("QQ-plot normal")
+axes[2].set(title="Boxplot", ylabel="As sintético (µg/L)", xticks=[])
 plt.show()
 
 print(f"Asimetría muestral: {stats.skew(x, bias=False):.2f}")
@@ -222,11 +223,11 @@ con una medida de diferencia, por ejemplo $|z(\mathbf{u}_i)-z(\mathbf{u}_j)|$ o 
 
 1. ¿Por qué curtosis alta no significa solamente un pico alto?
 2. ¿Qué rasgo importante puede ocultar un boxplot?
-3. ¿Cómo se vería una cola derecha pesada en un QQ-plot normal?
+3. ¿Qué aporta un violín frente a un boxplot y de qué parámetro depende su forma?
 4. ¿Qué cambia conceptualmente al analizar $\log X$ en lugar de $X$?
 
 ## Ejercicios de profundización
 
 1. Calcule $g_1$ y $g_2$ manualmente para una muestra pequeña y compárelos con SciPy usando `bias=True` y `bias=False`.
 2. Simule una distribución simétrica bimodal y explique por qué asimetría cercana a cero no implica normalidad.
-3. Construya QQ-plots para muestras normales de tamaños 15, 100 y 5000. Discuta resolución, sensibilidad y relevancia práctica.
+3. Compare violines de una misma muestra usando tres anchos de banda. Superponga los datos y discuta qué rasgos son estables.
