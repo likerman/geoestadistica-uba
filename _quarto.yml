@@ -41,6 +41,7 @@ book:
     - part: "III. Probabilidad y modelos"
       chapters:
         - capitulos/08-probabilidad.qmd
+        - capitulos/09-muestreo-e-inferencia.qmd
     - ejemplos/01-caso-sintetico.qmd
     - glosario.qmd
     - referencias.qmd

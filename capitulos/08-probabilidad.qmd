@@ -669,7 +669,7 @@ Por eso una probabilidad marginal como $P(X>30)$ no responde cuál es la probabi
 
 ## Puente hacia la inferencia
 
-Si repetimos una campaña de 50 pozos, también cambian $\bar X$, $s$, las proporciones y los cuantiles muestrales. El siguiente problema será estudiar la distribución de un estadístico entre muestras posibles:
+Si repetimos una campaña de 50 pozos, también cambian $\bar X$, $s$, las proporciones y los cuantiles muestrales. El siguiente problema será estudiar la [distribución de un estadístico entre muestras posibles](09-muestreo-e-inferencia.qmd#sec-distribucion-muestral):
 
 $$
 \text{muestreo repetido}\longrightarrow\text{distribución muestral}

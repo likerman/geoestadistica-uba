@@ -1,4 +1,643 @@
-# Muestreo e inferencia
+# Muestreo e inferencia estadística {#sec-muestreo-inferencia}
 
-Capítulo planificado. Incluirá distribuciones muestrales, teorema central del límite, estimación e intervalos de confianza.
+Este capítulo desarrolla el pasaje central de la estadística descriptiva a la [inferencia](../glosario.qmd#glosario-inferencia): ya no queremos solamente describir los datos observados, sino usar una [muestra](../glosario.qmd#glosario-muestra) para aprender sobre una [población](../glosario.qmd#glosario-poblacion) o un modelo no observado por completo. El punto clave es que un estadístico muestral cambia si cambia la muestra. Por eso, antes de interpretar una media, una proporción o un intervalo, necesitamos estudiar cómo se comportaría ese estadístico bajo muestreo repetido.
 
+En la cronología de la materia, este capítulo retoma la idea de variable aleatoria y distribución teórica del capítulo anterior, y la aplica a cantidades calculadas a partir de muestras. La presentación se mantiene en el caso más simple: observaciones independientes, igual distribución y una variable cuantitativa continua, usando el arsénico en aguas subterráneas como caso conductor. Esta simplificación es deliberada. Más adelante, al incorporar dependencia espacial, veremos por qué muchas fórmulas clásicas deben reinterpretarse con cuidado.
+
+Al terminar este capítulo deberías poder:
+
+- distinguir la distribución de $X$ de la distribución de $\bar X$;
+- explicar qué es una [distribución muestral](../glosario.qmd#glosario-distribucion-muestral);
+- derivar el centro y la varianza de la media muestral bajo supuestos clásicos;
+- interpretar el [error estándar](../glosario.qmd#glosario-error-estandar) sin confundirlo con la desviación estándar de los datos;
+- usar el Teorema Central del Límite como argumento aproximado, sin convertir $n=30$ en una regla universal;
+- distinguir [parámetro](../glosario.qmd#glosario-parametro), [estimador](../glosario.qmd#glosario-estimador) y [estimación](../glosario.qmd#glosario-estimacion);
+- interpretar un [intervalo de confianza](../glosario.qmd#glosario-intervalo-confianza) en términos de cobertura;
+- reconocer por qué aparece la distribución $t$ de Student cuando $\sigma$ es desconocida.
+
+## De una observación a una cantidad calculada
+
+Supongamos que $X$ representa la concentración de arsénico, en $\mu g/L$, que obtendríamos al seleccionar un pozo mediante cierto mecanismo de muestreo. Antes de medir, $X$ es una [variable aleatoria](../glosario.qmd#glosario-variable-aleatoria). Su distribución describe los valores posibles y sus probabilidades bajo el modelo elegido.
+
+Una campaña con $n$ pozos puede representarse como:
+
+$$
+X_1, X_2, \ldots, X_n.
+$$
+
+Cada $X_i$ es aleatoria antes de observar la muestra. Una vez tomada la campaña, obtenemos valores concretos:
+
+$$
+x_1, x_2, \ldots, x_n.
+$$
+
+La media muestral se define como:
+
+$$
+\bar X=\frac{1}{n}\sum_{i=1}^{n}X_i.
+$$
+
+Antes de observar la campaña, $\bar X$ también es una variable aleatoria, porque depende de variables aleatorias. Después de observarla, la media calculada:
+
+$$
+\bar x=\frac{1}{n}\sum_{i=1}^{n}x_i
+$$
+
+es un número. Esta distinción parece formal, pero evita una confusión frecuente: una campaña es una muestra completa de tamaño $n$, y cada campaña produce una sola media. Si repitiéramos muchas campañas bajo el mismo diseño, obtendríamos muchas medias posibles.
+
+## Distribución muestral {#sec-distribucion-muestral}
+
+La [distribución muestral](../glosario.qmd#glosario-distribucion-muestral) de un estadístico es la distribución que tendría ese estadístico si repitiéramos el muestreo muchas veces bajo el mismo mecanismo. No es la distribución de los datos originales; es la distribución de una cantidad calculada a partir de cada muestra.
+
+Para la media:
+
+$$
+X_1,\ldots,X_n \longrightarrow \bar X.
+$$
+
+Si repetimos el proceso $R$ veces:
+
+$$
+\bar X^{(1)},\bar X^{(2)},\ldots,\bar X^{(R)}
+$$
+
+representa una colección de medias muestrales posibles. Esa colección aproxima la distribución muestral de $\bar X$.
+
+| Objeto | Qué describe | Unidad | Cambia entre muestras |
+|---|---|---:|---:|
+| $X$ | valores individuales de la variable | $\mu g/L$ | sí |
+| $\bar X$ | medias de campañas de tamaño $n$ | $\mu g/L$ | sí |
+| $\mu$ | media poblacional o del modelo | $\mu g/L$ | no, dentro del modelo |
+| $\bar x$ | media observada en una campaña concreta | $\mu g/L$ | no, una vez observada |
+
+La figura siguiente simula la diferencia entre la distribución de valores individuales y la distribución de medias muestrales. El código usa el conjunto sintético de arsénico del manual; en un notebook puede correrse sin modificar rutas si se ejecuta desde la raíz del repositorio.
+
+```{python}
+#| label: fig-muestreo-repetido
+#| fig-cap: "Valores individuales y distribución muestral de la media. Cada campaña de tamaño n produce una sola media."
+#| fig-alt: "Dos paneles. El primero muestra una distribución asimétrica de concentraciones de arsénico y una muestra marcada con líneas. El segundo muestra una distribución más concentrada de medias muestrales."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+poblacion = datos["as_ug_l"].to_numpy()
+
+rng = np.random.default_rng(2026)
+n = 30
+R = 5000
+muestras = rng.choice(poblacion, size=(R, n), replace=True)
+medias = muestras.mean(axis=1)
+una_muestra = muestras[0]
+
+fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+
+ax[0].hist(poblacion, bins=35, density=True, color="#5B8FA8", alpha=0.75)
+ax[0].plot(una_muestra, np.full(n, -0.002), "|", color="#9A3412", markersize=12)
+ax[0].axvline(poblacion.mean(), color="#1F2937", lw=2, label=r"$\mu$")
+ax[0].set_title("Valores individuales: $X$")
+ax[0].set_xlabel(r"As ($\mu g/L$)")
+ax[0].set_ylabel("Densidad")
+ax[0].legend(frameon=False)
+
+ax[1].hist(medias, bins=35, density=True, color="#7A9E7E", alpha=0.80)
+ax[1].axvline(poblacion.mean(), color="#1F2937", lw=2, label=r"$\mu$")
+ax[1].axvline(medias[0], color="#9A3412", lw=2, label=r"$\bar{x}$ de una campaña")
+ax[1].set_title(r"Medias de campañas: $\bar X$")
+ax[1].set_xlabel(r"Media muestral de As ($\mu g/L$)")
+ax[1].set_ylabel("Densidad")
+ax[1].legend(frameon=False)
+
+for eje in ax:
+    eje.spines[["top", "right"]].set_visible(False)
+
+fig.tight_layout()
+plt.show()
+```
+
+## Centro de la distribución muestral
+
+Si $X_1,\ldots,X_n$ tienen la misma esperanza $\mu$, entonces:
+
+$$
+\mathbb E[\bar X]
+=\mathbb E\left[\frac{1}{n}\sum_{i=1}^{n}X_i\right]
+=\frac{1}{n}\sum_{i=1}^{n}\mathbb E[X_i]
+=\frac{1}{n}n\mu
+=\mu.
+$$
+
+Esto dice que, bajo ese modelo, la media muestral está centrada en la media poblacional. No dice que cada muestra tenga exactamente media $\mu$. Tampoco dice que una muestra chica sea suficiente. Dice algo sobre el comportamiento promedio de $\bar X$ si el muestreo se repitiera muchas veces.
+
+Esta propiedad es la base del lenguaje de insesgamiento. La media muestral no tiende a errar sistemáticamente hacia arriba o hacia abajo cuando las observaciones tienen esperanza común $\mu$.
+
+## Variabilidad de la media y error estándar {#sec-error-estandar}
+
+Para interpretar $\bar X$ no alcanza con saber dónde se centra. También necesitamos saber cuánto varía entre muestras. Si $X_1,\ldots,X_n$ son independientes y tienen varianza común $\sigma^2$, entonces:
+
+$$
+\operatorname{Var}(\bar X)
+=\operatorname{Var}\left(\frac{1}{n}\sum_{i=1}^{n}X_i\right)
+=\frac{1}{n^2}\sum_{i=1}^{n}\operatorname{Var}(X_i)
+=\frac{1}{n^2}n\sigma^2
+=\frac{\sigma^2}{n}.
+$$
+
+Por lo tanto:
+
+$$
+\operatorname{SD}(\bar X)=\frac{\sigma}{\sqrt n}.
+$$
+
+Esta desviación estándar de la distribución muestral de un estimador se llama [error estándar](../glosario.qmd#glosario-error-estandar):
+
+$$
+SE(\bar X)=\frac{\sigma}{\sqrt n}.
+$$
+
+La desviación estándar $\sigma$ mide dispersión de valores individuales. El error estándar mide dispersión de medias muestrales. Son cantidades distintas, aunque tengan las mismas unidades.
+
+```{python}
+#| label: fig-sd-se-n
+#| fig-cap: "La desviación estándar de los datos no cambia por aumentar n; el error estándar de la media decrece como 1/sqrt(n)."
+#| fig-alt: "Gráfico de líneas que compara una desviación estándar constante con un error estándar decreciente al aumentar el tamaño muestral."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+sigma = 10
+n_valores = np.arange(1, 121)
+se = sigma / np.sqrt(n_valores)
+
+fig, ax = plt.subplots(figsize=(7.5, 4.2))
+ax.plot(n_valores, np.full_like(n_valores, sigma), color="#9A3412", lw=2.5, label=r"$\sigma$")
+ax.plot(n_valores, se, color="#2F6F73", lw=2.5, label=r"$SE(\bar X)=\sigma/\sqrt{n}$")
+
+for n in [4, 25, 100]:
+    ax.scatter(n, sigma / np.sqrt(n), color="#1F2937", zorder=3)
+    ax.text(n + 2, sigma / np.sqrt(n) + 0.25, f"n={n}", fontsize=9)
+
+ax.set_xlabel("Tamaño muestral n")
+ax.set_ylabel("Escala")
+ax.set_title("Dispersión individual versus incertidumbre de la media")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+fig.tight_layout()
+plt.show()
+```
+
+La reducción $1/\sqrt n$ es importante pero lenta. Cuadruplicar $n$ reduce el error estándar a la mitad; multiplicar $n$ por 100 lo reduce a una décima parte. Por eso, aumentar mucho el tamaño muestral puede mejorar la precisión, pero no necesariamente corrige un mal diseño de muestreo.
+
+### Corrección por población finita
+
+Si la población es finita, de tamaño $N$, y se muestrea sin reemplazo, aparece una corrección:
+
+$$
+SE(\bar X)
+=\frac{\sigma}{\sqrt n}\sqrt{\frac{N-n}{N-1}}.
+$$
+
+Cuando $n$ es pequeño respecto de $N$, el factor de corrección es cercano a uno. Cuando se observa una fracción grande de la población, la incertidumbre de la media disminuye porque queda menos población sin observar.
+
+### Advertencia espacial
+
+La fórmula $\sigma^2/n$ depende de la independencia. En datos espaciales, observaciones cercanas suelen parecerse más que observaciones lejanas. Si existe dependencia espacial positiva, el tamaño muestral nominal $n$ puede sobrestimar la cantidad de información independiente.
+
+En forma general:
+
+$$
+\operatorname{Var}(\bar X)
+=\frac{1}{n^2}
+\left[
+\sum_{i=1}^{n}\operatorname{Var}(X_i)
++2\sum_{i<j}\operatorname{Cov}(X_i,X_j)
+\right].
+$$
+
+Si las covarianzas entre pares son positivas, la varianza de $\bar X$ será mayor que $\sigma^2/n$. Esta es una de las razones por las que la geoestadística no puede reducirse a aplicar fórmulas clásicas ignorando las coordenadas [@cressie_1993; @chiles_delfiner_2012].
+
+## Forma de la distribución muestral y Teorema Central del Límite {#sec-tcl}
+
+El [Teorema Central del Límite](../glosario.qmd#glosario-tcl) da una respuesta aproximada sobre la forma de la distribución muestral de la media. En una versión clásica, si $X_1,\ldots,X_n$ son independientes e idénticamente distribuidas, con esperanza $\mu$ y varianza finita $\sigma^2$, entonces:
+
+$$
+\frac{\bar X-\mu}{\sigma/\sqrt n}
+\xrightarrow{d}
+N(0,1)
+\quad \text{cuando } n\to\infty.
+$$
+
+Es decir, aunque la distribución de los valores individuales no sea normal, la distribución estandarizada de la media tiende a una normal estándar bajo condiciones adecuadas. Esta es la razón matemática por la que muchos procedimientos inferenciales para medias son aproximadamente normales.
+
+```{python}
+#| label: fig-tcl-forma
+#| fig-cap: "Efecto del tamaño muestral sobre la distribución muestral de la media para una población asimétrica."
+#| fig-alt: "Cuatro histogramas de medias muestrales para n igual a 1, 5, 30 y 100. La forma se vuelve más simétrica y concentrada al aumentar n."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+rng = np.random.default_rng(2026)
+mu_log = 2.6
+sigma_log = 1.25
+R = 20000
+n_list = [1, 5, 30, 100]
+
+media_pob = np.exp(mu_log + sigma_log**2 / 2)
+var_pob = (np.exp(sigma_log**2) - 1) * np.exp(2 * mu_log + sigma_log**2)
+sd_pob = np.sqrt(var_pob)
+
+fig, ax = plt.subplots(2, 2, figsize=(10, 7))
+ax = ax.ravel()
+
+for eje, n in zip(ax, n_list):
+    muestras = rng.lognormal(mean=mu_log, sigma=sigma_log, size=(R, n))
+    medias = muestras.mean(axis=1)
+    eje.hist(medias, bins=45, density=True, color="#5B8FA8", alpha=0.72)
+
+    xs = np.linspace(np.percentile(medias, 0.5), np.percentile(medias, 99.5), 300)
+    eje.plot(xs, norm.pdf(xs, loc=media_pob, scale=sd_pob / np.sqrt(n)), color="#9A3412", lw=2)
+    eje.axvline(media_pob, color="#1F2937", lw=1.5)
+    eje.set_title(f"n = {n}")
+    eje.set_xlabel(r"$\bar X$")
+    eje.set_ylabel("Densidad")
+    eje.spines[["top", "right"]].set_visible(False)
+
+fig.tight_layout()
+plt.show()
+```
+
+### No hay magia en n = 30
+
+La frase "$n=30$ alcanza" es una regla práctica demasiado pobre. La calidad de la aproximación normal depende de la forma de la distribución original, del peso de las colas, de la presencia de valores extremos, de la dependencia entre observaciones y del diseño de muestreo. Para distribuciones moderadamente simétricas, la aproximación puede ser razonable con tamaños menores. Para distribuciones muy asimétricas o con colas pesadas, puede requerir tamaños mucho mayores.
+
+En geociencias esto importa porque muchas variables ambientales, hidrogeoquímicas y geoquímicas son positivas, asimétricas y con valores extremos. El TCL ayuda, pero no reemplaza el diagnóstico de los datos ni la comprensión del proceso.
+
+## Estandarización de la media
+
+Si conocemos $\mu$ y $\sigma$, podemos estandarizar la media muestral:
+
+$$
+Z=\frac{\bar X-\mu}{\sigma/\sqrt n}.
+$$
+
+Cuando los datos individuales son normales, esta cantidad es exactamente normal estándar. Cuando no lo son, puede aproximarse por una normal estándar si el tamaño muestral y los supuestos del TCL son razonables.
+
+La estandarización expresa cuántos errores estándar separan a la media muestral de la media poblacional hipotética. Esta idea será la base para construir intervalos de confianza y, más adelante, pruebas de hipótesis.
+
+## Parámetro, estimador y estimación {#sec-parametro-estimador-estimacion}
+
+La inferencia requiere separar tres niveles:
+
+| Concepto | Qué es | Ejemplo |
+|---|---|---|
+| [Parámetro](../glosario.qmd#glosario-parametro) | cantidad fija, generalmente desconocida, de la población o modelo | $\mu$ |
+| [Estimador](../glosario.qmd#glosario-estimador) | regla aleatoria calculada con una muestra | $\bar X$ |
+| [Estimación](../glosario.qmd#glosario-estimacion) | valor numérico obtenido con una muestra observada | $\bar x=17.5$ |
+
+Antes de medir, $\bar X$ es una variable aleatoria. Después de medir, $\bar x$ es una estimación puntual concreta. Esta distinción evita atribuirle a un número observado propiedades que pertenecen al procedimiento de muestreo.
+
+## Sesgo y precisión {#sec-sesgo-precision}
+
+El [sesgo](../glosario.qmd#glosario-sesgo) de un estimador $\widehat\theta$ de un parámetro $\theta$ se define como:
+
+$$
+\operatorname{Bias}(\widehat\theta)
+=\mathbb E[\widehat\theta]-\theta.
+$$
+
+Un estimador es insesgado si:
+
+$$
+\mathbb E[\widehat\theta]=\theta.
+$$
+
+Para la media muestral, si $\mathbb E[X_i]=\mu$:
+
+$$
+\operatorname{Bias}(\bar X)=\mathbb E[\bar X]-\mu=0.
+$$
+
+Insesgado significa sin error sistemático bajo muestreo repetido, no sin error muestral. Una muestra particular puede dar una media bastante distinta de $\mu$ aunque el estimador sea insesgado.
+
+```{python}
+#| label: fig-sesgo-precision
+#| fig-cap: "Sesgo y precisión son propiedades distintas de un estimador bajo muestreo repetido."
+#| fig-alt: "Tres curvas de densidad alrededor de un valor verdadero. Una está centrada pero dispersa, otra centrada y estrecha, y otra estrecha pero desplazada."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+theta = 20
+xs = np.linspace(10, 30, 500)
+casos = [
+    ("Insesgado, impreciso", 20, 3.2, "#5B8FA8"),
+    ("Insesgado, preciso", 20, 1.2, "#2F6F73"),
+    ("Sesgado, preciso", 22.5, 1.2, "#9A3412"),
+]
+
+fig, ax = plt.subplots(figsize=(8, 4.2))
+for etiqueta, media, sd, color in casos:
+    ax.plot(xs, norm.pdf(xs, media, sd), lw=2.5, color=color, label=etiqueta)
+
+ax.axvline(theta, color="#1F2937", lw=2, linestyle="--", label=r"Valor verdadero $\theta$")
+ax.set_xlabel("Estimaciones posibles")
+ax.set_ylabel("Densidad")
+ax.set_title("Distribución muestral de estimadores hipotéticos")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+fig.tight_layout()
+plt.show()
+```
+
+La precisión se relaciona con la variabilidad del estimador; el sesgo, con su desplazamiento sistemático respecto del objetivo. Aumentar $n$ suele reducir la variabilidad, pero no elimina necesariamente el sesgo si el diseño de muestreo está distorsionado.
+
+## Estimación puntual insuficiente {#sec-estimacion-puntual}
+
+Una [estimación puntual](../glosario.qmd#glosario-estimacion-puntual) resume la inferencia en un solo número. Por ejemplo, una campaña de 50 pozos puede dar:
+
+$$
+\bar x=17.5\ \mu g/L.
+$$
+
+Ese número es informativo, pero incompleto. No dice cuánta incertidumbre tiene la estimación, ni cómo cambiaría con otro tamaño muestral, ni qué supuestos sostienen su interpretación. Para eso necesitamos acompañar la estimación con una medida de precisión.
+
+## Intervalos de confianza {#sec-intervalos-confianza}
+
+Supongamos, por el momento, que $\sigma$ es conocida y que $\bar X$ puede tratarse como normal:
+
+$$
+\bar X \sim N\left(\mu,\frac{\sigma^2}{n}\right).
+$$
+
+Entonces:
+
+$$
+Z=\frac{\bar X-\mu}{\sigma/\sqrt n}\sim N(0,1).
+$$
+
+El 95 % central de una normal estándar queda aproximadamente entre -1.96 y 1.96:
+
+$$
+P(-1.96\le Z\le 1.96)=0.95.
+$$
+
+Reemplazando $Z$:
+
+$$
+P\left(
+-1.96\le
+\frac{\bar X-\mu}{\sigma/\sqrt n}
+\le 1.96
+\right)=0.95.
+$$
+
+Al despejar $\mu$, obtenemos el procedimiento de intervalo:
+
+$$
+\bar X-1.96\frac{\sigma}{\sqrt n}
+\le \mu \le
+\bar X+1.96\frac{\sigma}{\sqrt n}.
+$$
+
+Para una muestra observada:
+
+$$
+IC_{95\%}:
+\quad
+\bar x \pm 1.96\frac{\sigma}{\sqrt n}.
+$$
+
+La cantidad:
+
+$$
+E=1.96\frac{\sigma}{\sqrt n}
+$$
+
+se llama [margen de error](../glosario.qmd#glosario-margen-error) para ese nivel de confianza.
+
+Con el conjunto sintético del manual, si tomamos $n=50$ y usamos $\sigma$ poblacional sólo con fines didácticos:
+
+```{python}
+import numpy as np
+import pandas as pd
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+poblacion = datos["as_ug_l"].to_numpy()
+
+rng = np.random.default_rng(2026)
+muestra = rng.choice(poblacion, size=50, replace=True)
+xbar = muestra.mean()
+sigma = poblacion.std(ddof=0)
+se = sigma / np.sqrt(len(muestra))
+z = 1.96
+ic = (xbar - z * se, xbar + z * se)
+
+print(f"media muestral = {xbar:.2f} ug/L")
+print(f"sigma poblacional usada para el ejemplo = {sigma:.2f} ug/L")
+print(f"SE = {se:.2f} ug/L")
+print(f"IC 95% = ({ic[0]:.2f}, {ic[1]:.2f}) ug/L")
+```
+
+## Qué significa confianza: cobertura {#sec-cobertura}
+
+Un intervalo de confianza del 95 % no significa que, después de observar los datos, haya 95 % de probabilidad de que el parámetro fijo $\mu$ esté dentro de ese intervalo. En la interpretación frecuentista clásica, $\mu$ no es aleatorio: el procedimiento sí lo es.
+
+La interpretación correcta es de [cobertura](../glosario.qmd#glosario-cobertura): si repitiéramos el procedimiento de muestreo e intervalo muchas veces bajo los supuestos del modelo, aproximadamente el 95 % de los intervalos construidos contendría al verdadero $\mu$ [@davis_2002; @mckillup_dyar_2010].
+
+```{python}
+#| label: fig-cobertura-ic
+#| fig-cap: "Interpretación frecuentista de un intervalo de confianza: cobertura bajo repetición del procedimiento."
+#| fig-alt: "Conjunto de intervalos de confianza simulados; la mayoría cruza la media verdadera y algunos no la cubren."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(2026)
+mu = 20
+sigma = 8
+n = 25
+R = 100
+z = 1.96
+
+muestras = rng.normal(mu, sigma, size=(R, n))
+medias = muestras.mean(axis=1)
+se = sigma / np.sqrt(n)
+li = medias - z * se
+ls = medias + z * se
+cubre = (li <= mu) & (mu <= ls)
+
+fig, ax = plt.subplots(figsize=(8, 7))
+y = np.arange(R)
+
+for i in range(R):
+    color = "#2F6F73" if cubre[i] else "#9A3412"
+    ax.plot([li[i], ls[i]], [y[i], y[i]], color=color, lw=1.5)
+    ax.scatter(medias[i], y[i], color=color, s=12)
+
+ax.axvline(mu, color="#1F2937", lw=2, linestyle="--", label=r"$\mu$")
+ax.set_xlabel("Intervalo para la media")
+ax.set_ylabel("Repetición")
+ax.set_title(f"Cobertura observada: {cubre.mean():.0%}")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+fig.tight_layout()
+plt.show()
+```
+
+La cobertura nominal depende de que los supuestos sean adecuados. Si hay dependencia espacial no considerada, muestreo preferencial, errores de medición sistemáticos o una distribución con colas extremas y $n$ bajo, el 95 % nominal puede no corresponder a una cobertura real cercana al 95 %.
+
+## Qué controla el ancho del intervalo
+
+El ancho de un intervalo de confianza depende de tres componentes:
+
+- el nivel de confianza: mayor confianza exige intervalos más anchos;
+- la variabilidad poblacional: mayor $\sigma$ produce intervalos más anchos;
+- el tamaño muestral: mayor $n$ reduce el ancho, pero a tasa $1/\sqrt n$.
+
+```{python}
+#| label: fig-ancho-ic
+#| fig-cap: "Factores que controlan el ancho de un intervalo de confianza para una media."
+#| fig-alt: "Tres paneles muestran que el ancho crece con el nivel de confianza y con sigma, y decrece al aumentar n."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+fig, ax = plt.subplots(1, 3, figsize=(12, 3.6))
+
+n = 40
+sigma = 10
+conf = np.linspace(0.80, 0.99, 80)
+z = norm.ppf((1 + conf) / 2)
+ancho_conf = 2 * z * sigma / np.sqrt(n)
+ax[0].plot(conf * 100, ancho_conf, color="#2F6F73", lw=2.5)
+ax[0].set_xlabel("Confianza (%)")
+ax[0].set_ylabel("Ancho")
+ax[0].set_title("Nivel de confianza")
+
+sigmas = np.linspace(2, 25, 80)
+ancho_sigma = 2 * 1.96 * sigmas / np.sqrt(n)
+ax[1].plot(sigmas, ancho_sigma, color="#5B8FA8", lw=2.5)
+ax[1].set_xlabel(r"$\sigma$")
+ax[1].set_title("Variabilidad")
+
+n_valores = np.arange(5, 201)
+ancho_n = 2 * 1.96 * sigma / np.sqrt(n_valores)
+ax[2].plot(n_valores, ancho_n, color="#9A3412", lw=2.5)
+ax[2].set_xlabel("n")
+ax[2].set_title("Tamaño muestral")
+
+for eje in ax:
+    eje.spines[["top", "right"]].set_visible(False)
+
+fig.tight_layout()
+plt.show()
+```
+
+## Cuando sigma es desconocida: t de Student {#sec-t-student}
+
+En aplicaciones reales casi nunca conocemos $\sigma$. La reemplazamos por la desviación estándar muestral $s$:
+
+$$
+s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar x)^2.
+$$
+
+Pero al reemplazar $\sigma$ por $S$, agregamos incertidumbre. Si $X_1,\ldots,X_n$ son independientes y normales, entonces:
+
+$$
+T=\frac{\bar X-\mu}{S/\sqrt n}
+\sim t_{n-1}.
+$$
+
+La distribución [$t$ de Student](../glosario.qmd#glosario-t-student) tiene colas más pesadas que la normal estándar, especialmente con pocos [grados de libertad](../glosario.qmd#glosario-grados-libertad). A medida que $n$ aumenta, $t_{n-1}$ se aproxima a $N(0,1)$.
+
+```{python}
+#| label: fig-t-student
+#| fig-cap: "La distribución t de Student tiene colas más pesadas que la normal estándar cuando los grados de libertad son bajos."
+#| fig-alt: "Curvas de densidad t con distintos grados de libertad comparadas con una normal estándar."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm, t
+
+xs = np.linspace(-5, 5, 600)
+fig, ax = plt.subplots(figsize=(7.5, 4.2))
+
+for df, color in [(2, "#9A3412"), (5, "#5B8FA8"), (30, "#2F6F73")]:
+    ax.plot(xs, t.pdf(xs, df), color=color, lw=2.2, label=f"t, gl={df}")
+
+ax.plot(xs, norm.pdf(xs), color="#1F2937", lw=2.2, linestyle="--", label="Normal estándar")
+ax.set_xlabel("Valor estandarizado")
+ax.set_ylabel("Densidad")
+ax.set_title("Normal estándar y distribuciones t")
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+fig.tight_layout()
+plt.show()
+```
+
+El intervalo de confianza para $\mu$ con $\sigma$ desconocida queda:
+
+$$
+\bar x \pm t_{1-\alpha/2,\ n-1}\frac{s}{\sqrt n}.
+$$
+
+El origen histórico de esta corrección está en el trabajo de William Sealy Gosset, publicado bajo el seudónimo "Student", sobre el error probable de una media [@student_1908]. La relevancia práctica es directa: con muestras chicas, usar 1.96 como si $\sigma$ fuera conocida puede subestimar la incertidumbre.
+
+```{python}
+import numpy as np
+import pandas as pd
+from scipy.stats import t
+
+datos = pd.read_csv("datos/arsenico_sintetico.csv")
+poblacion = datos["as_ug_l"].to_numpy()
+
+rng = np.random.default_rng(2026)
+muestra = rng.choice(poblacion, size=50, replace=True)
+n = len(muestra)
+xbar = muestra.mean()
+s = muestra.std(ddof=1)
+se = s / np.sqrt(n)
+tcrit = t.ppf(0.975, df=n - 1)
+ic = (xbar - tcrit * se, xbar + tcrit * se)
+
+print(f"media muestral = {xbar:.2f} ug/L")
+print(f"s = {s:.2f} ug/L")
+print(f"SE estimado = {se:.2f} ug/L")
+print(f"t critico = {tcrit:.3f}")
+print(f"IC 95% con t = ({ic[0]:.2f}, {ic[1]:.2f}) ug/L")
+```
+
+## Qué no deberíamos concluir todavía
+
+Este capítulo introduce inferencia para la media, pero todavía no resuelve otros problemas:
+
+- no decide si una media supera o no un valor normativo;
+- no calcula p-valores;
+- no compara dos poblaciones;
+- no incorpora explícitamente autocorrelación espacial;
+- no estima valores en localizaciones sin muestreo.
+
+Esos problemas requieren nuevas herramientas. En la próxima etapa, los intervalos de confianza se conectarán con pruebas de hipótesis y decisiones bajo incertidumbre. Más adelante, la dependencia espacial obligará a reemplazar la independencia clásica por modelos de continuidad espacial.
+
+## Preguntas de repaso
+
+1. ¿Por qué $\bar X$ es una variable aleatoria antes de observar la muestra?
+2. ¿Qué diferencia hay entre la distribución de $X$ y la distribución de $\bar X$?
+3. ¿Por qué el error estándar disminuye como $1/\sqrt n$ y no como $1/n$?
+4. ¿Qué significa que $\bar X$ sea un estimador insesgado de $\mu$?
+5. ¿Cuál es la interpretación correcta de un intervalo de confianza del 95 %?
+6. ¿Por qué la dependencia espacial puede invalidar la fórmula clásica $SE=\sigma/\sqrt n$?
+7. ¿Qué cambia cuando $\sigma$ es desconocida y usamos $s$?
+
+## Ejercicios sugeridos
+
+1. Usando `datos/arsenico_sintetico.csv`, simular 10 000 campañas de tamaño $n=10$, $n=30$ y $n=100$. Comparar la desviación estándar de las medias con $\sigma/\sqrt n$.
+2. Repetir la simulación anterior con una distribución lognormal muy asimétrica. Evaluar visualmente para qué tamaños muestrales la distribución de $\bar X$ parece aproximadamente normal.
+3. Simular 1000 intervalos de confianza del 95 % para una población normal con $\mu=20$ y $\sigma=8$. Calcular la proporción de intervalos que cubre $\mu$.
+4. Repetir el ejercicio 3 usando $s$ y la distribución $t$. Comparar los resultados para $n=5$, $n=15$ y $n=50$.
+5. Construir una simulación con datos espacialmente correlacionados y comparar el error estándar empírico de $\bar X$ con $\sigma/\sqrt n$. Identificar en qué dirección se produce el error si se ignora la dependencia.

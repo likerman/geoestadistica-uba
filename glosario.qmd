@@ -56,6 +56,12 @@ Familia de variables aleatorias indexadas por una localización espacial $\mathb
 
 Razón entre desviación estándar y media, habitualmente expresada como porcentaje: $CV=100s/\bar{x}$. Mide dispersión relativa y es apropiado principalmente para variables en escala de razón, con cero significativo y media suficientemente alejada de cero. Es invariante ante cambios multiplicativos de unidad, pero no ante traslaciones. Véase [Coeficiente de variación](capitulos/06-dispersion.qmd#coeficiente-de-variación).
 
+### Cobertura {#glosario-cobertura}
+
+**Inglés:** *coverage*.
+
+Proporción de veces que un procedimiento de intervalo contiene el parámetro verdadero bajo repetición del muestreo y bajo los supuestos del modelo. En un intervalo de confianza frecuentista, el nivel nominal —por ejemplo 95 %— se refiere a esta propiedad del procedimiento, no a la probabilidad posterior de que un parámetro fijo esté dentro de un intervalo ya observado. Véase [Qué significa confianza: cobertura](capitulos/09-muestreo-e-inferencia.qmd#sec-cobertura).
+
 ### Continuidad espacial {#glosario-continuidad-espacial}
 
 **Inglés:** *spatial continuity*.
@@ -106,6 +112,12 @@ Raíz cuadrada de la varianza. Expresa dispersión cuadrática en las mismas uni
 
 Descripción de cómo se reparte una variable entre sus posibles valores o categorías. En una muestra puede representarse mediante frecuencias o una distribución empírica; en un modelo probabilístico especifica probabilidades. Ningún estadístico aislado sustituye toda la información de una distribución.
 
+### Distribución muestral {#glosario-distribucion-muestral}
+
+**Inglés:** *sampling distribution*.
+
+Distribución probabilística de un estadístico bajo repetición hipotética del mismo mecanismo de muestreo. Por ejemplo, la distribución muestral de $\bar X$ describe cómo variarían las medias si se repitieran muchas campañas de tamaño $n$. No debe confundirse con la distribución de los valores individuales $X$. Véase [Distribución muestral](capitulos/09-muestreo-e-inferencia.qmd#sec-distribucion-muestral).
+
 ### Distribución teórica {#glosario-distribucion-teorica}
 
 **Inglés:** *theoretical distribution* o *probability distribution*.
@@ -136,7 +148,7 @@ Transformación afín que resta un centro y divide por una escala; en el caso cl
 
 **Inglés:** *standard error*.
 
-Desviación estándar de la distribución muestral de un estimador. Cuantifica cuánto variaría el estimador entre muestras hipotéticas bajo un modelo. No es la desviación estándar de los datos ni un error instrumental.
+Desviación estándar de la distribución muestral de un estimador. Cuantifica cuánto variaría el estimador entre muestras hipotéticas bajo un modelo. No es la desviación estándar de los datos ni un error instrumental. Véase [Variabilidad de la media y error estándar](capitulos/09-muestreo-e-inferencia.qmd#sec-error-estandar).
 
 ### Estadígrafo {#glosario-estadigrafo}
 
@@ -148,13 +160,19 @@ Función calculada exclusivamente a partir de una muestra, como $\bar{x}$, $s^2$
 
 **Inglés:** *estimator*.
 
-Regla o función de los datos destinada a estimar una cantidad desconocida. Antes de observar la muestra es una variable aleatoria; después produce una estimación concreta. Sus propiedades —sesgo, varianza y error cuadrático medio, entre otras— dependen del modelo y del mecanismo de muestreo.
+Regla o función de los datos destinada a estimar una cantidad desconocida. Antes de observar la muestra es una variable aleatoria; después produce una estimación concreta. Sus propiedades —sesgo, varianza y error cuadrático medio, entre otras— dependen del modelo y del mecanismo de muestreo. Véase [Parámetro, estimador y estimación](capitulos/09-muestreo-e-inferencia.qmd#sec-parametro-estimador-estimacion).
 
 ### Estimación {#glosario-estimacion}
 
 **Inglés:** *estimate*.
 
 Valor numérico producido por un estimador después de observar una muestra. Si $\bar X$ es el estimador de $\mu$, el número $\bar x=18.4$ calculado con datos concretos es una estimación. No debe confundirse la regla aleatoria con su resultado.
+
+### Estimación puntual {#glosario-estimacion-puntual}
+
+**Inglés:** *point estimate*.
+
+Estimación expresada como un único valor numérico, sin representar explícitamente su incertidumbre. Es útil como resumen, pero debe acompañarse con una medida de precisión o un intervalo cuando se usa para inferir sobre una población o modelo. Véase [Estimación puntual insuficiente](capitulos/09-muestreo-e-inferencia.qmd#sec-estimacion-puntual).
 
 ### Evento {#glosario-evento}
 
@@ -224,6 +242,12 @@ Representación de una variable cuantitativa mediante intervalos contiguos. Pued
 
 Proceso de formular conclusiones sobre una población, parámetros o relaciones no completamente observados utilizando una muestra y un conjunto explícito de supuestos. No debe confundirse con descripción de los datos ni con predicción de una observación particular.
 
+### Intervalo de confianza {#glosario-intervalo-confianza}
+
+**Inglés:** *confidence interval*.
+
+Intervalo construido mediante un procedimiento aleatorio que, bajo los supuestos del modelo, tiene una cobertura nominal especificada para un parámetro. En la lectura frecuentista clásica, el parámetro es fijo y el intervalo cambia entre muestras. Véase [Intervalos de confianza](capitulos/09-muestreo-e-inferencia.qmd#sec-intervalos-confianza).
+
 ### Intervalo intercuartílico {#glosario-iqr}
 
 **Inglés:** *interquartile range*. **Símbolo:** $IQR$.
@@ -265,6 +289,12 @@ Posición espacial asociada a una observación. Puede incluir coordenadas horizo
 **Inglés:** *arithmetic mean*. **Símbolos:** $\mu$ para población, $\bar{x}$ para muestra.
 
 Suma de los valores dividida por su cantidad. Es centro de balance y minimiza la suma de desviaciones cuadráticas. Utiliza todos los valores y es sensible a extremos. Véase [Media aritmética](capitulos/05-posicion.qmd#media-aritmética).
+
+### Margen de error {#glosario-margen-error}
+
+**Inglés:** *margin of error*.
+
+Semiancho de un intervalo de confianza alrededor de una estimación puntual, para un nivel de confianza y un modelo dados. En el caso normal con $\sigma$ conocida para la media, es $z_{1-\alpha/2}\sigma/\sqrt n$. Véase [Intervalos de confianza](capitulos/09-muestreo-e-inferencia.qmd#sec-intervalos-confianza).
 
 ### Media geométrica {#glosario-media-geometrica}
 
@@ -388,7 +418,7 @@ Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel r
 
 **Inglés:** *bias*.
 
-Diferencia sistemática entre el valor esperado de un estimador y la cantidad objetivo, o, en sentido más amplio, distorsión sistemática introducida por observación, selección o medición. Aumentar $n$ puede reducir variabilidad muestral sin eliminar un sesgo persistente.
+Diferencia sistemática entre el valor esperado de un estimador y la cantidad objetivo, o, en sentido más amplio, distorsión sistemática introducida por observación, selección o medición. Aumentar $n$ puede reducir variabilidad muestral sin eliminar un sesgo persistente. Véase [Sesgo y precisión](capitulos/09-muestreo-e-inferencia.qmd#sec-sesgo-precision).
 
 ### Simulación condicional {#glosario-simulacion-condicional}
 
@@ -401,6 +431,20 @@ Generación de realizaciones espaciales alternativas compatibles con datos, dist
 **Inglés:** *support*.
 
 Geometría, tamaño y orientación del volumen, área, longitud o intervalo sobre el cual una medición integra una propiedad. Cambiar el soporte puede modificar distribución y varianza aunque la localización nominal sea la misma.
+
+## T
+
+### t de Student {#glosario-t-student}
+
+**Inglés:** *Student's t distribution*.
+
+Familia de distribuciones simétricas, indexadas por grados de libertad, que aparece al estandarizar una media usando la desviación estándar muestral $S$ en lugar de la desviación estándar poblacional $\sigma$. Tiene colas más pesadas que la normal estándar, especialmente con pocos grados de libertad. Véase [Cuando sigma es desconocida: t de Student](capitulos/09-muestreo-e-inferencia.qmd#sec-t-student).
+
+### Teorema Central del Límite {#glosario-tcl}
+
+**Inglés:** *Central Limit Theorem*. **Abreviatura:** TCL.
+
+Resultado asintótico según el cual, bajo condiciones adecuadas, la media estandarizada de muchas variables independientes con esperanza y varianza finitas converge en distribución a una normal estándar. Justifica aproximaciones normales para medias, pero no elimina la necesidad de revisar asimetría, colas, dependencia y tamaño muestral. Véase [Forma de la distribución muestral y Teorema Central del Límite](capitulos/09-muestreo-e-inferencia.qmd#sec-tcl).
 
 ## V
 
