@@ -3,7 +3,6 @@ project:
   output-dir: _book
   execute-dir: project
   resources:
-    - datos/*.csv
     - ejemplos/*.ipynb
 
 lang: es
