@@ -24,12 +24,10 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements-lock.txt
-      - name: Verificar estructura, citas, enlaces locales y accesibilidad
+      - name: Verificar estructura, citas, enlaces, notebooks y caso sintético
         run: python scripts/check_manual.py
-      - name: Verificar que los datos sintéticos sean reproducibles
-        run: |
-          python ejemplos/generar_caso_arsenico.py
-          git diff --exit-code -- datos/arsenico_sintetico.csv
+      - name: Mostrar control numérico del caso conductor
+        run: python ejemplos/generar_caso_arsenico.py
       - uses: quarto-dev/quarto-actions/setup@v2
       - uses: quarto-dev/quarto-actions/render@v2
         with:
