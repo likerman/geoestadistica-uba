@@ -53,10 +53,29 @@ def main() -> None:
         with notebook.open(encoding="utf-8") as entrada:
             json.load(entrada)
 
-    datos = ROOT / "datos" / "arsenico_sintetico.csv"
-    filas = datos.read_text(encoding="utf-8").splitlines()
-    if len(filas) != 1001:
-        errores.append(f"datos sintéticos: se esperaban 1000 filas y hay {len(filas) - 1}")
+    # Control de continuidad del caso sintético usado en clases y manual.
+    from ejemplos.generar_caso_arsenico import generar, resumen_referencia
+
+    datos = generar()
+    if len(datos) != 1000:
+        errores.append(f"caso sintético: se esperaban 1000 pozos y hay {len(datos)}")
+
+    ref = resumen_referencia()
+    esperados = {
+        "n": 50.0,
+        "media": 18.0132356850,
+        "mediana": 15.7360730757,
+        "sd": 10.9647036070,
+        "asimetria": 1.6620646060,
+        "exceso_curtosis": 3.1297227700,
+    }
+    for clave, esperado in esperados.items():
+        observado = float(ref[clave])
+        tolerancia = 1e-8 if clave != "n" else 0.0
+        if abs(observado - esperado) > tolerancia:
+            errores.append(
+                f"caso sintético: {clave}={observado:.10f}; se esperaba {esperado:.10f}"
+            )
 
     if errores:
         raise SystemExit("\n".join(errores))
