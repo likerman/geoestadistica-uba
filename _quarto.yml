@@ -13,7 +13,7 @@ book:
   title: "Manual de Geoestadística"
   subtitle: "Fundamentos teóricos y ejemplos geológicos"
   author: "Dr. Jeremías Likerman"
-  date: "2026-08-14"
+  date: "2026-09-04"
   cover-image: recursos/identidad/banner_youtube.png
   cover-image-alt: "Banner de Geoestadística de Ciencias Geológicas, FCEN, UBA"
   sidebar:
@@ -41,7 +41,6 @@ book:
     - part: "III. Probabilidad y modelos"
       chapters:
         - capitulos/08-probabilidad.qmd
-        - capitulos/09-muestreo-e-inferencia.qmd
     - ejemplos/01-caso-sintetico.qmd
     - glosario.qmd
     - referencias.qmd
