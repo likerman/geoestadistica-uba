@@ -63,6 +63,34 @@ $$
 s_6=s_7=4\ \text{fracturas/m}.
 $$
 
+### Cómo se construye el estadístico
+
+La variable observada no es "el banco" completo, sino una intensidad calculada sobre unidades de observación de longitud conocida. Si una transecta se divide en segmentos de longitud $L$, en cada segmento contamos las fracturas interceptadas:
+
+$$
+N_i=\text{número de fracturas en el segmento }i.
+$$
+
+La intensidad lineal del segmento es
+
+$$
+X_i=\frac{N_i}{L}.
+$$
+
+Si todos los segmentos miden $1$ m, entonces $X_i$ coincide numéricamente con el conteo de fracturas por segmento y se expresa en fracturas/m. La media muestral del banco es
+
+$$
+\bar X=\frac{1}{n}\sum_{i=1}^{n}X_i.
+$$
+
+Si las longitudes no son iguales, el estimador natural de intensidad global no es el promedio simple de las intensidades individuales, sino
+
+$$
+\widehat\lambda=\frac{\sum_i N_i}{\sum_i L_i}.
+$$
+
+Esta aclaración importa porque $20$ fracturas/m no es una observación aislada: es una estimación construida a partir de varias unidades de observación. En el ejemplo de clase, para simplificar la inferencia, suponemos segmentos comparables, mismo soporte e independencia.
+
 La diferencia observada es
 
 $$
@@ -158,13 +186,13 @@ Ese cambio de formulación conduce a una prueba de hipótesis.
 
 ## Hipótesis nula y alternativa
 
-La hipótesis nula es
+La [hipótesis nula](../glosario.qmd#glosario-hipotesis-nula) es
 
 $$
 H_0:\Delta=0.
 $$
 
-Para una comparación sin dirección previa específica, la alternativa bilateral es
+Para una comparación sin dirección previa específica, la [hipótesis alternativa](../glosario.qmd#glosario-hipotesis-alternativa) bilateral es
 
 $$
 H_1:\Delta\neq0.
@@ -269,7 +297,7 @@ La dirección no debe elegirse después de observar los datos para obtener un p-
 
 ## Nivel de significación y región crítica
 
-Elegimos un nivel de significación
+Elegimos un [nivel de significación](../glosario.qmd#glosario-alpha)
 
 $$
 \alpha=0.05.
@@ -287,7 +315,7 @@ $$
 t_{crit}=t_{0.975,30}\approx2.042.
 $$
 
-La regla por valor crítico es:
+La [región crítica](../glosario.qmd#glosario-region-critica) queda definida por los valores de la distribución de referencia que consideramos suficientemente extremos. La regla por valor crítico es:
 
 $$
 |t_{obs}|>t_{crit}\quad\Longrightarrow\quad\text{rechazar }H_0.
@@ -305,7 +333,7 @@ Esto no demuestra con certeza que $H_0$ sea falsa. Indica que el resultado obser
 
 ## El p-valor {#sec-pvalor}
 
-El p-valor cuantifica cuán extremo es el resultado observado bajo $H_0$.
+El [p-valor](../glosario.qmd#glosario-pvalor) cuantifica cuán extremo es el resultado observado bajo $H_0$.
 
 Para una prueba bilateral:
 
@@ -424,7 +452,7 @@ El intervalo muestra **todos los valores compatibles** con los datos al nivel el
 
 ## Significación estadística e importancia geológica
 
-Rechazar $H_0$ no responde automáticamente si la diferencia es geológicamente importante.
+La [significación estadística](../glosario.qmd#glosario-significacion-estadistica) no responde automáticamente si la diferencia es geológicamente importante.
 
 El resultado estimado es
 
@@ -543,6 +571,18 @@ pd.DataFrame({
 7. ¿Por qué un IC95% que excluye cero conduce a la misma decisión que un test bilateral con $\alpha=0.05$ bajo el mismo modelo?
 8. ¿Cómo podría la correlación espacial entre transectas modificar la conclusión?
 9. ¿Por qué una diferencia estadísticamente significativa puede no ser geológicamente importante?
+
+## Autoevaluación de cierre
+
+Estas afirmaciones reproducen el tipo de control conceptual usado al final de la clase. La idea no es memorizar una fórmula sino justificar cada respuesta.
+
+1. Si aumentamos el tamaño muestral $n$, el error estándar de la media aumenta.
+2. Un intervalo de confianza del 95 % significa que hay 95 % de probabilidad de que $\mu$ esté dentro del intervalo observado.
+3. Si $p=0.03$, entonces hay 3 % de probabilidad de que $H_0$ sea verdadera.
+4. En un test bilateral con $\alpha=0.05$, si el valor propuesto por $H_0$ queda fuera del IC95 % correspondiente, rechazamos $H_0$, siempre que intervalo y test usen el mismo modelo y los mismos supuestos.
+5. Una diferencia de 3.2 fracturas/m entre dos medias alcanza por sí sola para decidir si existe una diferencia estadísticamente significativa.
+
+Las respuestas esperadas son: falsa, falsa, falsa, verdadera y falsa. Las falsas fallan por las razones centrales del capítulo: el SE disminuye como $1/\sqrt n$ bajo independencia; la confianza se interpreta como cobertura del procedimiento; el p-valor es una probabilidad condicionada a $H_0$ y no una probabilidad de $H_0$; y una diferencia observada debe compararse con su incertidumbre.
 
 ## Puente al cierre de inferencia
 

@@ -4,6 +4,12 @@ Este glosario reúne los términos centrales del manual. Las definiciones son de
 
 ## A
 
+### Alfa {#glosario-alpha}
+
+**Inglés:** *alpha* o *significance level*. **Símbolo:** $\alpha$.
+
+Nivel de significación fijado antes de aplicar una prueba de hipótesis. Bajo el modelo nulo, representa la probabilidad tolerada de rechazar $H_0$ cuando $H_0$ es verdadera. En un intervalo de confianza bilateral, $1-\alpha$ es el nivel de confianza correspondiente. Véase [Nivel de significación y región crítica](capitulos/10-hipotesis.qmd#nivel-de-significación-y-región-crítica).
+
 ### Ancho de banda {#glosario-ancho-banda}
 
 **Inglés:** *bandwidth*. **Símbolo habitual:** $h$.
@@ -234,6 +240,18 @@ Número de cantidades que pueden variar independientemente después de imponer r
 
 Representación de una variable cuantitativa mediante intervalos contiguos. Puede mostrar frecuencias, proporciones o densidad. Su forma depende del ancho y origen de los intervalos; con anchos desiguales debe interpretarse el área de cada barra. Véase [Histograma](capitulos/04-distribuciones-graficos.qmd#histograma).
 
+### Hipótesis alternativa {#glosario-hipotesis-alternativa}
+
+**Inglés:** *alternative hypothesis*. **Notación habitual:** $H_1$ o $H_A$.
+
+Afirmación o conjunto de valores que define qué desviaciones respecto de la hipótesis nula se considerarán evidencia en una prueba. Puede ser bilateral o unilateral y debe definirse a partir de la pregunta científica antes de mirar los datos. Véase [Bilateral y unilateral](capitulos/10-hipotesis.qmd#bilateral-y-unilateral).
+
+### Hipótesis nula {#glosario-hipotesis-nula}
+
+**Inglés:** *null hypothesis*. **Notación habitual:** $H_0$.
+
+Valor o afirmación de referencia bajo la cual se calcula la distribución del estadístico de prueba. No es necesariamente lo que se cree verdadero; es el modelo contra el cual se evalúa la extremidad del resultado observado. Véase [Hipótesis nula y alternativa](capitulos/10-hipotesis.qmd#hipótesis-nula-y-alternativa).
+
 ## I
 
 ### Inferencia {#glosario-inferencia}
@@ -384,6 +402,12 @@ Medida entre cero y uno asignada a un evento dentro de un modelo probabilístico
 
 Estimación de una cantidad aún no observada, como el valor en una localización sin muestra. Se diferencia de estimar un parámetro global: una buena estimación de la media poblacional no resuelve automáticamente una predicción local.
 
+### p-valor {#glosario-pvalor}
+
+**Inglés:** *p-value*.
+
+Probabilidad, calculada bajo la hipótesis nula y el modelo elegido, de obtener un estadístico tan extremo o más extremo que el observado. No es la probabilidad de que $H_0$ sea verdadera ni la probabilidad de que el resultado "se deba al azar" en sentido genérico. Véase [El p-valor](capitulos/10-hipotesis.qmd#sec-pvalor).
+
 ## Q
 
 ### QQ-plot {#glosario-qqplot}
@@ -406,6 +430,12 @@ Diferencia entre máximo y mínimo. Depende sólo de dos observaciones, es sensi
 
 Grado en que el mecanismo de observación y la muestra permiten aprender sobre la población definida respecto de una pregunta. No es sinónimo de tamaño muestral y debe evaluarse considerando probabilidades de inclusión, cobertura espacial, soporte y sesgos.
 
+### Región crítica {#glosario-region-critica}
+
+**Inglés:** *critical region*.
+
+Conjunto de valores del estadístico de prueba que llevan a rechazar la hipótesis nula para un nivel de significación dado. En una prueba bilateral se reparte en dos colas; en una unilateral se ubica en una sola cola según la hipótesis alternativa. Véase [Nivel de significación y región crítica](capitulos/10-hipotesis.qmd#nivel-de-significación-y-región-crítica).
+
 ### RMS {#glosario-rms}
 
 **Inglés:** *root mean square*.
@@ -419,6 +449,12 @@ Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel r
 **Inglés:** *bias*.
 
 Diferencia sistemática entre el valor esperado de un estimador y la cantidad objetivo, o, en sentido más amplio, distorsión sistemática introducida por observación, selección o medición. Aumentar $n$ puede reducir variabilidad muestral sin eliminar un sesgo persistente. Véase [Sesgo y precisión](capitulos/09-muestreo-e-inferencia.qmd#sec-sesgo-precision).
+
+### Significación estadística {#glosario-significacion-estadistica}
+
+**Inglés:** *statistical significance*.
+
+Resultado de una regla de decisión que declara incompatible un resultado con $H_0$ al nivel $\alpha$ elegido. No mide por sí sola la magnitud ni la relevancia científica del efecto. Véase [Significación estadística e importancia geológica](capitulos/10-hipotesis.qmd#significación-estadística-e-importancia-geológica).
 
 ### Simulación condicional {#glosario-simulacion-condicional}
 

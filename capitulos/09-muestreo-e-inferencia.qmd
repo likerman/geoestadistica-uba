@@ -121,6 +121,38 @@ for ax, n in zip(axes[1:], [5, 25, 100]):
 plt.show()
 ```
 
+### Tamaño muestral y cantidad de simulaciones
+
+En los exploradores de clase usamos dos cantidades distintas:
+
+$$
+n=\text{tamaño de cada muestra},
+$$
+
+$$
+M=\text{número de campañas simuladas}.
+$$
+
+No tienen el mismo significado. Aumentar $n$ cambia la precisión de cada media muestral porque reduce el error estándar. Aumentar $M$ sólo hace que el histograma simulado de medias sea más estable y represente mejor el experimento conceptual de muestreo repetido.
+
+$$
+\boxed{
+n\uparrow
+\Rightarrow
+SE(\bar X)\downarrow
+}
+$$
+
+$$
+\boxed{
+M\uparrow
+\Rightarrow
+\text{mejor visualización de la distribución muestral simulada}
+}
+$$
+
+En otras palabras, $M=10000$ no significa que tengamos 10000 datos en una campaña geológica. Significa que usamos la computadora para repetir muchas veces un procedimiento hipotético y visualizar el comportamiento de $\bar X$.
+
 ## Centro de la distribución muestral
 
 Si las observaciones tienen esperanza común $\mu$, entonces
