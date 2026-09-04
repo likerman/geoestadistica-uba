@@ -1,10 +1,8 @@
-# Geoestadística UBA
+# Manual de Geoestadística
 
-Manual teórico con ejemplos prácticos, desarrollado progresivamente a partir de la materia **Geoestadística** durante 2026.
+Manual teórico con ejemplos prácticos, desarrollado progresivamente a partir de la materia **Geoestadística** del Departamento de Geología de la UBA durante 2026.
 
 **Docentes:** Docentes de Geoestadística
-
-**Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
 
 [Libro web](https://likerman.github.io/geoestadistica-uba/) · [Repositorio](https://github.com/likerman/geoestadistica-uba)
 
