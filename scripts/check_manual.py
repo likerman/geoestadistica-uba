@@ -4,10 +4,17 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# Al ejecutar `python scripts/check_manual.py`, Python agrega `scripts/` y no la
+# raíz del repositorio a sys.path. Incorporamos explícitamente ROOT para poder
+# importar los módulos reproducibles del manual tanto localmente como en CI.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 
 def claves_bib() -> set[str]:
