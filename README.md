@@ -2,7 +2,7 @@
 
 Manual teórico con ejemplos prácticos, desarrollado progresivamente a partir de la materia **Geoestadística** durante 2026.
 
-**Autor:** Dr. Jeremías Likerman
+**Docentes:** Docentes de Geoestadística
 
 **Institución:** Departamento de Ciencias Geológicas, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires.
 
