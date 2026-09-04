@@ -37,9 +37,11 @@ book:
         - capitulos/05-posicion.qmd
         - capitulos/06-dispersion.qmd
         - capitulos/07-forma-diagnostico.qmd
-    - part: "III. Probabilidad y modelos"
+    - part: "III. Probabilidad e inferencia"
       chapters:
         - capitulos/08-probabilidad.qmd
+        - capitulos/09-muestreo-e-inferencia.qmd
+        - capitulos/10-hipotesis.qmd
     - ejemplos/01-caso-sintetico.qmd
     - glosario.qmd
     - referencias.qmd
