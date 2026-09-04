@@ -19,8 +19,8 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Descriptiva | rango, IQR, varianza, desvío, $n-1$ y CV | 06 | estable |
 | Descriptiva | momentos, asimetría, curtosis, boxplot, QQ-plot y normalidad | 07 | estable |
 | Probabilidad | variable aleatoria, densidad, acumulación, normal, estandarización, cuantiles y QQ-plot | 08 | estable |
-| Inferencia | distribución muestral, TCL, error estándar, t e intervalos | 09 | en desarrollo — próxima actualización |
-| Inferencia | comparación de medias, hipótesis, α, p, errores I/II, potencia y tamaño de efecto | 10 | en desarrollo — próxima actualización |
+| Inferencia | distribución muestral, TCL, error estándar, t e intervalos | 09 | estable |
+| Inferencia | comparación de medias, hipótesis, α, región crítica, p e IC-test | 10 | revisión docente — alineado con la clase vigente; falta el cierre sobre errores I/II, potencia y tamaño de efecto |
 | Bivariado | correlación y regresión | 11 | borrador |
 | Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador |
 | Multivariado | cluster, PCA y LDA | 13 | borrador |
@@ -33,10 +33,11 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 
 La auditoría del 4 de septiembre de 2026 contrastó el manual con:
 
-- presentaciones y guiones efectivamente utilizados en las clases de introducción, descriptiva y probabilidad;
-- notebooks de muestreo y descriptiva del caso sintético de arsénico;
-- `Laboratorio_Arsenico_Probabilidad_Distribuciones_v8.ipynb` y versiones de control;
-- guión de Probabilidad y Distribuciones, cuya secuencia explícita es descriptiva → variable aleatoria → densidad/acumulación → distribuciones teóricas → normal → estandarización → probabilidades → cuantiles → QQ-plot → puente a inferencia;
+- presentaciones y guiones efectivamente utilizados en las clases de introducción, descriptiva, probabilidad e inferencia;
+- la versión vigente de la presentación `03_Inferencia`, revisada hasta su cierre en IC, pruebas de hipótesis y p-valor;
+- notebooks y exploradores de muestreo repetido, error estándar, TCL, cobertura, ancho de intervalos y distribución $t$;
+- el caso de planificación del espesor medio de un banco sedimentario;
+- el ejemplo final de intensidad de fracturamiento en B06 y B07;
 - bibliografía estadística y geoestadística vigente: Alperin, Davis, McKillup y Dyar, Isaaks y Srivastava, Pyrcz, Goovaerts, Chilès y Delfiner, Cressie, Remy et al., Wackernagel y Tolosana-Delgado y Mueller.
 
 ## Caso conductor vigente
@@ -61,33 +62,70 @@ Estos números deben mantenerse sincronizados entre capítulos, notebooks y futu
 
 ## Decisiones de la auditoría pre-inferencia
 
-1. Los capítulos 01–07 se consideran conceptualmente sólidos y alineados con lo efectivamente enseñado; no se reescribieron para evitar cambios cosméticos sin beneficio pedagógico.
+1. Los capítulos 01–07 se consideran conceptualmente sólidos y alineados con lo efectivamente enseñado.
 2. El capítulo 08 fue consolidado y alineado con el caso y la narrativa de clase. Se reforzaron las distinciones ECDF/KDE/PDF/CDF, la normal como modelo, la estandarización como cambio de escala —no de forma—, la diferencia entre puntuación muestral y $Z$ poblacional, la interpretación de cuantiles y el uso diagnóstico del QQ-plot.
 3. Se unificó la receta reproducible del caso conductor en `ejemplos/generar_caso_arsenico.py` y se sincronizaron el laboratorio y notebook integrador.
 4. Se completó `referencias.bib` con Remy-Boucher-Wu, Wackernagel y Tolosana-Delgado-Mueller, además del núcleo ya existente.
-5. Los capítulos 09 y 10 se retiraron temporalmente de la navegación pública hasta ser actualizados contra la clase final de inferencia. No se considera aceptable publicar un capítulo planificado sólo por existir en el repositorio.
 
-## Próximo corte de trabajo: inferencia
+## Actualización de inferencia — 4 de septiembre de 2026
 
-Actualizar 09–10 contra la presentación y guión final de Inferencia Estadística I e incorporar de manera coherente:
+Los capítulos 09 y 10 fueron reescritos contra la versión final de la clase de Inferencia Estadística I y reincorporados a la navegación pública.
+
+### Capítulo 09
+
+Quedaron consolidados:
 
 1. distribución muestral de $\bar X$;
-2. centro, varianza y error estándar;
-3. TCL sin regla mágica de $n=30$;
-4. parámetro, estimador y estimación;
-5. $z$ y $t$ como distribuciones de referencia;
-6. intervalos de confianza, cobertura, α y precisión;
-7. ejemplo de planificación de tamaño muestral;
-8. comparación de dos medias mediante el caso de intensidad de fracturamiento en B06 y B07;
-9. IC de la diferencia, $H_0$, $t_{obs}$, alternativas bilateral/unilateral, región crítica y p-valor;
-10. equivalencia IC-test bajo el mismo modelo;
-11. errores tipo I y II, potencia y tamaño de efecto;
-12. independencia, pseudorreplicación y advertencia espacial.
+2. diferencia entre distribución de $X$ y distribución de $\bar X$;
+3. centro de la distribución muestral;
+4. varianza de la media y error estándar;
+5. regla $SE\propto1/\sqrt n$ y la consecuencia $n\times4\Rightarrow SE/2$;
+6. advertencia sobre dependencia espacial e información efectiva;
+7. TCL como aproximación para la distribución muestral, sin regla mágica de $n=30$;
+8. estandarización de la media en unidades de error estándar;
+9. parámetro, estimador y estimación;
+10. intervalos de confianza, cobertura y la interpretación frecuentista correcta del 95 %;
+11. separación entre confianza, ancho del intervalo y precisión;
+12. distribución $t$, grados de libertad y diferencia con la normal estándar;
+13. planificación de tamaño muestral y análisis posterior del ejemplo de espesor.
 
-El objetivo de esa actualización será conservar explícito el camino:
+### Capítulo 10
+
+Quedaron incorporados los contenidos ya efectivamente dados:
+
+1. comparación de dos medias mediante B06 y B07;
+2. IC individuales y por qué su solapamiento no constituye un test de igualdad;
+3. definición de $\Delta=\mu_7-\mu_6$;
+4. error estándar de la diferencia;
+5. IC95% de la diferencia $[0.31,6.09]$;
+6. formulación $H_0:\Delta=0$;
+7. interpretación de $t_{obs}\approx2.26$ como distancia en errores estándar;
+8. hipótesis bilateral, unilateral derecha y unilateral izquierda;
+9. $\alpha$, región crítica y valor crítico;
+10. p-valor bilateral $\approx0.031$ y su interpretación correcta;
+11. regla de decisión y distinción entre rechazar y demostrar;
+12. equivalencia IC-test para el mismo modelo y nivel;
+13. diferencia entre significación estadística e importancia geológica;
+14. supuestos del modelo pooled e indicación de la alternativa de Welch;
+15. independencia, dependencia espacial y riesgo de pseudorreplicación.
+
+El camino conceptual que debe permanecer visible es:
 
 $$
 \text{muestra}\rightarrow\text{estadístico}\rightarrow\text{distribución muestral}
 \rightarrow\text{TCL + SE}\rightarrow\text{estandarización}\rightarrow z/t
 \rightarrow\text{IC}\rightarrow H_0\rightarrow t_{obs}\rightarrow\alpha,p\rightarrow\text{decisión}.
 $$
+
+## Próximo corte de trabajo
+
+Antes de pasar formalmente a correlación y regresión falta cerrar un tramo corto de inferencia:
+
+1. error tipo I;
+2. error tipo II;
+3. potencia $1-\beta$;
+4. tamaño de efecto;
+5. relación entre potencia, tamaño muestral, variabilidad, efecto y $\alpha$;
+6. pseudorreplicación e independencia espacial como condición de validez.
+
+Una vez dado y auditado ese bloque, el capítulo 10 pasará de `revisión docente` a `estable` y el curso avanzará a correlación y regresión.
