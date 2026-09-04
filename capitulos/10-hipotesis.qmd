@@ -1,4 +1,549 @@
-# Pruebas de hipótesis
+# Pruebas de hipótesis {#sec-hipotesis}
 
-Capítulo planificado. Distinguirá significación estadística, tamaño de efecto e importancia geológica.
+## Objetivos
 
+Al finalizar este capítulo, el lector debería poder:
+
+- distinguir estimación por intervalos de prueba de hipótesis;
+- formular una hipótesis nula y una alternativa en términos de un parámetro;
+- interpretar un estadístico observado como distancia estandarizada respecto de $H_0$;
+- diferenciar pruebas bilaterales y unilaterales;
+- relacionar nivel de significación, región crítica y valor crítico;
+- interpretar correctamente un p-valor;
+- aplicar una regla de decisión sin confundirla con la probabilidad de que $H_0$ sea verdadera;
+- explicar la equivalencia entre un IC y un test bilateral correspondiente;
+- reconocer que significación estadística no implica importancia geológica;
+- identificar los supuestos que sostienen un test $t$ para comparar dos medias.
+
+## Del intervalo a una afirmación puntual
+
+En el capítulo anterior preguntamos:
+
+> ¿qué valores de un parámetro son compatibles con los datos al nivel de confianza elegido?
+
+Una prueba de hipótesis formula la misma clase de problema desde otra dirección:
+
+> ¿es compatible con los datos un valor específico del parámetro?
+
+Por ejemplo, para dos bancos sedimentarios podemos definir
+
+$$
+\Delta=\mu_7-\mu_6,
+$$
+
+donde $\mu_6$ y $\mu_7$ son las intensidades medias poblacionales de fracturamiento de los bancos B06 y B07.
+
+El valor
+
+$$
+\Delta=0
+$$
+
+representa igualdad de medias. Por eso constituye un valor de referencia natural.
+
+## Caso conductor: intensidad lineal de fracturamiento
+
+Supongamos que en cada banco medimos la frecuencia lineal de fracturas mediante transectas y obtenemos:
+
+$$
+\bar x_6=20.0\ \text{fracturas/m},
+$$
+
+$$
+\bar x_7=23.2\ \text{fracturas/m}.
+$$
+
+En ambos bancos:
+
+$$
+n_6=n_7=16,
+$$
+
+$$
+s_6=s_7=4\ \text{fracturas/m}.
+$$
+
+La diferencia observada es
+
+$$
+\bar x_7-\bar x_6=3.2\ \text{fracturas/m}.
+$$
+
+Pero una diferencia numérica no basta por sí sola para decidir si existe una diferencia poblacional. Debemos compararla con la variabilidad esperable del estimador.
+
+## Intervalos individuales: una primera mirada
+
+Para cada media,
+
+$$
+SE_6=SE_7=\frac{4}{\sqrt{16}}=1\ \text{fractura/m}.
+$$
+
+Con $\nu=15$ grados de libertad por muestra y
+
+$$
+t^*_{0.975,15}\approx2.131,
+$$
+
+los intervalos individuales del 95 % son
+
+$$
+IC_{95\%}(\mu_6)=20.0\pm2.131=[17.87,22.13],
+$$
+
+$$
+IC_{95\%}(\mu_7)=23.2\pm2.131=[21.07,25.33].
+$$
+
+Los intervalos se solapan. Esa observación visual puede ser útil, pero **no constituye una prueba formal de igualdad de medias**. El objeto correcto es la diferencia entre medias.
+
+::: {.callout-important title="Solapamiento de intervalos"}
+El solapamiento de dos IC individuales no es equivalente a probar $H_0:\mu_7-\mu_6=0$. La incertidumbre relevante es la de la diferencia.
+:::
+
+## El intervalo de la diferencia
+
+Para muestras independientes,
+
+$$
+SE(\bar X_7-\bar X_6)
+=\sqrt{SE_7^2+SE_6^2}.
+$$
+
+En este ejemplo:
+
+$$
+SE_\Delta=\sqrt{1^2+1^2}=\sqrt 2\approx1.414.
+$$
+
+Aunque las medias se resten, las **varianzas** de estimadores independientes se suman.
+
+Para mantener la lógica de la clase usamos el modelo clásico de dos muestras independientes con varianzas poblacionales iguales. Entonces
+
+$$
+\nu=n_6+n_7-2=30.
+$$
+
+Con
+
+$$
+t^*_{0.975,30}\approx2.042,
+$$
+
+obtenemos
+
+$$
+IC_{95\%}(\Delta)
+=3.2\pm2.042(1.414)
+=3.2\pm2.89,
+$$
+
+$$
+\boxed{IC_{95\%}(\Delta)=[0.31,6.09]}.
+$$
+
+Como el intervalo no contiene cero, una diferencia poblacional nula no pertenece al conjunto de valores compatibles con los datos al 95 % bajo este modelo.
+
+## El puente entre intervalo y test
+
+El intervalo preguntó:
+
+> ¿qué valores de $\Delta$ son compatibles con los datos?
+
+Ahora elegimos uno de esos valores posibles, $\Delta_0=0$, y preguntamos:
+
+> si la diferencia poblacional fuera realmente cero, ¿qué tan extraño sería observar una diferencia muestral de 3.2 fracturas/m?
+
+Ese cambio de formulación conduce a una prueba de hipótesis.
+
+## Hipótesis nula y alternativa
+
+La hipótesis nula es
+
+$$
+H_0:\Delta=0.
+$$
+
+Para una comparación sin dirección previa específica, la alternativa bilateral es
+
+$$
+H_1:\Delta\neq0.
+$$
+
+La hipótesis nula no es “lo que creemos verdadero”. Es el valor de referencia bajo el cual calculamos la distribución del estadístico de prueba.
+
+## El estadístico observado
+
+La estructura general es
+
+$$
+\text{estadístico estandarizado}
+=
+\frac{\text{estimación}-\text{valor bajo }H_0}{\text{error estándar}}.
+$$
+
+Para la diferencia de medias:
+
+$$
+T=
+\frac{(\bar X_7-\bar X_6)-\Delta_0}
+{SE(\bar X_7-\bar X_6)}.
+$$
+
+Con nuestros datos:
+
+$$
+t_{obs}
+=
+\frac{3.2-0}{1.414}
+\approx2.26.
+$$
+
+Esto significa que la diferencia observada está aproximadamente a **2.26 errores estándar** de la diferencia nula.
+
+La pregunta clave ya no es “¿3.2 es mucho?”, sino:
+
+> ¿2.26 errores estándar es suficientemente extremo bajo $H_0$?
+
+## ¿De dónde sale la distribución t en este ejemplo?
+
+No usamos una distribución $t$ porque existan dos muestras. Tampoco porque “$n$ sea menor que 30”.
+
+El razonamiento es:
+
+1. queremos estudiar una diferencia entre medias;
+2. bajo poblaciones normales, la diferencia de medias tiene una distribución muestral normal;
+3. si las poblaciones no son exactamente normales, la aproximación puede ser razonable cuando las distribuciones de las medias son suficientemente cercanas a normal;
+4. las varianzas poblacionales son desconocidas y se estiman con las muestras;
+5. esa estimación de la escala conduce a un estadístico con distribución $t$ bajo el modelo correspondiente [@student_1908; @mckillup_dyar_2010].
+
+En una aplicación real normalmente **no** sacamos muchas campañas para observar directamente la distribución muestral. Revisamos el diseño, la independencia, la forma de los datos, los valores extremos y la plausibilidad del modelo. El TCL y la teoría de la $t$ proporcionan la justificación probabilística cuando sus condiciones son razonables.
+
+## Supuestos del ejemplo
+
+El cálculo mostrado supone:
+
+- independencia entre los dos bancos;
+- independencia de las observaciones dentro de cada banco;
+- una población aproximadamente normal en cada grupo, o una aproximación suficientemente buena para la distribución de las medias;
+- varianzas poblacionales iguales para usar la versión *pooled*;
+- soporte y procedimiento de medición comparables.
+
+En la práctica, si no es razonable asumir varianzas iguales, suele utilizarse el test $t$ de Welch, cuyos grados de libertad se calculan de manera diferente. El objetivo didáctico de este ejemplo es hacer visible la lógica inferencial antes de ampliar el repertorio de modelos.
+
+### Advertencia espacial
+
+Si las 16 mediciones de un banco provienen de segmentos próximos y espacialmente correlacionados, tratarlas como 16 replicaciones independientes puede subestimar el error estándar y exagerar la evidencia contra $H_0$.
+
+La independencia no es un detalle técnico: conecta directamente el test clásico con el problema geoestadístico de la dependencia espacial.
+
+## Bilateral y unilateral
+
+La región que consideramos “extrema” depende de la pregunta formulada antes de mirar el resultado.
+
+### Bilateral
+
+$$
+H_1:\Delta\neq0.
+$$
+
+Nos interesan diferencias grandes tanto positivas como negativas.
+
+### Unilateral derecha
+
+$$
+H_1:\Delta>0.
+$$
+
+Nos interesa específicamente si B07 tiene una media mayor.
+
+### Unilateral izquierda
+
+$$
+H_1:\Delta<0.
+$$
+
+Nos interesa específicamente si B07 tiene una media menor.
+
+La dirección no debe elegirse después de observar los datos para obtener un p-valor menor.
+
+## Nivel de significación y región crítica
+
+Elegimos un nivel de significación
+
+$$
+\alpha=0.05.
+$$
+
+En una prueba bilateral, el 5 % total se reparte entre las dos colas:
+
+$$
+\alpha/2=0.025.
+$$
+
+Con $\nu=30$,
+
+$$
+t_{crit}=t_{0.975,30}\approx2.042.
+$$
+
+La regla por valor crítico es:
+
+$$
+|t_{obs}|>t_{crit}\quad\Longrightarrow\quad\text{rechazar }H_0.
+$$
+
+En este ejemplo:
+
+$$
+2.26>2.042,
+$$
+
+por lo tanto rechazamos $H_0$ al nivel $\alpha=0.05$.
+
+Esto no demuestra con certeza que $H_0$ sea falsa. Indica que el resultado observado cae en una región que definimos como suficientemente extrema bajo el modelo nulo.
+
+## El p-valor {#sec-pvalor}
+
+El p-valor cuantifica cuán extremo es el resultado observado bajo $H_0$.
+
+Para una prueba bilateral:
+
+$$
+p=P(|T|\ge|t_{obs}|\mid H_0).
+$$
+
+Con $t_{obs}\approx2.26$ y $\nu=30$:
+
+$$
+p\approx0.031.
+$$
+
+La interpretación correcta es:
+
+> Si $H_0$ fuera cierta y el modelo fuera adecuado, resultados tan extremos o más que el observado aparecerían aproximadamente el 3.1 % de las veces bajo repetición del procedimiento.
+
+No significa:
+
+$$
+p=P(H_0\text{ verdadera}).
+$$
+
+Tampoco significa que haya 96.9 % de probabilidad de que $H_1$ sea verdadera.
+
+```{python}
+#| label: fig-pvalor-fracturas
+#| fig-cap: "p-valor bilateral para el ejemplo de fracturamiento. El área corresponde a resultados tan extremos o más que el t observado bajo H0."
+#| fig-alt: "Distribución t con 30 grados de libertad, líneas en menos y más 2.26 y ambas colas externas sombreadas."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+df = 30
+t_obs = 2.26
+x = np.linspace(-4.5, 4.5, 800)
+y = stats.t.pdf(x, df)
+
+fig, ax = plt.subplots(figsize=(8.5, 4.5))
+ax.plot(x, y, linewidth=2)
+izq = x <= -abs(t_obs)
+der = x >= abs(t_obs)
+ax.fill_between(x[izq], 0, y[izq], alpha=0.35)
+ax.fill_between(x[der], 0, y[der], alpha=0.35)
+ax.axvline(-t_obs, linestyle="--")
+ax.axvline(t_obs, linestyle="--")
+p = 2 * stats.t.sf(abs(t_obs), df)
+ax.set(title=f"p bilateral ≈ {p:.3f}", xlabel="t", ylabel="Densidad")
+plt.show()
+```
+
+## De p a la decisión
+
+La regla habitual es
+
+$$
+p\le\alpha
+\quad\Longrightarrow\quad
+\text{rechazar }H_0.
+$$
+
+En nuestro caso:
+
+$$
+0.031<0.05.
+$$
+
+Por lo tanto, los datos aportan evidencia estadística contra la igualdad de medias bajo los supuestos del modelo.
+
+Una formulación científicamente cuidadosa sería:
+
+> Bajo el modelo de dos muestras independientes utilizado, encontramos evidencia de una diferencia entre las intensidades medias poblacionales de fracturamiento de B06 y B07.
+
+## No rechazar no significa aceptar
+
+Si $p>\alpha$, la conclusión es **no rechazar $H_0$**. No significa haber demostrado que $H_0$ sea verdadera.
+
+Un resultado no significativo puede deberse, entre otras cosas, a una diferencia realmente pequeña, alta variabilidad, una muestra insuficiente o un diseño poco informativo. Estas ideas se desarrollarán al estudiar errores de decisión y potencia.
+
+## IC y test: dos caras de la misma lógica
+
+Para una prueba bilateral y un intervalo construidos con el mismo modelo y nivel correspondiente:
+
+$$
+0\in IC_{95\%}(\Delta)
+\Longleftrightarrow
+p\ge0.05,
+$$
+
+$$
+0\notin IC_{95\%}(\Delta)
+\Longleftrightarrow
+p<0.05.
+$$
+
+En nuestro ejemplo:
+
+$$
+IC_{95\%}(\Delta)=[0.31,6.09],
+$$
+
+por lo tanto
+
+$$
+0\notin IC_{95\%},
+$$
+
+y consistentemente
+
+$$
+p\approx0.031<0.05.
+$$
+
+El intervalo muestra **todos los valores compatibles** con los datos al nivel elegido; el test pregunta por **un valor puntual**.
+
+## Significación estadística e importancia geológica
+
+Rechazar $H_0$ no responde automáticamente si la diferencia es geológicamente importante.
+
+El resultado estimado es
+
+$$
+\widehat\Delta=3.2\ \text{fracturas/m},
+$$
+
+con
+
+$$
+IC_{95\%}=[0.31,6.09].
+$$
+
+La interpretación geológica debe preguntar si diferencias dentro de ese rango modifican procesos relevantes: conectividad de fracturas, permeabilidad, estabilidad mecánica, compartimentalización u otra propiedad de interés.
+
+Por eso:
+
+$$
+\boxed{\text{significación estadística}\neq\text{importancia geológica}}.
+$$
+
+El p-valor informa compatibilidad con $H_0$; el tamaño del efecto y su intervalo informan magnitud e incertidumbre; el contexto geológico define relevancia.
+
+## El camino completo de la inferencia
+
+La prueba de hipótesis no apareció de manera aislada. Es la culminación de conceptos desarrollados antes:
+
+$$
+\boxed{
+\text{muestra}
+\to
+\text{estadístico}
+\to
+\text{distribución muestral}
+\to
+\text{TCL + SE}
+\to
+\text{estandarización}
+\to
+\text{distribución de referencia}
+\to
+\text{IC / test}
+\to
+\alpha,p
+\to
+\text{decisión}
+}
+$$
+
+La conexión con el TCL puede resumirse así:
+
+> Para decidir si un resultado es extremo primero necesitamos conocer —exacta o aproximadamente— cómo se distribuye el estadístico entre muestras. El TCL ayuda a justificar esa distribución para medias; el error estándar fija su escala; la estandarización convierte la diferencia en una distancia comparable; la distribución $t$ aporta la referencia cuando la varianza poblacional se estima; y sobre esa referencia definimos intervalos, regiones críticas y p-valores.
+
+## Ejemplo reproducible completo
+
+```{python}
+#| label: tbl-test-fracturas
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+x6, x7 = 20.0, 23.2
+s6 = s7 = 4.0
+n6 = n7 = 16
+
+se6 = s6 / np.sqrt(n6)
+se7 = s7 / np.sqrt(n7)
+
+df_ind = 15
+t_ind = stats.t.ppf(0.975, df_ind)
+ic6 = (x6 - t_ind*se6, x6 + t_ind*se6)
+ic7 = (x7 - t_ind*se7, x7 + t_ind*se7)
+
+delta = x7 - x6
+se_delta = np.sqrt(se6**2 + se7**2)
+df = n6 + n7 - 2
+tcrit = stats.t.ppf(0.975, df)
+ic_delta = (delta - tcrit*se_delta, delta + tcrit*se_delta)
+t_obs = delta / se_delta
+p = 2 * stats.t.sf(abs(t_obs), df)
+
+pd.DataFrame({
+    "cantidad": ["IC B06", "IC B07", "IC diferencia", "t observado", "p bilateral"],
+    "resultado": [
+        f"[{ic6[0]:.2f}, {ic6[1]:.2f}]",
+        f"[{ic7[0]:.2f}, {ic7[1]:.2f}]",
+        f"[{ic_delta[0]:.2f}, {ic_delta[1]:.2f}]",
+        f"{t_obs:.2f}",
+        f"{p:.3f}",
+    ],
+})
+```
+
+## Errores frecuentes
+
+- decidir sólo mirando si dos IC individuales se solapan;
+- creer que dos muestras implican automáticamente una distribución $t$;
+- usar un test sin revisar independencia y diseño;
+- interpretar $t_{obs}$ como una probabilidad;
+- elegir unilateral o bilateral después de ver los datos;
+- interpretar $p$ como probabilidad de que $H_0$ sea verdadera;
+- afirmar que $p<0.05$ “demuestra” una hipótesis;
+- confundir no rechazar $H_0$ con aceptar que es verdadera;
+- confundir significación estadística con relevancia geológica;
+- ignorar dependencia espacial y pseudorreplicación.
+
+## Preguntas de revisión
+
+1. ¿Por qué una diferencia de 3.2 fracturas/m no basta para decidir si las poblaciones difieren?
+2. ¿Por qué las varianzas se suman al calcular el SE de una diferencia entre medias independientes?
+3. ¿Qué significa $t_{obs}=2.26$?
+4. ¿Qué determina si una prueba es bilateral o unilateral?
+5. ¿Qué representa $\alpha=0.05$?
+6. Interprete $p=0.031$ sin usar la frase “probabilidad de que $H_0$ sea verdadera”.
+7. ¿Por qué un IC95% que excluye cero conduce a la misma decisión que un test bilateral con $\alpha=0.05$ bajo el mismo modelo?
+8. ¿Cómo podría la correlación espacial entre transectas modificar la conclusión?
+9. ¿Por qué una diferencia estadísticamente significativa puede no ser geológicamente importante?
+
+## Puente al cierre de inferencia
+
+Todavía resta una pregunta fundamental: aun usando correctamente el procedimiento, podemos tomar decisiones equivocadas. El siguiente cierre de inferencia introducirá **error tipo I, error tipo II, potencia y tamaño de efecto**, y mostrará por qué el diseño de muestreo y la independencia condicionan la capacidad real de un test para detectar diferencias relevantes. Después de ese cierre estaremos en condiciones de pasar de comparar grupos a estudiar relaciones entre variables mediante correlación y regresión.
