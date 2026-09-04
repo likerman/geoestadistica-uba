@@ -1,45 +1,65 @@
 # Laboratorio integrador: población sintética de arsénico
 
-Este laboratorio aplica los capítulos 01–07 sobre una única población didáctica de 1000 pozos. Los valores, coordenadas y unidades hidroestratigráficas son **completamente sintéticos**: permiten estudiar muestreo y espacialidad, pero no describen ningún municipio real ni sirven para evaluar exposición.
+Este laboratorio aplica los capítulos 01–08 sobre la **misma población sintética de 1000 pozos utilizada en las clases de 2026**. Los valores y coordenadas son completamente ficticios: permiten estudiar muestreo, distribución y espacialidad sin atribuir concentraciones a localizaciones reales.
 
-[Descargar notebook](01_caso_arsenico_sintetico.ipynb) · [Abrir en Google Colab](https://colab.research.google.com/github/likerman/geoestadistica-uba/blob/main/ejemplos/01_caso_arsenico_sintetico.ipynb) · [Descargar datos](../datos/arsenico_sintetico.csv)
+[Descargar notebook](01_caso_arsenico_sintetico.ipynb) · [Abrir en Google Colab](https://colab.research.google.com/github/likerman/geoestadistica-uba/blob/main/ejemplos/01_caso_arsenico_sintetico.ipynb)
+
+La receta autoritativa está documentada en [`generar_caso_arsenico.py`](generar_caso_arsenico.py). La campaña aleatoria de 50 pozos reproduce exactamente la usada en las clases de estadística descriptiva, probabilidad e inferencia.
 
 ## Preguntas
 
-1. ¿Cómo cambia la distribución al pasar de la población a cada muestra de 50 pozos?
+1. ¿Cómo cambia la distribución al pasar de la población a una muestra de 50 pozos?
 2. ¿Qué estadísticos son sensibles al muestreo preferencial?
-3. ¿Por qué una muestra puede tener una distribución razonable y dejar grandes huecos espaciales?
-4. ¿Qué información se pierde al eliminar coordenadas, profundidad y unidad?
+3. ¿Por qué una muestra puede parecer razonable marginalmente y dejar grandes huecos espaciales?
+4. ¿Qué información se pierde si conservamos los valores pero eliminamos o permutamos las coordenadas?
+5. ¿Qué diferencia existe entre describir la campaña observada y asignar probabilidades mediante un modelo?
 
-## Carga y selección
+## Generación y selección
 
 ```{python}
 #| label: tbl-resumen-caso-sintetico
 
 import pandas as pd
+from scipy import stats
+from ejemplos.generar_caso_arsenico import generar, muestra_clase, muestra_preferencial
 
-datos = pd.read_csv("datos/arsenico_sintetico.csv")
-aleatoria = datos[datos["muestra_aleatoria_50"]]
-preferencial = datos[datos["muestra_preferencial_50"]]
+datos = generar()
+aleatoria = muestra_clase(datos)
+preferencial = muestra_preferencial(datos)
+
+
+def resumen(x):
+    return pd.Series({
+        "n": len(x),
+        "media": x.mean(),
+        "mediana": x.median(),
+        "sd": x.std(ddof=1),
+        "IQR": x.quantile(.75) - x.quantile(.25),
+        "asimetría": stats.skew(x, bias=False),
+        "exceso de curtosis": stats.kurtosis(x, fisher=True, bias=False),
+    })
 
 pd.DataFrame({
-    "población": datos["as_ug_l"].describe(),
-    "aleatoria": aleatoria["as_ug_l"].describe(),
-    "preferencial": preferencial["as_ug_l"].describe(),
+    "población": resumen(datos["as_ug_l"]),
+    "aleatoria": resumen(aleatoria["as_ug_l"]),
+    "preferencial": resumen(preferencial["as_ug_l"]),
 }).round(2)
 ```
 
-## Distribución y cobertura
+La campaña aleatoria de referencia tiene $n=50$, media aproximadamente 18.01 µg/L, mediana 15.74 µg/L, desviación estándar muestral 10.97 µg/L, asimetría 1.66 y exceso de curtosis 3.13. Estos valores sirven como control de continuidad entre el manual, las presentaciones y los notebooks.
+
+## Distribución y cobertura espacial
 
 ```{python}
 #| label: fig-caso-sintetico-integrador
-#| fig-cap: "Dos muestras del mismo tamaño difieren en distribución y cobertura espacial. Datos completamente sintéticos."
-#| fig-alt: "Histogramas y mapas de una muestra aleatoria y una preferencial de una población sintética de arsénico."
+#| fig-cap: "Dos muestras del mismo tamaño pueden diferir tanto en su distribución como en su cobertura espacial. Datos completamente sintéticos."
+#| fig-alt: "Histogramas y mapas de una muestra aleatoria y una muestra preferencial de una población sintética de arsénico."
 
+import numpy as np
 import matplotlib.pyplot as plt
 
 fig, axes = plt.subplots(2, 2, figsize=(11, 8), constrained_layout=True)
-bins = range(0, 56, 4)
+bins = np.linspace(0, max(55, datos["as_ug_l"].max()), 16)
 
 for fila, (nombre, muestra) in enumerate([
     ("Muestra aleatoria", aleatoria),
@@ -50,12 +70,13 @@ for fila, (nombre, muestra) in enumerate([
     axes[fila, 0].hist(muestra["as_ug_l"], bins=bins, density=True,
                        histtype="step", linewidth=2, color="#B56F3A", label=nombre)
     axes[fila, 0].set(xlabel="As sintético (µg/L)", ylabel="Densidad", title=nombre)
-    axes[fila, 0].legend()
+    axes[fila, 0].legend(frameon=False)
 
-    axes[fila, 1].scatter(datos["x_m"], datos["y_m"], s=4, color="#D5DADF")
-    puntos = axes[fila, 1].scatter(muestra["x_m"], muestra["y_m"],
-                                   c=muestra["as_ug_l"], cmap="viridis", s=32)
-    axes[fila, 1].set(xlabel="x (m)", ylabel="y (m)", title=f"Cobertura: {nombre.lower()}")
+    axes[fila, 1].scatter(datos["x_km"], datos["y_km"], s=5, color="#D5DADF")
+    puntos = axes[fila, 1].scatter(muestra["x_km"], muestra["y_km"],
+                                   c=muestra["as_ug_l"], cmap="viridis", s=34)
+    axes[fila, 1].set(xlabel="x (km)", ylabel="y (km)",
+                      title=f"Cobertura: {nombre.lower()}", aspect="equal")
 
 fig.colorbar(puntos, ax=axes[:, 1], label="As sintético (µg/L)")
 plt.show()
@@ -63,11 +84,51 @@ plt.show()
 
 ## Interpretación
 
-La selección preferencial sobre-representa concentraciones altas porque su probabilidad de inclusión depende de la propia variable. La muestra aleatoria evita esa regla, aunque una realización de 50 pozos todavía deja huecos. Comparar sólo histogramas no permite diagnosticar cobertura; comparar sólo mapas tampoco sustituye el análisis de la distribución.
+La selección preferencial sobre-representa concentraciones altas porque la probabilidad de inclusión depende de la propia variable. La muestra aleatoria evita esa regla de selección, aunque una realización particular todavía puede dejar huecos espaciales.
+
+Esto muestra por qué debemos separar dos preguntas:
+
+- **representación marginal:** ¿la distribución de valores de la muestra se parece a la población?;
+- **representación espacial:** ¿qué sectores, direcciones y escalas del dominio fueron observados?
+
+Un histograma no responde la segunda pregunta. Un mapa, por sí solo, tampoco sustituye el análisis de la distribución.
+
+## De la descripción a la probabilidad
+
+Sobre la campaña aleatoria podemos construir una ECDF y contar qué proporción observada queda por debajo de un umbral. Si en cambio ajustamos una distribución normal y calculamos un área de cola, estamos agregando un modelo. Ambas cantidades pueden diferir sin que exista un error de cálculo.
+
+```{python}
+#| label: fig-empirico-vs-modelo-integrador
+#| fig-cap: "Proporción empírica y probabilidad bajo una normal ajustada responden a objetos conceptualmente distintos."
+#| fig-alt: "ECDF de la campaña de arsénico y CDF normal ajustada sobre el mismo eje."
+
+import numpy as np
+from scipy import stats
+
+x = aleatoria["as_ug_l"].to_numpy()
+xord = np.sort(x)
+ecdf = np.arange(1, len(xord) + 1) / len(xord)
+mu, s = x.mean(), x.std(ddof=1)
+malla = np.linspace(0, max(55, x.max()*1.05), 500)
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.step(xord, ecdf, where="post", color="#446681", linewidth=2.2, label="ECDF")
+ax.plot(malla, stats.norm.cdf(malla, mu, s), color="#B56F3A", linewidth=2.2,
+        label="CDF normal ajustada")
+ax.set(xlabel="As sintético (µg/L)", ylabel="Acumulación", ylim=(0, 1.02))
+ax.legend(frameon=False)
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
 
 ## Actividades
 
-1. Calcule media, mediana, desviación estándar, IQR, asimetría y exceso de curtosis para las tres columnas del resumen.
-2. Repita el muestreo aleatorio 500 veces y grafique la distribución de las medias.
-3. Permute las concentraciones de la muestra aleatoria entre sus coordenadas y verifique qué resúmenes cambian.
-4. Estratifique por `unidad_sintetica` y discuta si la distribución marginal mezcla poblaciones diferentes.
+1. Calcule media, mediana, desviación estándar, IQR, asimetría y exceso de curtosis para población, muestra aleatoria y muestra preferencial.
+2. Cambie el tamaño muestral y repita el muestreo aleatorio 500 veces. Grafique la distribución de las medias; todavía no la interprete como intervalo de confianza.
+3. Permute las concentraciones entre coordenadas. Verifique qué resúmenes marginales se conservan y qué patrón espacial se destruye.
+4. Compare $P(X>30)$ bajo una normal ajustada con la proporción observada de valores mayores que 30 µg/L.
+5. Explique por qué una muestra con menor coeficiente de variación no es automáticamente una muestra mejor.
+
+## Puente
+
+El próximo paso inferencial consistirá en dejar de preguntar sólo por la distribución de las observaciones y estudiar qué ocurre con un **estadístico** —por ejemplo $\bar X$— cuando repetimos el muestreo. Esa nueva distribución será la distribución muestral.
