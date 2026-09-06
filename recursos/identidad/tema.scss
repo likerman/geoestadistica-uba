@@ -200,12 +200,7 @@ figcaption,
   max-width: 920px;
 }
 
-@media (max-width: 768px) {
-  .portada-manual {
-    border-radius: 0.25rem;
-  }
-}
-
+/* Oculta el bloque automático de título */
 .portada-inicial #title-block-header {
   display: none;
 }
@@ -222,14 +217,16 @@ figcaption,
 }
 
 .portada-titulo {
+  display: block;
   font-size: 2.4rem;
   line-height: 1.15;
   font-weight: 700;
   color: #1D4162;
-  margin: 0 0 0.4rem 0;
+  margin: 0 0 0.5rem 0;
 }
 
 .portada-subtitulo {
+  display: block;
   font-size: 1.25rem;
   line-height: 1.4;
   color: #39556E;
@@ -239,25 +236,27 @@ figcaption,
 .portada-metadata {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: 3rem;
   max-width: 650px;
   margin-bottom: 2.5rem;
 }
 
-.portada-metadata > div {
+.portada-item {
   display: flex;
   flex-direction: column;
 }
 
 .portada-label {
+  display: block;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #6D899F;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 
 .portada-valor {
+  display: block;
   font-size: 0.95rem;
   color: #1D4162;
 }
