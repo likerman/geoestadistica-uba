@@ -11,25 +11,25 @@ body-classes: portada-inicial
 
 ![](recursos/identidad/banner_youtube.png){.portada-imagen fig-alt="Geoestadística - Ciencias Geológicas FCEN UBA"}
 
-<div class="portada-titulo">
-Manual de Geoestadística
-</div>
+[Manual de Geoestadística]{.portada-titulo}
 
-<div class="portada-subtitulo">
-Fundamentos teóricos y ejemplos geológicos
-</div>
+[Fundamentos teóricos y ejemplos geológicos]{.portada-subtitulo}
 
-<div class="portada-metadata">
-  <div>
-    <span class="portada-label">AUTOR/A</span>
-    <span class="portada-valor">Docentes de Geoestadística</span>
-  </div>
+::: {.portada-metadata}
 
-  <div>
-    <span class="portada-label">FECHA DE PUBLICACIÓN</span>
-    <span class="portada-valor">14 de agosto de 2026</span>
-  </div>
-</div>
+::: {.portada-item}
+[AUTOR/A]{.portada-label}
+
+[Docentes de Geoestadística]{.portada-valor}
+:::
+
+::: {.portada-item}
+[FECHA DE PUBLICACIÓN]{.portada-label}
+
+[14 de agosto de 2026]{.portada-valor}
+:::
+
+:::
 
 :::
 
