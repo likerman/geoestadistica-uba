@@ -585,3 +585,43 @@ Una prueba de hipótesis reutilizará la misma distribución de referencia. En v
 ## Puente al capítulo siguiente
 
 Hasta ahora preguntamos por un **rango de valores plausibles** para un parámetro. El paso siguiente es elegir una afirmación concreta —por ejemplo, que dos medias poblacionales son iguales— y medir cuán compatibles son los datos con esa afirmación. Eso conduce a hipótesis nulas, estadísticos observados, regiones críticas y p-valores.
+
+<!-- codex:class-update:clase-2026-09-04-511f25d8c108:start -->
+
+:::{.callout-note title="Borrador de actualización docente"}
+Esta sección es un borrador editorial generado a partir de **Geoestadística #06 | Intervalos de confianza, t de Student, pruebas de hipótesis y p-valor**. Debe revisarse y transformarse en prosa estable del manual antes del PR final.
+
+**Motivo de inclusión:** coincide con: distribución muestral, tcl, teorema central, intervalo, confianza.
+
+**Resumen fuente.** En esta clase retomamos la distribución muestral de la media y la estandarización para consolidar el puente entre el Teorema Central del Límite y los intervalos de confianza. Se analiza en detalle el escenario práctico donde la desviación estándar poblacional sigma es desconocida, motivando la transición de la normal estándar a la distribución t de Student con n - 1 grados de libertad y colas más pesadas. Mediante ejemplos geológicos concretos —como el cálculo del espesor promedio de un banco guía y la comparación de bancos con distinta intensidad de fracturas— se desglosa el significado del nivel de confianza, el nivel de significancia alfa y los factores que controlan el ancho del intervalo. Por último, se conectan los intervalos de confianza con las pruebas de hipótesis uni y bilaterales, clarificando la interpretación rigurosa de la región crítica, el p-valor y la decisión estadística de rechazar o no la hipótesis nula.
+
+**Temas a integrar**
+
+- Distribución muestral de la media y Teorema Central del Límite
+- Inferencia con varianza poblacional desconocida
+- Distribución t de Student y grados de libertad
+- Construcción e interpretación de intervalos de confianza
+- Relación entre tamaño de muestra, nivel de confianza y precisión
+- Comparación de medias entre dos poblaciones
+- Pruebas de hipótesis bilaterales y unilaterales
+- Región crítica, p-valor y reglas de decisión estadística
+
+**Correcciones que deben quedar absorbidas**
+
+- 38:32 — Fórmula del error estándar y tamaño muestral n: Al explicar el margen de error, en el discurso oral se menciona la desviación estándar &ldquo;sobre la cantidad de muestras&rdquo;. Matemáticamente el error estándar de la media es s/&radic;n (o &sigma;/&radic;n); el tamaño muestral n interviene bajo raíz cuadrada. Reducir el error a la mitad requiere cuadruplicar n.
+- 41:25 — Cálculo numérico del error estándar de la muestra: Oralmente se indica &ldquo;es la desviación sobre la cantidad de muestras y ese error me da 10 centímetros&rdquo;. El cálculo numérico aplicado es correcto (0,50 m / &radic;25 = 0,50 / 5 = 0,10 m), pero la formulación verbal omitió enunciar la raíz cuadrada de n.
+- 53:00 — Comportamiento del ancho del intervalo en función de n: Al describir la reducción del ancho del intervalo se enfatiza que &ldquo;n está dividiendo&rdquo;, pero el decrecimiento ocurre proporcionalmente a 1/&radic;n. Esto implica rendimientos decrecientes: ganancias sucesivas de precisión exigen muestras sustancialmente mayores.
+- 01:29:20 — Interpretación estadística: no rechazar H0 no equivale a aceptar H0: En la conclusión de la prueba de hipótesis es crucial recalcar que no caer en la región de rechazo implica &ldquo;no rechazar H0&rdquo; por falta de evidencia suficiente, lo que no equivale a demostrar positivamente que H0 sea cierta o verdadera.
+
+**Dossier de trabajo:** [brief editorial](../recursos/clases/clase-2026-09-04-511f25d8c108/manual-update-brief.md) y [contexto fuente](../recursos/clases/clase-2026-09-04-511f25d8c108/manual-source-context.md).
+
+**Checklist antes de consolidar**
+
+- Convertir este borrador en desarrollo teórico-práctico autosuficiente.
+- Enlazar la primera aparición sustantiva de términos existentes del glosario.
+- Agregar términos nuevos al `glosario.qmd` sólo si quedan como vocabulario estable.
+- Reutilizar claves de `referencias.bib` y revisar las 5 fuentes inventariadas desde Drive.
+- Agregar ejemplos reproducibles o ejercicios si el tramo de clase introduce cálculos.
+:::
+
+<!-- codex:class-update:clase-2026-09-04-511f25d8c108:end -->
