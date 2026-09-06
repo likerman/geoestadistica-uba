@@ -1,9 +1,16 @@
 /_book/
 /.quarto/
+/_freeze/
 /.jupyter_cache/
 /recursos/clases/
 __pycache__/
 *.py[cod]
+*.aux
+*.log
+*.tex
 .Rhistory
 .RData
 .DS_Store
+
+**/*.quarto_ipynb
+**/*_files/

@@ -31,6 +31,7 @@ body {
   background:
     linear-gradient(180deg, rgba(196, 208, 218, 0.16) 0, rgba(255,255,255,0) 17rem),
     #FFFFFF;
+  line-height: 1.62;
 }
 
 h1, h2, h3 {
@@ -45,6 +46,11 @@ h1 {
 h2 {
   border-bottom: 1px solid $geo-celeste-palido;
   padding-bottom: 0.22rem;
+  margin-top: 2.2rem;
+}
+
+h3 {
+  margin-top: 1.7rem;
 }
 
 a {
@@ -145,6 +151,7 @@ blockquote {
 
 table {
   border-color: $geo-gris-claro;
+  font-size: 0.95rem;
 }
 
 thead {
@@ -159,11 +166,13 @@ tbody tr:nth-child(even) {
 pre.sourceCode {
   border-left: 4px solid $geo-azul-medio;
   border-top: 1px solid $geo-gris-claro;
+  font-size: 0.92rem;
 }
 
 .callout {
   border-radius: 0.35rem;
   box-shadow: 0 2px 8px rgba(29, 65, 98, 0.05);
+  margin: 1.25rem 0;
 }
 
 .callout-note {
@@ -177,6 +186,18 @@ pre.sourceCode {
 
 #quarto-back-to-top {
   color: $geo-azul-oscuro;
+}
+
+.figure-caption,
+figcaption,
+.table-caption {
+  color: $geo-azul-pizarra;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+#quarto-document-content {
+  max-width: 920px;
 }
 
 @media (max-width: 768px) {

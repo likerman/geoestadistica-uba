@@ -25,11 +25,22 @@ def claves_bib() -> set[str]:
 def main() -> None:
     errores: list[str] = []
     bib = claves_bib()
+    marcadores_editoriales = [
+        "codex:class-update",
+        "Borrador de actualización docente",
+        "Debe revisarse y transformarse",
+    ]
 
     for archivo in ROOT.rglob("*.qmd"):
         if "_book" in archivo.parts:
             continue
         texto = archivo.read_text(encoding="utf-8")
+
+        for marcador in marcadores_editoriales:
+            if marcador in texto:
+                errores.append(
+                    f"{archivo.relative_to(ROOT)}: marcador editorial visible: {marcador}"
+                )
 
         for clave in re.findall(r"@([A-Za-z0-9_:-]+)", texto):
             if clave not in bib:

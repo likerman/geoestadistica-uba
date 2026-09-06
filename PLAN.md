@@ -16,7 +16,7 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Introducción | variables, calidad, soporte y preparación | 03 | estable |
 | Descriptiva | frecuencias, histogramas, densidad, ECDF, KDE | 04 | estable |
 | Descriptiva | media aritmética, geométrica y cuadrática; mediana, moda y cuantiles | 05 | estable |
-| Descriptiva | rango, IQR, varianza, desvío, $n-1$ y CV | 06 | estable |
+| Descriptiva | rango, IQR, varianza, desviación estándar, $n-1$ y CV | 06 | estable |
 | Descriptiva | momentos, asimetría, curtosis, boxplot, QQ-plot y normalidad | 07 | estable |
 | Probabilidad | variable aleatoria, densidad, acumulación, normal, estandarización, cuantiles y QQ-plot | 08 | estable |
 | Inferencia | distribución muestral, TCL, error estándar, t e intervalos | 09 | estable |
@@ -129,23 +129,3 @@ Antes de pasar formalmente a correlación y regresión falta cerrar un tramo cor
 6. pseudorreplicación e independencia espacial como condición de validez.
 
 Una vez dado y auditado ese bloque, el capítulo 10 pasará de `revisión docente` a `estable` y el curso avanzará a correlación y regresión.
-
-<!-- codex:class-update:clase-2026-09-04-511f25d8c108:plan:start -->
-
-## Actualización en preparación: Geoestadística #06 | Intervalos de confianza, t de Student, pruebas de hipótesis y p-valor
-
-Origen: dossier automático en `recursos/clases/clase-2026-09-04-511f25d8c108/`.
-
-Capítulos tocados:
-
-- `capitulos/09-muestreo-e-inferencia.qmd`
-- `capitulos/10-hipotesis.qmd`
-
-Tareas editoriales:
-
-- consolidar el borrador en prosa definitiva;
-- actualizar glosario y bibliografía si corresponde;
-- correr `python scripts/check_manual.py` y `quarto render`;
-- abrir PR para revisión docente.
-
-<!-- codex:class-update:clase-2026-09-04-511f25d8c108:plan:end -->

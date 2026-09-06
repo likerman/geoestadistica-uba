@@ -59,9 +59,6 @@ format:
     code-tools: true
     code-copy: true
     link-external-newwindow: true
-  pdf:
-    documentclass: scrreprt
-    number-sections: true
 
 execute:
   freeze: auto

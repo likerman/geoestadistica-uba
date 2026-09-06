@@ -2,8 +2,6 @@
 
 Manual teórico con ejemplos prácticos, desarrollado progresivamente a partir de la materia **Geoestadística** del Departamento de Geología de la UBA durante 2026.
 
-**Docentes:** Docentes de Geoestadística
-
 [Libro web](https://likerman.github.io/geoestadistica-uba/) · [Repositorio](https://github.com/likerman/geoestadistica-uba)
 
 El texto busca ser autosuficiente: sigue la secuencia conceptual del curso, pero no presupone que quien lee haya visto las clases ni reproduce las diapositivas. Los ejemplos geológicos introducen cada herramienta a partir de un problema concreto.
@@ -32,7 +30,7 @@ quarto preview
 Para generar la versión publicable:
 
 ```bash
-quarto render
+quarto render --to html
 ```
 
 GitHub Actions genera y publica automáticamente el libro web cuando se actualiza la rama `main`.

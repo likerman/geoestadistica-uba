@@ -28,13 +28,15 @@ $$
 f_j=\#\{x_i:x_i\in C_j\}.
 $$
 
-La [frecuencia relativa](../glosario.qmd#glosario-frecuencia-relativa) y la acumulada son
+La [frecuencia relativa](../glosario.qmd#glosario-frecuencia-relativa), la frecuencia absoluta acumulada y la frecuencia relativa acumulada son
 
 $$
-r_j=\frac{f_j}{n},\qquad F_j=\sum_{\ell=1}^{j}f_\ell.
+r_j=\frac{f_j}{n},\qquad
+F_j=\sum_{\ell=1}^{j}f_\ell,\qquad
+R_j=\sum_{\ell=1}^{j}r_\ell=\frac{F_j}{n}.
 $$
 
-Las tres responden preguntas diferentes: ¿cuántos?, ¿qué proporción? y ¿cuántos —o qué proporción— hasta aquí?
+Estas cantidades responden preguntas diferentes: ¿cuántos casos caen en esta clase?, ¿qué proporción representan?, ¿cuántos casos se acumulan hasta aquí? y ¿qué proporción acumulada queda por debajo de este límite?
 
 ## Histograma
 

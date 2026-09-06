@@ -31,6 +31,12 @@ Los datos reales definitivos, su procedencia y sus condiciones de uso se documen
 
 Las figuras que representen resultados numéricos se generarán, siempre que sea posible, mediante código Python incluido junto al texto. Los bloques están pensados para ejecutarse en Jupyter o Google Colab utilizando bibliotecas de uso extendido. Cuando una ilustración requiera diseño manual o una fuente externa todavía no disponible, el texto mostrará un marcador explícito con su propósito y contenido esperado.
 
+## Estado actual del manual
+
+Esta versión cubre el tramo inicial de la materia: datos, muestreo, estadística descriptiva, probabilidad, distribución muestral, intervalos de confianza y pruebas de hipótesis. Los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avancen las clases.
+
+El texto debe leerse como un libro en construcción controlada: los capítulos publicados buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
+
 ## Alcance
 
 El libro combina tres niveles de lectura:
