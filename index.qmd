@@ -1,13 +1,33 @@
 ---
-title: "Manual de Geoestadística"
-subtitle: "Fundamentos teóricos y ejemplos geológicos"
-author: "Docentes de Geoestadística"
-date: "2026-08-14"
-date-format: long
-image: recursos/identidad/banner_youtube.png
+title: false
 body-classes: portada-inicial
 ---
 
+::: {.portada-manual}
+
+![](recursos/identidad/banner_youtube.png){.portada-imagen fig-alt="Geoestadística - Ciencias Geológicas FCEN UBA"}
+
+<div class="portada-titulo">
+Manual de Geoestadística
+</div>
+
+<div class="portada-subtitulo">
+Fundamentos teóricos y ejemplos geológicos
+</div>
+
+<div class="portada-metadata">
+  <div>
+    <span class="portada-label">AUTOR/A</span>
+    <span class="portada-valor">Docentes de Geoestadística</span>
+  </div>
+
+  <div>
+    <span class="portada-label">FECHA DE PUBLICACIÓN</span>
+    <span class="portada-valor">14 de agosto de 2026</span>
+  </div>
+</div>
+
+:::
 # Propósito
 
 Este manual desarrolla las ideas fundamentales de la geoestadística desde los primeros problemas de descripción de datos hasta la modelización de la dependencia espacial y la estimación por kriging.
