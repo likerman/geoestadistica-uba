@@ -1,7 +1,81 @@
 ---
-title: false
+title: "Manual de Geoestadística"
+subtitle: "Fundamentos teóricos y ejemplos geológicos"
+author: "Docentes de Geoestadística"
+date: "2026-08-14"
+date-format: long
 body-classes: portada-inicial
 ---
+
+<style>
+/* Oculta el bloque automático de título solamente en la portada */
+.portada-inicial #title-block-header {
+  display: none;
+}
+
+.portada-manual {
+  margin: 0 0 3rem 0;
+}
+
+.portada-manual .portada-imagen {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 2rem 0;
+}
+
+.portada-titulo {
+  font-size: 2.4rem;
+  line-height: 1.15;
+  font-weight: 700;
+  color: #1D4162;
+  margin: 0 0 0.4rem 0;
+}
+
+.portada-subtitulo {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: #39556E;
+  margin-bottom: 1.8rem;
+}
+
+.portada-metadata {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 650px;
+  margin-bottom: 2.5rem;
+}
+
+.portada-metadata > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.portada-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6D899F;
+  margin-bottom: 0.25rem;
+}
+
+.portada-valor {
+  font-size: 0.95rem;
+  color: #1D4162;
+}
+
+@media (max-width: 600px) {
+  .portada-metadata {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .portada-titulo {
+    font-size: 2rem;
+  }
+}
+</style>
 
 ::: {.portada-manual}
 
@@ -28,6 +102,7 @@ Fundamentos teóricos y ejemplos geológicos
 </div>
 
 :::
+
 # Propósito
 
 Este manual desarrolla las ideas fundamentales de la geoestadística desde los primeros problemas de descripción de datos hasta la modelización de la dependencia espacial y la estimación por kriging.
