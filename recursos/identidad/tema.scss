@@ -145,6 +145,16 @@ a:hover {
    PORTADA DEL MANUAL
    ========================= */
 
+/* Oculta el encabezado automático de Quarto */
+.portada-inicial #title-block-header {
+  display: none !important;
+}
+
+/* Oculta la imagen de portada automática de Quarto */
+.portada-inicial .quarto-cover-image {
+  display: none !important;
+}
+
 /*
   En index.qmd:
   body-classes: portada-inicial
@@ -156,6 +166,8 @@ a:hover {
 .portada-inicial #title-block-header {
   display: none;
 }
+
+
 
 .portada-manual {
   width: 100%;
