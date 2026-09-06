@@ -15,26 +15,52 @@ $geo-cobre: #B56F3A;
 
 $primary: $geo-azul-oscuro;
 $secondary: $geo-azul-pizarra;
+
 $body-bg: #FFFFFF;
 $body-color: #243746;
+
 $link-color: $geo-azul-medio;
+
 $code-bg: #F4F6F7;
 $code-color: $geo-azul-oscuro;
+
 $font-family-sans-serif: "Source Sans 3", "Segoe UI", Arial, sans-serif;
 $headings-font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
 $headings-color: $geo-azul-oscuro;
+
 $border-radius: 0.35rem;
+
 
 /*-- scss:rules --*/
 
+/* =========================
+   GENERAL
+   ========================= */
+
 body {
   background:
-    linear-gradient(180deg, rgba(196, 208, 218, 0.16) 0, rgba(255,255,255,0) 17rem),
+    linear-gradient(
+      180deg,
+      rgba(196, 208, 218, 0.16) 0,
+      rgba(255, 255, 255, 0) 17rem
+    ),
     #FFFFFF;
+
   line-height: 1.62;
 }
 
-h1, h2, h3 {
+#quarto-document-content {
+  max-width: 920px;
+}
+
+
+/* =========================
+   TÍTULOS
+   ========================= */
+
+h1,
+h2,
+h3 {
   letter-spacing: -0.015em;
 }
 
@@ -53,6 +79,11 @@ h3 {
   margin-top: 1.7rem;
 }
 
+
+/* =========================
+   ENLACES
+   ========================= */
+
 a {
   text-decoration-color: rgba(181, 111, 58, 0.55);
   text-underline-offset: 0.14em;
@@ -62,6 +93,11 @@ a:hover {
   color: $geo-cobre;
   text-decoration-color: $geo-cobre;
 }
+
+
+/* =========================
+   SIDEBAR
+   ========================= */
 
 .sidebar {
   background-color: $geo-blanco-calido;
@@ -91,63 +127,136 @@ a:hover {
   padding-left: calc(0.5rem - 3px);
 }
 
+
+/* =========================
+   TITLE BANNER GENERAL
+   ========================= */
+
 .quarto-title-banner {
-  background: linear-gradient(120deg, $geo-azul-oscuro, $geo-azul-medio);
+  background: linear-gradient(
+    120deg,
+    $geo-azul-oscuro,
+    $geo-azul-medio
+  );
+}
+
+
+/* =========================
+   PORTADA DEL MANUAL
+   ========================= */
+
+/*
+  En index.qmd:
+  body-classes: portada-inicial
+
+  El título automático de Quarto se mantiene en los metadatos
+  pero no se muestra visualmente.
+*/
+
+.portada-inicial #title-block-header {
+  display: none;
 }
 
 .portada-manual {
   width: 100%;
-  border-radius: 0.5rem;
-  box-shadow: 0 12px 32px rgba(29, 65, 98, 0.18);
-  margin: 1rem 0 2rem;
+  margin: 0 0 3rem 0;
 }
 
-.portada-inicial #title-block-header {
-  text-align: center;
+
+/* Banner de portada */
+
+.portada-manual .portada-imagen {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 2rem 0;
 }
 
-.portada-inicial #title-block-header h1.title,
-.portada-inicial #title-block-header .code-tools-button {
-  display: none;
+
+/* Título manual */
+
+.portada-titulo {
+  display: block;
+  font-size: 2.4rem;
+  line-height: 1.15;
+  font-weight: 700;
+  color: $geo-azul-oscuro;
+  margin: 0 0 0.5rem 0;
 }
 
-.portada-inicial #quarto-document-content {
+
+/* Subtítulo */
+
+.portada-subtitulo {
+  display: block;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: $geo-azul-pizarra;
+  margin: 0 0 1.8rem 0;
+}
+
+
+/* Metadatos */
+
+.portada-metadata {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 650px;
+  margin: 0 0 2.5rem 0;
+}
+
+.portada-item {
   display: flex;
   flex-direction: column;
 }
 
-.portada-inicial #quarto-document-content > * {
-  order: 3;
-}
-
-.portada-inicial #quarto-document-content > p:has(> .quarto-cover-image) {
-  order: 1;
-  width: 100%;
-  margin: 0 auto 1.75rem;
-  text-align: center;
-}
-
-.portada-inicial #title-block-header {
-  order: 2;
-}
-
-.portada-inicial .quarto-title-meta {
-  justify-content: center;
-  text-align: center;
-}
-
-.portada-inicial .quarto-cover-image {
+.portada-label {
   display: block;
-  width: 100%;
-  max-width: 900px;
-  margin-inline: auto;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $geo-azul-gris;
+  margin-bottom: 0.3rem;
 }
+
+.portada-valor {
+  display: block;
+  font-size: 0.95rem;
+  color: $geo-azul-oscuro;
+}
+
+
+/* Portada responsive */
+
+@media (max-width: 600px) {
+
+  .portada-metadata {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .portada-titulo {
+    font-size: 2rem;
+  }
+}
+
+
+/* =========================
+   BLOCKQUOTES
+   ========================= */
 
 blockquote {
   border-left: 4px solid $geo-cobre;
   background-color: rgba(244, 243, 241, 0.72);
   color: $geo-azul-pizarra;
 }
+
+
+/* =========================
+   TABLAS
+   ========================= */
 
 table {
   border-color: $geo-gris-claro;
@@ -163,11 +272,21 @@ tbody tr:nth-child(even) {
   background-color: rgba(196, 208, 218, 0.22);
 }
 
+
+/* =========================
+   CÓDIGO
+   ========================= */
+
 pre.sourceCode {
   border-left: 4px solid $geo-azul-medio;
   border-top: 1px solid $geo-gris-claro;
   font-size: 0.92rem;
 }
+
+
+/* =========================
+   CALLOUTS
+   ========================= */
 
 .callout {
   border-radius: 0.35rem;
@@ -184,9 +303,19 @@ pre.sourceCode {
   border-left-color: $geo-cobre !important;
 }
 
+
+/* =========================
+   VOLVER ARRIBA
+   ========================= */
+
 #quarto-back-to-top {
   color: $geo-azul-oscuro;
 }
+
+
+/* =========================
+   FIGURAS Y TABLAS
+   ========================= */
 
 .figure-caption,
 figcaption,
@@ -194,80 +323,4 @@ figcaption,
   color: $geo-azul-pizarra;
   font-size: 0.92rem;
   line-height: 1.45;
-}
-
-#quarto-document-content {
-  max-width: 920px;
-}
-
-/* Oculta el bloque automático de título */
-.portada-inicial #title-block-header {
-  display: none;
-}
-
-.portada-manual {
-  margin: 0 0 3rem 0;
-}
-
-.portada-manual .portada-imagen {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  margin: 0 0 2rem 0;
-}
-
-.portada-titulo {
-  display: block;
-  font-size: 2.4rem;
-  line-height: 1.15;
-  font-weight: 700;
-  color: #1D4162;
-  margin: 0 0 0.5rem 0;
-}
-
-.portada-subtitulo {
-  display: block;
-  font-size: 1.25rem;
-  line-height: 1.4;
-  color: #39556E;
-  margin-bottom: 1.8rem;
-}
-
-.portada-metadata {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  max-width: 650px;
-  margin-bottom: 2.5rem;
-}
-
-.portada-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.portada-label {
-  display: block;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #6D899F;
-  margin-bottom: 0.3rem;
-}
-
-.portada-valor {
-  display: block;
-  font-size: 0.95rem;
-  color: #1D4162;
-}
-
-@media (max-width: 600px) {
-  .portada-metadata {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .portada-titulo {
-    font-size: 2rem;
-  }
 }
