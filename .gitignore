@@ -1,9 +1,9 @@
 /_book/
 /.quarto/
 /.jupyter_cache/
+/recursos/clases/
 __pycache__/
 *.py[cod]
 .Rhistory
 .RData
 .DS_Store
-

@@ -412,7 +412,15 @@ Una formulación científicamente cuidadosa sería:
 
 Si $p>\alpha$, la conclusión es **no rechazar $H_0$**. No significa haber demostrado que $H_0$ sea verdadera.
 
-Un resultado no significativo puede deberse, entre otras cosas, a una diferencia realmente pequeña, alta variabilidad, una muestra insuficiente o un diseño poco informativo. Estas ideas se desarrollarán al estudiar errores de decisión y potencia.
+La asimetría entre ambas decisiones es importante. Rechazar $H_0$ significa que el resultado cayó en una región que habíamos definido como poco compatible con el modelo nulo. No rechazarla significa que el resultado no fue suficientemente extremo bajo ese mismo criterio. Esa segunda frase es deliberadamente más débil: puede ocurrir porque la diferencia poblacional sea pequeña, porque la variabilidad sea grande, porque el tamaño muestral sea insuficiente, porque el diseño concentre observaciones redundantes o porque el modelo elegido no tenga potencia para detectar el efecto relevante.
+
+En geología esta cautela evita una conclusión demasiado fuerte. Si no encontramos evidencia estadística de diferencia entre dos bancos, no hemos probado que ambos bancos sean equivalentes en sentido geológico. Sólo hemos dicho que, con esos datos, ese diseño y ese modelo, no hay evidencia suficiente para rechazar la igualdad de medias.
+
+::: {.callout-important title="Decisión estadística cuidadosa"}
+La alternativa a “rechazar $H_0$” no es “aceptar $H_0$”, sino “no rechazar $H_0$”. La evidencia insuficiente contra una hipótesis no es evidencia de que esa hipótesis sea verdadera.
+:::
+
+Estas ideas se desarrollarán al estudiar errores de decisión y potencia.
 
 ## IC y test: dos caras de la misma lógica
 
