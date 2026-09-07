@@ -7,7 +7,7 @@ Al finalizar este capítulo, el lector debería poder:
 - reconocer la estadística como un proceso que conecta datos y decisiones;
 - distinguir una descripción estadística de una pregunta espacial;
 - explicar por qué proximidad, dirección, escala y soporte son relevantes;
-- identificar inferencia, predicción y simulación como objetivos diferentes;
+- identificar inferencia, predicción espacial y simulación como objetivos diferentes;
 - formular un problema geológico antes de elegir una técnica.
 
 ## De una medición a una decisión
@@ -52,7 +52,7 @@ Dos conjuntos con exactamente los mismos valores pueden tener patrones espaciale
 - ¿se parecen más dos observaciones cercanas que dos lejanas?;
 - ¿la continuidad es igual en todas las direcciones?;
 - ¿qué valor cabe esperar en una ubicación no muestreada?;
-- ¿con qué incertidumbre se realiza esa predicción?;
+- ¿con qué incertidumbre se realiza esa predicción espacial?;
 
 ::: {.callout-important title="Principio central"}
 En datos espaciales importa cuánto vale una observación y también dónde está. Permutar valores entre localizaciones conserva toda la estadística univariada, pero puede destruir la continuidad espacial.
@@ -96,13 +96,15 @@ La cobertura puede ser irregular, los métodos pueden cambiar en el tiempo, la r
 
 Cantidad de observaciones y cantidad de información no son idénticas. Miles de datos muy próximos pueden ser redundantes para ciertas escalas, mientras unas pocas observaciones bien distribuidas pueden revelar contrastes que el agrupamiento espacial ocultaba. El cómputo permite procesar bases más grandes, pero no corrige por sí mismo un proceso generador de datos sesgado.
 
-## Inferencia, predicción y simulación
+## Inferencia, predicción espacial y simulación
 
 Conviene separar tres objetivos:
 
 - **[Inferencia](../glosario.qmd#glosario-inferencia):** aprender propiedades de una población o de un modelo a partir de una muestra.
-- **[Predicción](../glosario.qmd#glosario-prediccion):** estimar una variable en una localización o volumen no observado.
+- **[Predicción espacial](../glosario.qmd#glosario-prediccion):** estimar una variable en una localización o volumen no observado.
 - **[Simulación condicional](../glosario.qmd#glosario-simulacion-condicional):** producir realizaciones alternativas compatibles con datos y modelo para representar escenarios posibles.
+
+En este manual usaremos **predicción espacial** para la tarea de asignar un valor o una distribución a una localización no observada. Cuando nos refiramos al valor calculado por un método como kriging, también hablaremos de **estimación** o **estimación espacial**. Así evitamos usar “estimación” indistintamente para la tarea predictiva y para la estimación inferencial de parámetros.
 
 Una predicción suavizada y una simulación pueden compartir datos y variograma, pero responden preguntas diferentes. La primera busca estimar; la segunda, reproducir variabilidad y evaluar consecuencias de escenarios alternativos [@pyrcz_2024, caps. “Simple and Ordinary Kriging” y “Stochastic Simulation”].
 
@@ -174,7 +176,7 @@ Este contexto anticipa una idea decisiva: dos pozos que miden As en µg/L no nec
 
 1. ¿Por qué una base con millones de observaciones puede no representar el sistema de interés?
 2. ¿Qué información se pierde si se conserva la columna de valores y se eliminan las coordenadas?
-3. Distinga inferencia de predicción usando un ejemplo de porosidad.
+3. Distinga inferencia de predicción espacial usando un ejemplo de porosidad.
 4. ¿Por qué una simulación no debe interpretarse como “el mapa verdadero”?
 
 ## Ejercicios de profundización
