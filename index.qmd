@@ -50,7 +50,7 @@ A lo largo del texto volveremos sobre concentraciones de arsénico medidas en po
 - reconocer continuidad, anisotropía y escalas espaciales;
 - estimar en lugares no muestreados y cuantificar incertidumbre.
 
-Los datos reales definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporarlos. Mientras tanto, el [laboratorio integrador](ejemplos/01-caso-sintetico.qmd) utiliza una población sintética reproducible de 1000 pozos para mantener un mismo caso entre capítulos sin atribuir valores a localizaciones reales.
+Los datos reales definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporarlos. Mientras tanto, los ejemplos reproducibles utilizan una población sintética de 1000 pozos para mantener continuidad entre capítulos sin atribuir valores a localizaciones reales.
 
 ## Reproducibilidad
 
@@ -58,7 +58,7 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre el tramo inicial de la materia: datos, muestreo, estadística descriptiva, probabilidad, distribución muestral, intervalos de confianza y pruebas de hipótesis. Los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avancen las clases.
+Esta versión cubre el tramo inicial de la materia: datos, muestreo, estadística descriptiva, probabilidad, distribución muestral, intervalos de confianza e introducción a la distribución $t$ de Student. Los contenidos posteriores de inferencia y los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avancen las clases.
 
 El texto debe leerse como un libro en construcción controlada: los capítulos publicados buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
 
