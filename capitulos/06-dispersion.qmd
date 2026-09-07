@@ -60,6 +60,8 @@ $$
 s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2.
 $$
 
+La primera expresión corresponde a una **población finita de $N$ valores enumerables**. Cuando trabajamos con una variable aleatoria, la misma idea poblacional se expresa como $\operatorname{Var}(X)=\mathbb E[(X-\mu)^2]$. Ambas describen dispersión respecto de una media poblacional, pero pertenecen a marcos conceptuales diferentes.
+
 ## ¿Por qué dividir por $n-1$?
 
 La media muestral se eligió con los mismos datos y minimiza la suma de cuadrados:
