@@ -211,6 +211,26 @@ $$
 
 Duplicar $n$ no reduce el error estándar a la mitad.
 
+### Si la población es realmente finita
+
+La expresión $\sigma/\sqrt n$ corresponde al esquema iid o a un muestreo en el que la fracción extraída de una población finita es despreciable. Si el objetivo fuera literalmente la media de los **1000 pozos existentes** y seleccionáramos una muestra aleatoria simple **sin reemplazo**, la incertidumbre disminuye además porque cada pozo observado deja menos unidades desconocidas.
+
+Con una población finita de tamaño $N$ y varianza definida con divisor $N$, el error estándar de la media incorpora la corrección por población finita:
+
+$$
+SE(\bar X)=
+\frac{\sigma}{\sqrt n}
+\sqrt{\frac{N-n}{N-1}}.
+$$
+
+El factor
+
+$$
+\sqrt{\frac{N-n}{N-1}}
+$$
+
+se aproxima a uno cuando $n\ll N$ y tiende a cero cuando observamos toda la población. Esta corrección pertenece a inferencia sobre una población finita bajo un diseño de muestreo específico. Si los “1000 pozos” se usan sólo como realización de un proceso espacial más amplio o si las observaciones están correlacionadas, el problema cambia y la fórmula no sustituye un modelo de dependencia.
+
 ## Dependencia espacial: $n$ no siempre es información independiente
 
 La expresión $\sigma^2/n$ depende de la independencia. En forma general,
@@ -370,21 +390,21 @@ La cobertura observada en una simulación finita puede ser 92 %, 97 % u otro val
 
 ## Confianza, ancho y precisión no son lo mismo
 
-El intervalo puede escribirse como
+Antes de introducir una distribución de referencia específica, podemos escribir un intervalo en forma genérica como
 
 $$
-IC=\bar x\pm t^*\,SE.
+IC=\bar x\pm c^*\,SE,
 $$
 
-Hay dos palancas diferentes:
+donde $c^*$ es el **valor crítico** asociado con el nivel de cobertura y el modelo utilizado. Hay dos palancas diferentes:
 
 $$
-\underbrace{t^*}_{\text{cobertura exigida}}
+\underbrace{c^*}_{\text{cobertura exigida}}
 \times
 \underbrace{SE}_{\text{precisión del estimador}}.
 $$
 
-Si disminuimos el nivel de confianza, disminuye $t^*$ y el intervalo se vuelve más angosto, pero **el error estándar no cambia**. No hemos obtenido más información; aceptamos una menor cobertura.
+Si disminuimos el nivel de confianza, disminuye el valor crítico $c^*$ y el intervalo se vuelve más angosto, pero **el error estándar no cambia**. No hemos obtenido más información; aceptamos una menor cobertura.
 
 Por ejemplo:
 
