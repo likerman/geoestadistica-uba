@@ -131,22 +131,39 @@ El solapamiento de dos IC individuales no es equivalente a probar $H_0:\mu_7-\mu
 
 ## El intervalo de la diferencia
 
-Para muestras independientes,
+Para muestras independientes, las varianzas de las medias se suman al estudiar una diferencia. En el modelo clásico de dos muestras independientes con **varianzas poblacionales iguales**, estimamos primero esa varianza común mediante la varianza agrupada (*pooled*):
+
+$$
+s_p^2=
+\frac{(n_6-1)s_6^2+(n_7-1)s_7^2}
+{n_6+n_7-2}.
+$$
+
+El error estándar de la diferencia es entonces
 
 $$
 SE(\bar X_7-\bar X_6)
-=\sqrt{SE_7^2+SE_6^2}.
+=
+s_p\sqrt{\frac{1}{n_7}+\frac{1}{n_6}}.
 $$
 
-En este ejemplo:
+En este ejemplo, como $s_6=s_7=4$,
 
 $$
-SE_\Delta=\sqrt{1^2+1^2}=\sqrt 2\approx1.414.
+s_p=4,
 $$
 
-Aunque las medias se resten, las **varianzas** de estimadores independientes se suman.
+y por lo tanto
 
-Para mantener la lógica de la clase usamos el modelo clásico de dos muestras independientes con varianzas poblacionales iguales. Entonces
+$$
+SE_\Delta
+=4\sqrt{\frac{1}{16}+\frac{1}{16}}
+=\sqrt 2\approx1.414.
+$$
+
+Aunque las medias se resten, las **varianzas** de estimadores independientes se suman. En este caso particular, escribir $\sqrt{SE_7^2+SE_6^2}$ conduce al mismo número porque ambas desviaciones estándar muestrales son iguales; la expresión con $s_p$ deja explícito el supuesto de varianza poblacional común.
+
+Los grados de libertad del modelo *pooled* son
 
 $$
 \nu=n_6+n_7-2=30.
@@ -536,7 +553,9 @@ ic6 = (x6 - t_ind*se6, x6 + t_ind*se6)
 ic7 = (x7 - t_ind*se7, x7 + t_ind*se7)
 
 delta = x7 - x6
-se_delta = np.sqrt(se6**2 + se7**2)
+sp2 = ((n6 - 1)*s6**2 + (n7 - 1)*s7**2) / (n6 + n7 - 2)
+sp = np.sqrt(sp2)
+se_delta = sp * np.sqrt(1/n6 + 1/n7)
 df = n6 + n7 - 2
 tcrit = stats.t.ppf(0.975, df)
 ic_delta = (delta - tcrit*se_delta, delta + tcrit*se_delta)
