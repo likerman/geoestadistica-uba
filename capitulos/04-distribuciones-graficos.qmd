@@ -36,6 +36,8 @@ F_j=\sum_{\ell=1}^{j}f_\ell,\qquad
 R_j=\sum_{\ell=1}^{j}r_\ell=\frac{F_j}{n}.
 $$
 
+En este capítulo, $F_j$ representa un **recuento absoluto acumulado indexado por clases**. No debe confundirse con $F(x)$, notación que más adelante utilizaremos para la función de distribución acumulada (CDF) de una variable aleatoria. El contexto y el argumento —índice de clase $j$ frente a valor continuo $x$— distinguen ambos objetos.
+
 Estas cantidades responden preguntas diferentes: ¿cuántos casos caen en esta clase?, ¿qué proporción representan?, ¿cuántos casos se acumulan hasta aquí? y ¿qué proporción acumulada queda por debajo de este límite?
 
 ## Histograma
