@@ -58,7 +58,7 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre el tramo inicial de la materia: datos, muestreo, estadística descriptiva, probabilidad, distribución muestral, intervalos de confianza e introducción a la distribución $t$ de Student. Los contenidos posteriores de inferencia y los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avancen las clases.
+Esta versión cubre el tramo inicial de la materia: datos, muestreo, estadística descriptiva, probabilidad, distribución muestral, intervalos de confianza, distribución $t$ de Student y pruebas de hipótesis. Los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avancen las clases.
 
 El texto debe leerse como un libro en construcción controlada: los capítulos publicados buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
 
