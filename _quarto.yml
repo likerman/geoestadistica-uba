@@ -13,6 +13,9 @@ book:
   subtitle: "Fundamentos teóricos y ejemplos geológicos"
   author: "Docentes de Geoestadística"
   date: "2026-08-14"
+  favicon: recursos/identidad/logo.png
+  google-analytics: "G-9W1MQJJ7YW"
+  cookie-consent: true
   cover-image: recursos/identidad/banner_youtube.png
   cover-image-alt: "Banner del manual de Geoestadística"
   sidebar:
