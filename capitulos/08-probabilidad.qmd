@@ -364,9 +364,9 @@ $$
 P(X\leq x)=\Phi\!\left(\frac{x-\mu}{\sigma}\right).
 $$
 
-### Modelo normal ajustado a la campaña
+### Probabilidades *plug-in* bajo un modelo normal ajustado a la campaña
 
-Para estudiar el procedimiento podemos usar $\bar x$ y $s$ como parámetros ajustados de una normal descriptiva. Debe quedar claro que esto no prueba que la población sea normal.
+Para estudiar el procedimiento podemos sustituir los parámetros desconocidos $\mu$ y $\sigma$ por $\bar x$ y $s$ y calcular probabilidades como si esos valores ajustados fueran fijos. Estas cantidades se denominan aquí **probabilidades *plug-in***: incorporan el modelo y los parámetros estimados, pero no propagan todavía la incertidumbre asociada a haber estimado esos parámetros con una muestra finita. Tampoco prueban que la población sea normal.
 
 Con $\bar x\approx18.01$ y $s\approx10.97$:
 
