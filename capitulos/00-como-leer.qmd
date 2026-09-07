@@ -2,7 +2,7 @@
 
 Los capítulos están ordenados según dependencias conceptuales, no como una colección de técnicas. Cada herramienta aparece porque responde a una limitación encontrada antes.
 
-Las cajas destacadas conectan definiciones con decisiones reales y señalan supuestos o errores habituales. Cada capítulo incluye el código breve necesario para reproducir sus figuras; los laboratorios integradores y notebooks descargables reúnen flujos de trabajo más extensos.
+Las cajas destacadas conectan definiciones con decisiones reales y señalan supuestos o errores habituales. Cada capítulo incluye el código breve necesario para reproducir sus figuras; los laboratorios integradores y, cuando están disponibles, los notebooks descargables reúnen flujos de trabajo más extensos.
 
 La notación distingue variables aleatorias de valores observados y estimadores de estimaciones. Antes de avanzar conviene leer [Notación y lenguaje probabilístico mínimo](00-notacion-prerrequisitos.qmd), que define los símbolos utilizados en la primera parte.
 
