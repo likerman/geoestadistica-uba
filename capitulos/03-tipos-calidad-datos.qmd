@@ -36,6 +36,16 @@ Surgen habitualmente de conteos y toman valores separados: número de fracturas 
 
 Resultan de mediciones y, idealmente, pueden tomar cualquier valor dentro de un intervalo: porosidad, ley de oro, elevación, permeabilidad o concentración. La precisión del instrumento produce un conjunto finito de valores registrados, pero no cambia la naturaleza conceptual de la variable.
 
+## Escalas de intervalo y de razón
+
+La distinción entre **intervalo** y **razón** responde a otra pregunta: qué significado tienen las diferencias y los cocientes entre valores. No reemplaza la clasificación discreta/continua; la complementa.
+
+En una **escala de intervalo**, diferencias iguales representan cambios iguales, pero el cero es convencional. La temperatura en grados Celsius es el ejemplo clásico: la diferencia entre 10 °C y 20 °C tiene sentido, pero 20 °C no representa “el doble de temperatura” que 10 °C porque 0 °C no es ausencia de temperatura.
+
+En una **escala de razón**, además de diferencias comparables existe un cero con significado físico para la cantidad estudiada, por lo que los cocientes pueden interpretarse. Espesor, longitud y temperatura absoluta en kelvin son ejemplos. Concentraciones y leyes suelen tratarse como escalas de razón cuando cero representa ausencia de la cantidad, aunque en datos reales deben considerarse límites de detección y censura.
+
+Esta distinción será importante al introducir el coeficiente de variación: dividir una desviación estándar por una media sólo produce una medida relativa interpretable cuando la escala y el cero permiten comparar razones.
+
 | Variable geológica | Tipo | Observación |
 |---|---|---|
 | Litología | cualitativa nominal | categorías sin orden |
