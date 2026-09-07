@@ -5,6 +5,7 @@ author: "Docentes de Geoestadística"
 date: "2026-08-14"
 date-format: long
 body-classes: portada-inicial
+favicon: recursos/identidad/logo.png
 ---
 
 ::: {.portada-manual}
