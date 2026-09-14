@@ -265,20 +265,22 @@ $$
 
 La distribución $\chi^2$ es no negativa y asimétrica a la derecha. Su forma depende de los grados de libertad; al aumentar $\nu$, la distribución se desplaza y se vuelve relativamente menos asimétrica.
 
+Para comparar esa evolución de forma con una escala legible, la figura principal comienza en $\nu=2$. El caso $\nu=1$ concentra mucha densidad muy cerca de cero y domina la escala vertical, ocultando las diferencias entre los demás grados de libertad.
+
 ```{python}
 #| label: fig-chi2-grados-libertad
-#| fig-cap: "Distribución chi-cuadrado para distintos grados de libertad."
-#| fig-alt: "Cuatro curvas chi-cuadrado positivas con distinta asimetría según los grados de libertad."
+#| fig-cap: "Distribución chi-cuadrado para distintos grados de libertad. Se omite gl = 1 para preservar una escala que permita comparar la forma de las curvas."
+#| fig-alt: "Cuatro curvas chi-cuadrado para 2, 5, 10 y 20 grados de libertad, progresivamente menos asimétricas y desplazadas hacia la derecha."
 
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-x = np.linspace(0.001, 30, 1000)
+x = np.linspace(0.001, 40, 1200)
 fig, ax = plt.subplots(figsize=(8.5, 4.5))
-for df in (1, 2, 5, 10):
+for df in (2, 5, 10, 20):
     ax.plot(x, stats.chi2.pdf(x, df), label=f"gl = {df}")
-ax.set(xlabel=r"$\chi^2$", ylabel="Densidad", xlim=(0, 30))
+ax.set(xlabel=r"$\chi^2$", ylabel="Densidad", xlim=(0, 40))
 ax.legend()
 plt.show()
 ```
