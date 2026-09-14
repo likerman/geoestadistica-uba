@@ -1,0 +1,399 @@
+# Variabilidad, distribución F y datos categóricos {#sec-varianzas-categorias}
+
+## Objetivos
+
+Al finalizar este capítulo, el lector debería poder:
+
+- explicar por qué comparar medias no alcanza para responder todas las preguntas geológicas;
+- distinguir varianza poblacional $\sigma^2$ de varianza muestral $s^2$ en un contraste;
+- formular y analizar una comparación de dos varianzas mediante un test $F$;
+- interpretar la distribución $F$ y sus dos grados de libertad;
+- reconocer los supuestos y la sensibilidad del test $F$ a valores extremos y no normalidad;
+- construir frecuencias esperadas bajo independencia en una tabla de contingencia;
+- calcular e interpretar un estadístico $\chi^2$ de independencia;
+- relacionar los grados de libertad con las restricciones de una tabla;
+- elegir un test a partir de la pregunta geológica, el tipo de dato y el diseño.
+
+## Cuando comparar medias no alcanza
+
+Dos poblaciones pueden tener la misma media y, sin embargo, comportarse de manera muy distinta. En geología, la variabilidad puede ser parte de la señal que queremos explicar:
+
+- dos facies pueden tener igual porosidad media pero heterogeneidades muy diferentes;
+- dos acuíferos pueden tener conductividades hidráulicas medias similares pero distinta dispersión;
+- dos dominios estructurales pueden compartir un buzamiento medio y diferir fuertemente en su variabilidad;
+- una unidad puede ser más homogénea que otra aun cuando sus valores centrales coincidan.
+
+Por eso la pregunta
+
+> ¿difieren las medias?
+
+no sustituye a
+
+> ¿difiere la variabilidad?
+
+### Misma media, distinta varianza
+
+```{python}
+#| label: fig-misma-media-distinta-varianza
+#| fig-cap: "Dos poblaciones normales ilustrativas con la misma media y distinta varianza. Comparar sólo las medias no detectaría la diferencia de heterogeneidad."
+#| fig-alt: "Dos curvas normales centradas en el mismo valor, una estrecha y otra más ancha."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+x = np.linspace(3, 17, 800)
+mu = 10
+fig, ax = plt.subplots(figsize=(8.5, 4.5))
+ax.plot(x, stats.norm.pdf(x, mu, 1.2), label=r"Facies A: $\sigma=1.2$")
+ax.plot(x, stats.norm.pdf(x, mu, 2.8), label=r"Facies B: $\sigma=2.8$")
+ax.axvline(mu, linestyle="--", linewidth=1)
+ax.set(xlabel="Porosidad (%)", ylabel="Densidad")
+ax.legend()
+plt.show()
+```
+
+## Varianza poblacional y varianza muestral
+
+La varianza poblacional $\sigma^2$ es un parámetro: caracteriza la dispersión de una población o modelo. La varianza muestral
+
+$$
+s^2=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar x)^2
+$$
+
+es un estadístico calculado con una muestra. Cambia entre muestras y se utiliza para aprender sobre $\sigma^2$.
+
+En una prueba sobre varianzas, por lo tanto, no comparamos dos números como si fueran exactos. Preguntamos si el cociente observado entre varianzas muestrales es compatible con lo que esperaríamos si las varianzas poblacionales fueran iguales.
+
+## Dos varianzas: el test F
+
+Para dos poblaciones independientes planteamos
+
+$$
+H_0:\sigma_1^2=\sigma_2^2,
+$$
+
+frente a una alternativa bilateral
+
+$$
+H_1:\sigma_1^2\neq\sigma_2^2.
+$$
+
+El estadístico es
+
+$$
+F=\frac{s_1^2}{s_2^2}.
+$$
+
+Si $H_0$ es verdadera, esperamos cocientes cercanos a 1. Valores muy alejados de 1 indican que las dispersiones muestrales son difíciles de explicar sólo por variabilidad muestral bajo igualdad de varianzas.
+
+## La distribución F
+
+La distribución $F$ toma sólo valores no negativos y está determinada por **dos** grados de libertad:
+
+$$
+\nu_1=n_1-1,\qquad \nu_2=n_2-1.
+$$
+
+El primer grado de libertad corresponde a la varianza del numerador y el segundo a la del denominador. Por eso el orden debe mantenerse de forma consistente al calcular el estadístico y su probabilidad.
+
+```{python}
+#| label: fig-distribucion-f
+#| fig-cap: "Distribución F para distintas combinaciones de grados de libertad. Su forma es asimétrica y depende de los grados de libertad del numerador y del denominador."
+#| fig-alt: "Varias curvas de distribución F sobre valores positivos."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+x = np.linspace(0.001, 5, 900)
+fig, ax = plt.subplots(figsize=(8.5, 4.5))
+for df1, df2 in [(4, 4), (10, 10), (30, 30), (5, 20)]:
+    ax.plot(x, stats.f.pdf(x, df1, df2), label=f"({df1}, {df2})")
+ax.axvline(1, linestyle="--", linewidth=1)
+ax.set(xlabel="F", ylabel="Densidad", xlim=(0, 5))
+ax.legend(title="(gl1, gl2)")
+plt.show()
+```
+
+### Un detalle práctico: cuál varianza va arriba
+
+Para una presentación sencilla puede colocarse la mayor varianza muestral en el numerador, de modo que $F\ge1$. Pero el cálculo del p-valor debe respetar la formulación elegida. En software es preferible declarar explícitamente si la prueba es bilateral o unilateral y conservar los grados de libertad asociados a cada muestra.
+
+## Supuestos y sensibilidad del test F
+
+El test $F$ clásico para dos varianzas requiere:
+
+- variable cuantitativa;
+- muestras independientes;
+- observaciones independientes dentro de cada muestra;
+- poblaciones aproximadamente normales;
+- ausencia de valores extremos que dominen la varianza.
+
+::: {.callout-warning title="F es sensible a outliers y no normalidad"}
+La varianza eleva las desviaciones al cuadrado y el test $F$ depende fuertemente del supuesto de normalidad. Una diferencia de varianzas aparentes puede estar impulsada por asimetría, colas pesadas o unos pocos valores extremos. Antes del test hay que mirar los datos.
+:::
+
+La advertencia es especialmente importante en geociencias, donde muchas variables son asimétricas o mezclan poblaciones. El test responde a una pregunta bajo un modelo; no convierte automáticamente la varianza en una propiedad geológica homogénea.
+
+## Ejemplo reproducible: dos facies con distinta variabilidad
+
+El siguiente ejemplo es ilustrativo: ambas muestras están centradas cerca de la misma porosidad, pero una es más dispersa.
+
+```{python}
+#| label: tbl-test-f-varianzas
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+facies_a = np.array([9.1, 9.4, 9.7, 9.8, 10.0, 10.1, 10.2, 10.4, 10.5, 10.8])
+facies_b = np.array([5.8, 7.1, 8.4, 9.0, 9.8, 10.4, 11.2, 12.0, 13.1, 13.7])
+
+s2_a = np.var(facies_a, ddof=1)
+s2_b = np.var(facies_b, ddof=1)
+
+# Conservamos el grupo de mayor varianza en el numerador.
+if s2_a >= s2_b:
+    f_obs = s2_a / s2_b
+    df1, df2 = len(facies_a)-1, len(facies_b)-1
+else:
+    f_obs = s2_b / s2_a
+    df1, df2 = len(facies_b)-1, len(facies_a)-1
+
+p_bilateral = 2 * min(stats.f.cdf(f_obs, df1, df2), stats.f.sf(f_obs, df1, df2))
+p_bilateral = min(p_bilateral, 1.0)
+
+pd.DataFrame({
+    "cantidad": ["media A", "media B", "varianza A", "varianza B", "F", "p bilateral"],
+    "valor": [facies_a.mean(), facies_b.mean(), s2_a, s2_b, f_obs, p_bilateral],
+})
+```
+
+El objetivo del ejemplo no es memorizar una rutina, sino separar dos preguntas: **posición** y **variabilidad**.
+
+## ¿Y la distribución chi-cuadrado en pruebas de varianza?
+
+La distribución $\chi^2$ también aparece en la inferencia clásica de una **sola** varianza normal, porque bajo $H_0:\sigma^2=\sigma_0^2$ se cumple
+
+$$
+\frac{(n-1)S^2}{\sigma_0^2}\sim\chi^2_{n-1}.
+$$
+
+Sin embargo, en la clase 7 la comparación de **dos varianzas** se trabajó con la distribución $F$, mientras que $\chi^2$ se introdujo para **frecuencias categóricas**. Mantener separados estos dos usos evita confundir problemas estadísticos diferentes.
+
+## De variables cuantitativas a categorías
+
+Supongamos ahora que en cada observación registramos una categoría litológica y el sector al que pertenece. La pregunta de clase fue:
+
+> ¿la proporción de litologías observadas cambia entre dos sectores?
+
+Los datos fueron:
+
+| Litología | Sector A | Sector B | Total |
+|---|---:|---:|---:|
+| Arenisca | 28 | 14 | 42 |
+| Heterolítica | 16 | 18 | 34 |
+| Pelita | 6 | 18 | 24 |
+| **Total** | **50** | **50** | **100** |
+
+Aquí no comparamos medias ni varianzas. Analizamos **frecuencias**.
+
+## Independencia: ¿qué significa?
+
+Planteamos
+
+$$
+H_0:\text{litología y sector son independientes},
+$$
+
+$$
+H_1:\text{litología y sector están asociados}.
+$$
+
+Independencia significa que conocer el sector no cambia la distribución de probabilidades de las categorías litológicas. Si $H_0$ fuera cierta, la composición esperada sería la misma en ambos sectores, salvo fluctuación muestral.
+
+## Frecuencias esperadas
+
+Bajo independencia, la frecuencia esperada de la celda $(i,j)$ es
+
+$$
+E_{ij}=\frac{(\text{total fila }i)(\text{total columna }j)}{N}.
+$$
+
+En el ejemplo, como cada sector contiene 50 de las 100 observaciones, las frecuencias esperadas son:
+
+| Litología | Sector A | Sector B |
+|---|---:|---:|
+| Arenisca | 21 | 21 |
+| Heterolítica | 17 | 17 |
+| Pelita | 12 | 12 |
+
+## El estadístico chi-cuadrado
+
+Cada celda aporta una discrepancia estandarizada cuadrática:
+
+$$
+\frac{(O-E)^2}{E}.
+$$
+
+El estadístico total es
+
+$$
+\boxed{\chi^2=\sum\frac{(O-E)^2}{E}}.
+$$
+
+Para la tabla de clase,
+
+$$
+\chi^2_{obs}\approx10.78.
+$$
+
+Los grados de libertad de una tabla con $r$ filas y $c$ columnas son
+
+$$
+\nu=(r-1)(c-1).
+$$
+
+Con tres litologías y dos sectores,
+
+$$
+\nu=(3-1)(2-1)=2.
+$$
+
+## La distribución chi-cuadrado
+
+La distribución $\chi^2$ es no negativa y asimétrica a la derecha. Su forma depende de los grados de libertad; al aumentar $\nu$, la distribución se desplaza y se vuelve relativamente menos asimétrica.
+
+```{python}
+#| label: fig-chi2-grados-libertad
+#| fig-cap: "Distribución chi-cuadrado para distintos grados de libertad."
+#| fig-alt: "Cuatro curvas chi-cuadrado positivas con distinta asimetría según los grados de libertad."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+x = np.linspace(0.001, 30, 1000)
+fig, ax = plt.subplots(figsize=(8.5, 4.5))
+for df in (1, 2, 5, 10):
+    ax.plot(x, stats.chi2.pdf(x, df), label=f"gl = {df}")
+ax.set(xlabel=r"$\chi^2$", ylabel="Densidad", xlim=(0, 30))
+ax.legend()
+plt.show()
+```
+
+Para $\nu=2$,
+
+$$
+p=P(\chi^2_2\ge10.78)\approx0.0046.
+$$
+
+Por lo tanto, al nivel $\alpha=0.05$ rechazamos la independencia: **hay evidencia estadística de asociación entre sector y litología observada**.
+
+## Ejemplo reproducible: chi-cuadrado de independencia
+
+```{python}
+#| label: tbl-chi2-litologia-sector
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+observado = np.array([
+    [28, 14],
+    [16, 18],
+    [ 6, 18],
+])
+
+chi2, p, dof, esperado = stats.chi2_contingency(observado, correction=False)
+
+resultado = pd.DataFrame({
+    "cantidad": ["chi2 observado", "grados de libertad", "p-valor"],
+    "valor": [f"{chi2:.2f}", str(dof), f"{p:.4f}"],
+})
+resultado
+```
+
+```{python}
+#| label: tbl-frecuencias-esperadas
+
+pd.DataFrame(
+    esperado,
+    index=["Arenisca", "Heterolítica", "Pelita"],
+    columns=["Sector A", "Sector B"],
+)
+```
+
+## Supuestos y lectura del chi-cuadrado
+
+Para interpretar el test de independencia necesitamos que:
+
+- los datos sean conteos de unidades clasificadas en categorías mutuamente excluyentes;
+- cada unidad contribuya de acuerdo con el diseño previsto;
+- las observaciones sean efectivamente independientes;
+- las frecuencias esperadas no sean tan pequeñas que la aproximación $\chi^2$ deje de ser razonable.
+
+En datos espaciales vuelve a aparecer el mismo problema: muchas observaciones vecinas pueden no aportar la misma cantidad de información que muchas unidades independientes. Un p-valor pequeño no repara un diseño pseudorreplicado.
+
+::: {.callout-note title="Qué no dice el test"}
+Un test $\chi^2$ significativo indica asociación, pero no explica por sí solo su mecanismo geológico ni cuál celda es más importante. Conviene revisar las diferencias observado–esperado y volver a la pregunta geológica.
+:::
+
+## ¿Qué test usamos en cada caso? {#sec-eleccion-test}
+
+La síntesis de la clase puede organizarse así:
+
+| Pregunta estadística | Tipo de estructura | Procedimiento trabajado |
+|---|---|---|
+| una media vs. un valor de referencia, $\sigma$ conocida | cuantitativa | $z$ |
+| una media vs. un valor de referencia, $\sigma$ desconocida | cuantitativa | $t$ de una muestra |
+| dos medias de grupos distintos | cuantitativa, grupos independientes | $t$ de dos muestras |
+| mismas unidades medidas dos veces | cuantitativa, pares | $t$ apareada |
+| dos varianzas | cuantitativa, grupos independientes | $F$ |
+| frecuencias observadas en categorías | categórica / tabla de contingencia | $\chi^2$ |
+
+Ejemplos geológicos de la clase:
+
+- espesor medio de una capa de ceniza frente a 35 cm → $t$ de una muestra;
+- velocidad sísmica media entre dos unidades → $t$ de dos muestras;
+- densidad de una roca antes y después del secado → $t$ apareada;
+- variabilidad de conductividad hidráulica entre dos acuíferos → $F$;
+- preservación fósil entre dos formaciones → $\chi^2$ de independencia;
+- variabilidad del buzamiento entre dominios estructurales → $F$;
+- proporción de tipos de falla entre sectores tectónicos → $\chi^2$ de independencia.
+
+La secuencia correcta no es “tengo estos datos, ¿qué test les aplico?”, sino
+
+$$
+\boxed{\text{pregunta geológica}\to\text{tipo de dato}\to\text{diseño de muestreo}\to\text{estructura estadística}\to\text{test}}
+$$
+
+## Errores frecuentes
+
+- comparar sólo medias cuando la pregunta geológica es sobre heterogeneidad;
+- interpretar $s_1^2/s_2^2$ como una razón exacta entre varianzas poblacionales;
+- usar el test $F$ sin mirar outliers o fuerte no normalidad;
+- intercambiar numerador y denominador sin cambiar sus grados de libertad;
+- aplicar $\chi^2$ a porcentajes sin conservar los conteos que los originaron;
+- confundir frecuencia observada con frecuencia esperada;
+- interpretar independencia estadística como ausencia de cualquier relación causal;
+- ignorar dependencia espacial o pseudorreplicación;
+- elegir un test por el nombre de la variable en vez de por la pregunta y el diseño.
+
+## Preguntas de revisión
+
+1. Dé un ejemplo geológico en el que dos poblaciones puedan tener igual media pero distinta relevancia por su variabilidad.
+2. ¿Cuál es la diferencia entre $\sigma^2$ y $s^2$?
+3. ¿Qué valor del estadístico $F$ esperaríamos aproximadamente si dos varianzas poblacionales fueran iguales?
+4. ¿Por qué la distribución $F$ necesita dos grados de libertad?
+5. ¿Por qué el test $F$ es sensible a outliers?
+6. En una tabla de contingencia, ¿cómo se calcula una frecuencia esperada bajo independencia?
+7. ¿Por qué $\chi^2$ suma términos $(O-E)^2/E$?
+8. ¿Cuántos grados de libertad tiene una tabla $3\times2$ y por qué?
+9. ¿Qué significa rechazar independencia entre litología y sector?
+10. ¿Qué tienen en común la advertencia de independencia del test $F$, del $\chi^2$ y de las pruebas $t$ vistas antes?
+
+## Síntesis
+
+La clase 7 amplía la inferencia más allá de comparar medias. Una diferencia geológica puede expresarse como cambio de posición, de variabilidad, de respuesta dentro de pares o de frecuencias categóricas. Cada estructura conduce a un estadístico de referencia distinto, pero la lógica es la misma: formular la pregunta, identificar la unidad de observación, construir lo esperado bajo $H_0$, medir cuán extremo es lo observado y volver a interpretar el resultado en términos del proceso geológico.
