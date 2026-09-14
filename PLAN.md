@@ -129,3 +129,23 @@ Antes de pasar formalmente a correlación y regresión falta cerrar un tramo cor
 6. pseudorreplicación e independencia espacial como condición de validez.
 
 Una vez dado y auditado ese bloque, el capítulo 10 pasará de `revisión docente` a `estable` y el curso avanzará a correlación y regresión.
+
+<!-- codex:class-update:clase_07_finalfinal-2379255f5616:plan:start -->
+
+## Actualización en preparación: Geoestadística #07 | Tests de hipótesis, potencia, varianzas y chi-cuadrado
+
+Origen: dossier automático en `recursos/clases/clase_07_finalfinal-2379255f5616/`.
+
+Capítulos tocados:
+
+- `capitulos/09-muestreo-e-inferencia.qmd`
+- `capitulos/10-hipotesis.qmd`
+
+Tareas editoriales:
+
+- consolidar el borrador en prosa definitiva;
+- actualizar glosario y bibliografía si corresponde;
+- correr `python scripts/check_manual.py` y `quarto render`;
+- abrir PR para revisión docente.
+
+<!-- codex:class-update:clase_07_finalfinal-2379255f5616:plan:end -->

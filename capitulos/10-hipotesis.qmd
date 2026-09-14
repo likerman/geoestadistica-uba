@@ -614,3 +614,47 @@ Las respuestas esperadas son: falsa, falsa, falsa, verdadera y falsa. Las falsas
 ## Puente al cierre de inferencia
 
 Todavía resta una pregunta fundamental: aun usando correctamente el procedimiento, podemos tomar decisiones equivocadas. El siguiente cierre de inferencia introducirá **error tipo I, error tipo II, potencia y tamaño de efecto**, y mostrará por qué el diseño de muestreo y la independencia condicionan la capacidad real de un test para detectar diferencias relevantes. Después de ese cierre estaremos en condiciones de pasar de comparar grupos a estudiar relaciones entre variables mediante correlación y regresión.
+
+<!-- codex:class-update:clase_07_finalfinal-2379255f5616:start -->
+
+:::{.callout-note title="Borrador de actualización docente"}
+Esta sección es un borrador editorial generado a partir de **Geoestadística #07 | Tests de hipótesis, potencia, varianzas y chi-cuadrado**. Debe revisarse y transformarse en prosa estable del manual antes del PR final.
+
+**Motivo de inclusión:** coincide con: hipótesis, p-valor, h0, test.
+
+**Resumen fuente.** En esta clase cerramos el bloque de inferencia estadística retomando la relación entre intervalos de confianza y tests de hipótesis. A partir del caso de la porosidad en el Miembro Avilé, revisamos cómo se formulan H0 y H1, cómo se interpreta el estadístico observado, el valor crítico, el p-valor y la decisión de rechazar o no rechazar la hipótesis nula.
+
+Luego introducimos los errores tipo I y tipo II, la potencia de una prueba y los factores que la modifican. A partir de allí ampliamos el repertorio de herramientas: discutimos cuándo corresponde usar una t apareada, cómo comparar varianzas mediante la distribución F y cómo trabajar con variables categóricas mediante una prueba chi-cuadrado de independencia. La clase cierra con una síntesis orientada a elegir el test adecuado según la pregunta geológica, el tipo de dato y el diseño de muestreo.
+
+**Temas a integrar**
+
+- Relación entre intervalos de confianza y tests de hipótesis
+- Hipótesis nula e hipótesis alternativa
+- Valor crítico, p-valor y decisión estadística
+- Errores tipo I y tipo II
+- Potencia de una prueba
+- Muestras apareadas
+- Comparación de varianzas y distribución F
+- Condiciones de uso del test F
+- Variables categóricas y tablas de contingencia
+- Prueba chi-cuadrado de independencia
+- Elección del test según pregunta, dato y diseño
+
+**Correcciones que deben quedar absorbidas**
+
+- 08:09 — Sobre la decisión de “aceptar” la hipótesis nula: En un test de hipótesis, la decisión formal no es “aceptar H0”, sino “rechazar H0” o “no rechazar H0”. No rechazar H0 significa que los datos no aportan evidencia suficiente para descartarla al nivel elegido, pero no demuestra que H0 sea verdadera.
+- 36:07 — Error tipo II, beta y potencia: El error tipo II corresponde a β. La potencia de la prueba es 1 - β, es decir, la probabilidad de rechazar H0 cuando la alternativa es verdadera.
+- 42:19 — Relación entre potencia y beta: Si la potencia aumenta, β disminuye. No son magnitudes que aumenten juntas: la potencia se define como 1 - β.
+
+**Dossier de trabajo:** [brief editorial](../recursos/clases/clase_07_finalfinal-2379255f5616/manual-update-brief.md) y [contexto fuente](../recursos/clases/clase_07_finalfinal-2379255f5616/manual-source-context.md).
+
+**Checklist antes de consolidar**
+
+- Convertir este borrador en desarrollo teórico-práctico autosuficiente.
+- Enlazar la primera aparición sustantiva de términos existentes del glosario.
+- Agregar términos nuevos al `glosario.qmd` sólo si quedan como vocabulario estable.
+- Reutilizar claves de `referencias.bib` y revisar las 5 fuentes inventariadas desde Drive.
+- Agregar ejemplos reproducibles o ejercicios si el tramo de clase introduce cálculos.
+:::
+
+<!-- codex:class-update:clase_07_finalfinal-2379255f5616:end -->
