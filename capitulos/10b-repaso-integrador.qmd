@@ -1,14 +1,16 @@
-# Repaso integrador para el primer parcial {#sec-repaso-integrador}
+# Síntesis integradora: del dato a la inferencia {#sec-sintesis-integradora}
 
 ## Propósito
 
-Este capítulo reúne el tipo de razonamiento trabajado en la clase de repaso. No agrega una teoría nueva: entrena la lectura integrada de los conceptos ya desarrollados.
+Este capítulo condensa el recorrido conceptual desarrollado hasta aquí. No introduce una teoría nueva: organiza los vínculos entre muestreo, descripción, probabilidad e inferencia para que puedan leerse como una misma cadena de razonamiento.
 
-La meta no es memorizar definiciones aisladas, sino poder mirar un gráfico, reconocer qué objeto estadístico representa, decidir qué conclusión está autorizada por los datos y explicar qué supuesto podría fallar.
+La idea central es que una conclusión estadística nunca sale directamente de una fórmula. Sale de una secuencia de decisiones: qué población se quiere representar, cómo se obtuvo la muestra, qué variable se midió, qué modelo probabilístico se acepta como aproximación, qué incertidumbre se cuantifica y qué interpretación geológica queda autorizada por ese procedimiento.
 
-El recorrido de repaso puede organizarse así:
+El recorrido puede resumirse así:
 
 $$
+\text{problema geológico}
+\to
 \text{datos}
 \to
 \text{descripción}
@@ -17,36 +19,36 @@ $$
 \to
 \text{distribución muestral}
 \to
-\text{intervalo/test}
+\text{intervalo o prueba}
 \to
-\text{decisión}
-\to
-\text{interpretación geológica}.
+\text{interpretación}.
 $$
 
-## Qué debería poder justificar
+## El hilo conductor
 
-Al cerrar este tramo de la materia, una respuesta sólida debería poder:
+El primer paso consiste en separar la realidad geológica de la muestra disponible. Una población puede ser un conjunto de pozos, testigos, muestras de suelo, celdas de una grilla o mediciones potencialmente repetibles bajo un mismo diseño. La muestra es el subconjunto observado. Entre ambas aparece el problema clave de la representatividad: una muestra grande no garantiza una inferencia válida si el mecanismo de selección está sesgado respecto de la pregunta.
 
-1. identificar población, muestra, unidad de observación, variable y soporte;
-2. interpretar histogramas, ECDF, boxplots y QQ-plots sin sobreleerlos;
-3. distinguir media, mediana, dispersión, asimetría y valores extremos;
-4. separar desviación estándar de error estándar;
-5. explicar qué cambia cuando aumenta $n$ y qué no cambia necesariamente;
-6. interpretar una distribución $t$ bajo $H_0$;
-7. leer un intervalo de confianza como resultado de un procedimiento con cobertura;
-8. interpretar un p-valor sin convertirlo en probabilidad de $H_0$;
-9. distinguir error tipo I, error tipo II y potencia;
-10. reconocer cuándo una conclusión estadística excede la evidencia geológica o espacial disponible.
+En términos prácticos, antes de calcular una media o un p-valor conviene identificar:
 
-## Figuras base del repaso
+- la unidad de observación;
+- la variable medida y sus unidades;
+- el soporte espacial o físico de la medición;
+- el dominio sobre el que se quiere inferir;
+- el mecanismo de muestreo;
+- la posible dependencia entre observaciones.
 
-El siguiente bloque genera cuatro gráficos que sirven como punto de partida para varias preguntas: histograma/KDE, boxplot, ECDF y QQ-plot. Los datos son sintéticos y representan dos campañas hipotéticas de concentración de arsénico.
+Esta lista parece administrativa, pero es estadísticamente decisiva. Dos conjuntos de datos con el mismo $n$ pueden contener cantidades de información muy distintas si uno cubre bien el dominio y el otro concentra observaciones en un sector particular.
+
+## Describir antes de modelar
+
+La estadística descriptiva no es un trámite previo a la inferencia: es la primera forma de control conceptual sobre los datos. Los gráficos y estadísticos resumen dimensiones distintas de la muestra y, por eso, deben leerse en conjunto.
+
+Un histograma muestra cómo se reparte la frecuencia entre intervalos, pero depende del ancho y posición de las clases. Una curva de densidad estimada suaviza la forma general, aunque incorpora una decisión de suavizado. La ECDF permite leer proporciones acumuladas sin agrupar los datos. El boxplot resume mediana, cuartiles y valores alejados, pero no reemplaza la lectura de la forma completa. El QQ-plot compara los cuantiles observados con los esperados bajo una distribución de referencia, por ejemplo una normal.
 
 ```{python}
-#| label: fig-repaso-descriptiva
-#| fig-cap: "Cuatro lecturas complementarias para comparar dos muestras sintéticas: histograma/KDE, boxplot, ECDF y QQ-plot normal."
-#| fig-alt: "Paneles con dos muestras asimétricas de arsénico comparadas mediante histograma, boxplot, distribución acumulada empírica y QQ-plot."
+#| label: fig-sintesis-descriptiva
+#| fig-cap: "Lecturas descriptivas complementarias para dos muestras sintéticas de arsénico: histograma/KDE, boxplot, ECDF y QQ-plot normal."
+#| fig-alt: "Cuatro paneles comparan dos muestras asimétricas de arsénico mediante histograma con densidad, boxplot, distribución acumulada empírica y QQ-plot."
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -98,175 +100,162 @@ axes[1, 1].set(title="QQ-plot normal: muestra B",
 plt.show()
 ```
 
-## Preguntas de repaso
+La comparación entre media y mediana es especialmente importante en variables geoquímicas. Cuando la distribución es asimétrica a derecha, la mediana suele describir mejor un valor típico robusto, mientras que la media conserva una interpretación de balance aditivo. Ninguna de las dos es “la” medida correcta en abstracto: la elección depende de la pregunta.
 
-### 1. Muestreo y representatividad
-
-Dos campañas tienen el mismo tamaño muestral, pero una cubre todo el dominio y la otra se concentra cerca de pozos previamente conocidos con valores altos.
-
-**Pregunta.** ¿Cuál campaña permite inferir mejor sobre la población completa?
-
-**Respuesta esperada.** La campaña que cubre el dominio de manera compatible con la pregunta poblacional. Aumentar $n$ no corrige automáticamente un sesgo de selección. La muestra preferencial puede ser útil para estudiar zonas de alto interés, pero no representa sin más la distribución regional.
-
-### 2. Histograma: forma y centro
-
-En la figura, la muestra B tiene cola derecha más marcada que la muestra A.
-
-**Pregunta.** ¿Qué medida de posición usaría para resumir un valor típico y cuál para conservar el balance total?
-
-**Respuesta esperada.** La mediana describe mejor un valor típico robusto frente a cola derecha y extremos. La media conserva el balance aditivo y puede ser necesaria si la pregunta involucra carga total, concentración media o comparación con un umbral regulatorio definido sobre promedios.
-
-### 3. Boxplot: cuartiles y valores atípicos
-
-**Pregunta.** ¿Un punto fuera de las vallas de Tukey debe eliminarse?
-
-**Respuesta esperada.** No. El boxplot señala observaciones alejadas según una convención descriptiva. En geología o hidrogeoquímica, un extremo puede ser error, contaminación, cambio de unidad o una anomalía real. La respuesta correcta es investigar metadatos, soporte y proceso antes de borrar.
-
-### 4. ECDF: comparación bajo un umbral
-
-**Pregunta.** ¿Qué gráfico permite leer directamente qué proporción de pozos está por debajo de 10 µg/L?
-
-**Respuesta esperada.** La ECDF. En $x=10$ µg/L, la altura de cada escalón indica la proporción acumulada de observaciones menores o iguales al umbral. El histograma puede sugerirlo, pero depende de los intervalos elegidos.
-
-### 5. QQ-plot: normalidad y colas
-
-**Pregunta.** Si los puntos del QQ-plot se curvan hacia arriba en la cola superior, ¿qué indica?
-
-**Respuesta esperada.** Indica que los valores altos observados son mayores que los esperados bajo una normal con la misma escala de referencia. Es evidencia de cola derecha pesada o asimetría positiva, no una prueba automática de “dato malo”.
-
-### 6. Transformación lineal
-
-Si $Y=2X+5$,
-
-$$
-\bar y=2\bar x+5,\qquad s_y=2s_x.
-$$
-
-**Pregunta.** ¿La transformación cambia la forma estandarizada de la distribución?
-
-**Respuesta esperada.** No si el factor multiplicativo es positivo: cambia origen y escala, pero conserva orden, asimetría estandarizada y forma relativa. Esto es distinto de una transformación no lineal como $\log X$, que sí puede modificar la forma.
-
-### 7. Desviación estándar vs error estándar
-
-**Pregunta.** ¿Qué disminuye como $1/\sqrt n$ bajo independencia: la desviación estándar de los datos o el error estándar de la media?
-
-**Respuesta esperada.** El error estándar de la media. La desviación estándar describe heterogeneidad entre observaciones; no tiene por qué disminuir al aumentar $n$. Incluso puede aumentar si la nueva muestra cubre sectores antes ausentes.
-
-### 8. Tamaño muestral y precisión
-
-**Pregunta.** Si se quiere reducir a la mitad el error estándar de una media, ¿alcanza con duplicar $n$?
-
-**Respuesta esperada.** No. Bajo el modelo clásico,
+La dispersión también requiere precisión conceptual. La desviación estándar mide heterogeneidad entre observaciones; el error estándar mide incertidumbre de un estadístico, por ejemplo de la media. Bajo independencia y varianza finita,
 
 $$
 SE(\bar X)=\frac{\sigma}{\sqrt n}.
 $$
 
-Para dividir el SE por dos, se necesita aproximadamente cuadruplicar $n$.
+Por eso aumentar $n$ reduce la incertidumbre de la media, pero no vuelve homogénea a la población. Si las nuevas observaciones incorporan sectores antes no muestreados, la desviación estándar observada incluso puede aumentar.
 
-### 9. Distribución $t$ bajo $H_0$
+## De la descripción al modelo probabilístico
 
-**Pregunta.** ¿Qué significa que $t_{obs}=2.26$ en una prueba de diferencia de medias?
+La probabilidad entra cuando dejamos de describir únicamente los datos observados y empezamos a razonar sobre resultados posibles bajo un modelo. Ese paso exige supuestos. En la inferencia clásica elemental, los supuestos habituales son independencia, igualdad de distribución dentro del grupo considerado, varianza finita y una forma de distribución suficientemente compatible con el procedimiento usado.
 
-**Respuesta esperada.** Que la diferencia observada está a 2.26 errores estándar del valor propuesto por $H_0$. La pregunta inferencial es si esa distancia es extrema respecto de la distribución de referencia bajo $H_0$.
+La normal no debe leerse como una afirmación literal sobre la naturaleza de toda variable geológica. Funciona muchas veces como modelo de referencia, como aproximación para errores o como consecuencia aproximada de promediar muchas contribuciones. Cuando la variable es positiva, asimétrica y con valores extremos, una transformación o un modelo alternativo puede ser más razonable.
 
-### 10. p-valor
+El teorema central del límite justifica que, bajo condiciones amplias, la distribución de la media muestral tienda a aproximarse a una normal al aumentar $n$. Lo que se vuelve aproximadamente normal es la distribución muestral de $\bar X$, no necesariamente la distribución de los datos originales.
 
-**Pregunta.** Interprete $p=0.031$ sin decir “hay 3.1 % de probabilidad de que $H_0$ sea verdadera”.
+## Intervalos, pruebas y decisiones
 
-**Respuesta esperada.** Si $H_0$ fuera verdadera y el modelo usado fuera adecuado, la probabilidad de observar un estadístico tan extremo como el observado, o más extremo, sería aproximadamente 0.031.
+Un intervalo de confianza resume un procedimiento de estimación con cobertura. Un IC95 % no significa que haya 95 % de probabilidad de que el parámetro fijo esté dentro del intervalo ya calculado. Significa que, si se repitiera el procedimiento bajo las mismas condiciones, aproximadamente 95 % de los intervalos construidos de esa manera cubrirían el parámetro.
 
-### 11. Decisión con $\alpha$
+Una prueba de hipótesis organiza una decisión frente a un modelo nulo. En una prueba bilateral para una media,
 
-**Pregunta.** En una prueba bilateral con $\alpha=0.05$, si $p=0.031$, ¿qué decisión se toma?
+$$
+H_0:\mu=\mu_0,
+\qquad
+H_1:\mu\ne\mu_0,
+$$
 
-**Respuesta esperada.** Se rechaza $H_0$ al 5 %. Eso no demuestra la alternativa ni garantiza importancia geológica; indica incompatibilidad estadística con el modelo nulo al nivel elegido.
+el estadístico
 
-### 12. Error tipo I y error tipo II
+$$
+t_{obs}=\frac{\bar x-\mu_0}{s/\sqrt n}
+$$
 
-**Pregunta.** ¿Cuál es la diferencia entre error tipo I y error tipo II?
+mide cuántos errores estándar separan a la media observada del valor propuesto por $H_0$. El p-valor es la probabilidad, calculada bajo $H_0$ y el modelo asumido, de obtener un estadístico tan extremo como el observado o más extremo.
 
-**Respuesta esperada.** El error tipo I consiste en rechazar $H_0$ cuando $H_0$ es verdadera. El error tipo II consiste en no rechazar $H_0$ cuando hay un efecto real específico. El primero se controla mediante $\alpha$; el segundo depende de potencia, tamaño de efecto, variabilidad y diseño.
+La decisión formal depende de un nivel $\alpha$:
 
-### 13. Potencia
+- si $p \le \alpha$, se rechaza $H_0$;
+- si $p > \alpha$, no se rechaza $H_0$.
 
-**Pregunta.** ¿Por qué dos estudios con el mismo $\alpha$ pueden tener distinta potencia?
+La segunda frase es deliberadamente cuidadosa. No rechazar $H_0$ no equivale a demostrar que $H_0$ sea verdadera. Puede significar que el efecto no existe, que el efecto es pequeño, que la variabilidad es grande, que el tamaño muestral es insuficiente o que el diseño no aporta suficiente información efectiva.
 
-**Respuesta esperada.** Porque la potencia depende de más que $\alpha$: cambia con $n$, variabilidad, tamaño de efecto, diseño e independencia. Un estudio con bajo tamaño efectivo puede no detectar una diferencia real aunque use el mismo nivel de significación.
+## Variabilidad muestral y errores de decisión
 
-### 14. IC y test
+Los errores tipo I y tipo II no son fallas operativas del cálculo, sino consecuencias inevitables de decidir con muestras finitas.
 
-**Pregunta.** Si un IC95 % para $\Delta=\mu_7-\mu_6$ no contiene cero, ¿qué ocurre con el test bilateral de $H_0:\Delta=0$ al 5 %?
+El error tipo I ocurre cuando se rechaza $H_0$ siendo verdadera. Su probabilidad se controla mediante $\alpha$:
 
-**Respuesta esperada.** Bajo el mismo modelo y los mismos supuestos, se rechaza $H_0$. Intervalo y test formulan la pregunta de modo distinto, pero son equivalentes en ese caso.
+$$
+P(\text{rechazar }H_0\mid H_0\text{ verdadera})=\alpha.
+$$
 
-### 15. Significación estadística y relevancia geológica
+El error tipo II ocurre cuando no se rechaza $H_0$ aunque existe un efecto real específico:
 
-**Pregunta.** ¿Una diferencia estadísticamente significativa siempre es geológicamente importante?
+$$
+P(\text{no rechazar }H_0\mid H_1\text{ verdadera})=\beta.
+$$
 
-**Respuesta esperada.** No. La significación estadística evalúa compatibilidad con $H_0$ bajo un modelo. La importancia geológica depende de la magnitud del efecto, su incertidumbre, la escala del proceso, el soporte de medición y la decisión científica o aplicada.
+La potencia es $1-\beta$: la probabilidad de detectar el efecto bajo una alternativa concreta.
 
-### 16. Pseudorreplicación espacial
-
-**Pregunta.** ¿Qué problema aparece si se tratan mediciones muy próximas como réplicas independientes?
-
-**Respuesta esperada.** El tamaño muestral nominal puede exagerar la información efectiva. El error estándar puede quedar subestimado, los intervalos demasiado estrechos y los p-valores artificialmente pequeños. La dependencia espacial debe reconocerse en el diseño o modelarse explícitamente.
-
-## Figura de decisión y potencia
-
-El siguiente ejemplo muestra cómo cambian región crítica, error tipo II y potencia cuando existe una alternativa específica. Se usa una aproximación normal para que el mecanismo sea visible.
+La simulación siguiente muestra el mecanismo con una prueba t bilateral para una media. Se generan muchas muestras posibles. En el panel izquierdo, $H_0$ es verdadera; aun así, algunas muestras caen en la región crítica y producen rechazos por variabilidad muestral. En el panel derecho, la media verdadera está desplazada; aun así, algunas muestras no alcanzan la región crítica y producen no rechazos.
 
 ```{python}
-#| label: fig-repaso-error-potencia
-#| fig-cap: "Relación entre región crítica, error tipo II y potencia en una prueba unilateral idealizada."
-#| fig-alt: "Dos curvas normales: una bajo H0 y otra bajo una alternativa desplazada. Se sombrean la región crítica y la potencia."
+#| label: fig-simulacion-error-i-ii
+#| fig-cap: "Errores de decisión por variabilidad muestral en una prueba t bilateral. Bajo H0 aparecen rechazos espurios —error tipo I—; bajo una alternativa real aparecen no rechazos —error tipo II—."
+#| fig-alt: "Dos histogramas de estadísticos t simulados. En el caso nulo se resaltan en azul oscuro los rechazos erróneos; en el caso alternativo se resaltan en gris los no rechazos."
 
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
+rng = np.random.default_rng(20260915)
+
 alpha = 0.05
-mu0 = 0
-mu1 = 1.4
-se = 1
-crit = stats.norm.ppf(1 - alpha, loc=mu0, scale=se)
-x = np.linspace(-3.5, 5, 600)
+n = 12
+repeticiones = 6000
+mu0 = 0.0
+sigma = 1.0
+mu_alt = 0.55
+gl = n - 1
+tcrit = stats.t.ppf(1 - alpha / 2, df=gl)
 
-f0 = stats.norm.pdf(x, loc=mu0, scale=se)
-f1 = stats.norm.pdf(x, loc=mu1, scale=se)
 
-plt.figure(figsize=(8, 4.8))
-plt.plot(x, f0, color="#1D4162", linewidth=2.3, label="$H_0$")
-plt.plot(x, f1, color="#B56F3A", linewidth=2.3, label="alternativa")
+def simular_t(mu_verdadera):
+    muestras = rng.normal(loc=mu_verdadera, scale=sigma, size=(repeticiones, n))
+    medias = muestras.mean(axis=1)
+    desvios = muestras.std(axis=1, ddof=1)
+    return (medias - mu0) / (desvios / np.sqrt(n))
 
-region = x >= crit
-plt.fill_between(x[region], 0, f0[region], color="#1D4162", alpha=0.20,
-                 label=r"error tipo I = $\alpha$")
-plt.fill_between(x[region], 0, f1[region], color="#B56F3A", alpha=0.28,
-                 label="potencia")
-plt.fill_between(x[~region], 0, f1[~region], color="#6D899F", alpha=0.18,
-                 label=r"error tipo II = $\beta$")
 
-plt.axvline(crit, color="#243746", linestyle="--", linewidth=1)
-plt.text(crit + 0.05, max(f0.max(), f1.max())*0.92,
-         "valor crítico", rotation=90, va="top", ha="left")
-plt.xlabel("Estadístico de prueba")
-plt.ylabel("Densidad")
-plt.legend()
-plt.grid(alpha=0.20)
+t_h0 = simular_t(mu0)
+t_h1 = simular_t(mu_alt)
+rechaza_h0 = np.abs(t_h0) >= tcrit
+rechaza_h1 = np.abs(t_h1) >= tcrit
+
+error_tipo_i = rechaza_h0.mean()
+potencia = rechaza_h1.mean()
+error_tipo_ii = 1 - potencia
+
+bins = np.linspace(-5.5, 5.5, 60)
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), sharey=True, constrained_layout=True)
+
+axes[0].hist(t_h0[~rechaza_h0], bins=bins, density=True, color="#C4D0DA",
+             edgecolor="white", label="no rechaza")
+axes[0].hist(t_h0[rechaza_h0], bins=bins, density=True, color="#1D4162",
+             edgecolor="white", label="rechaza")
+axes[0].set_title(r"$H_0$ verdadera")
+axes[0].text(0.03, 0.92, fr"error tipo I $\approx$ {error_tipo_i:.3f}",
+             transform=axes[0].transAxes, color="#1D4162")
+
+axes[1].hist(t_h1[rechaza_h1], bins=bins, density=True, color="#B56F3A",
+             edgecolor="white", label="rechaza")
+axes[1].hist(t_h1[~rechaza_h1], bins=bins, density=True, color="#6D899F",
+             edgecolor="white", alpha=0.65, label="no rechaza")
+axes[1].set_title(r"Alternativa verdadera: $\mu=0.55$")
+axes[1].text(0.03, 0.92, fr"error tipo II $\approx$ {error_tipo_ii:.3f}",
+             transform=axes[1].transAxes, color="#1D4162")
+axes[1].text(0.03, 0.84, fr"potencia $\approx$ {potencia:.3f}",
+             transform=axes[1].transAxes, color="#8C4F25")
+
+for ax in axes:
+    ax.axvline(-tcrit, color="#243746", linestyle="--", linewidth=1.2)
+    ax.axvline(tcrit, color="#243746", linestyle="--", linewidth=1.2)
+    ax.set_xlabel("estadístico t")
+    ax.grid(alpha=0.18)
+    ax.legend()
+
+axes[0].set_ylabel("densidad")
 plt.show()
 ```
 
-La figura muestra por qué una prueba no significativa no prueba ausencia de efecto. Puede ocurrir que el efecto exista, pero una parte importante de su distribución bajo la alternativa quede fuera de la región crítica.
+Este ejemplo es útil porque muestra por qué la decisión no es una propiedad fija de la naturaleza sino del cruce entre efecto, variabilidad, tamaño muestral y regla de decisión. Una muestra puede llevar a rechazar $H_0$ aun si el modelo nulo es cierto; otra puede no rechazarlo aunque exista una diferencia real. Por eso el resultado debe interpretarse junto con el tamaño del efecto, el intervalo de confianza y el diseño de muestreo.
 
-## Cierre
+## Integración con problemas geológicos
 
-Una buena respuesta de parcial no es la que aplica una fórmula en piloto automático. Es la que sabe decir:
+En un problema geológico o hidrogeoquímico, la significación estadística no alcanza por sí sola. Una diferencia puede ser estadísticamente detectable y geológicamente irrelevante si su magnitud es mínima frente a la escala del proceso. También puede ser geológicamente importante y no alcanzar significación si la muestra es pequeña, ruidosa o dependiente.
 
-- qué objeto se está mirando;
-- qué supuesto sostiene la conclusión;
-- qué cantidad mide incertidumbre;
-- qué decisión estadística corresponde;
-- qué interpretación geológica queda permitida y cuál sería una sobreinterpretación.
+La inferencia clásica trabaja con una noción de información efectiva que suele descansar en la independencia. En datos espaciales, esa independencia rara vez puede asumirse sin examen. Mediciones muy próximas pueden parecer muchas réplicas, pero si comparten el mismo patrón espacial aportan menos información que el mismo número de observaciones independientes dispersas en el dominio.
 
-Ese es el puente natural hacia el resto de la materia: cuando la ubicación espacial empieza a importar explícitamente, muchas de estas respuestas deberán reformularse incorporando dependencia, soporte, dominio y continuidad espacial.
+Este punto abre el puente hacia la geoestadística propiamente dicha: cuando importa dónde está cada dato, la dependencia deja de ser una molestia y pasa a ser el objeto central de estudio.
+
+## Qué queda integrado
+
+Al cerrar este tramo, el lector debería poder justificar:
+
+- qué población intenta representar una muestra;
+- qué parte del comportamiento de los datos se ve en cada gráfico descriptivo;
+- cuándo conviene usar media, mediana, desviación estándar, IQR o coeficiente de variación;
+- por qué el error estándar no mide lo mismo que la desviación estándar;
+- qué representa una distribución muestral;
+- cómo se conectan intervalo de confianza, prueba de hipótesis y p-valor;
+- qué significan error tipo I, error tipo II y potencia;
+- por qué no rechazar una hipótesis nula no prueba ausencia de efecto;
+- por qué una conclusión estadística debe revisarse a la luz del soporte, el dominio, el diseño y la posible dependencia espacial.
+
+La síntesis no cierra el problema: prepara el terreno. A partir de aquí, el manual incorporará de manera explícita coordenadas, continuidad espacial, variogramas y estimación en lugares no muestreados.
