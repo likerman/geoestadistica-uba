@@ -21,7 +21,7 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Probabilidad | variable aleatoria, densidad, acumulación, normal, estandarización, cuantiles y QQ-plot | 08 | estable |
 | Inferencia | distribución muestral, TCL, error estándar, t e intervalos | 09 | estable |
 | Inferencia | comparación de medias, hipótesis, α, región crítica, p, errores, potencia e IC-test | 10 | estable |
-| Repaso | integración conceptual para parcial: gráficos, inferencia, errores y potencia | 10b | estable |
+| Síntesis | integración conceptual: gráficos, inferencia, errores y potencia | 10b | estable |
 | Bivariado | correlación y regresión | 11 | borrador |
 | Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador |
 | Multivariado | cluster, PCA y LDA | 13 | borrador |
@@ -118,9 +118,9 @@ $$
 \rightarrow\text{IC}\rightarrow H_0\rightarrow t_{obs}\rightarrow\alpha,p\rightarrow\text{decisión}.
 $$
 
-## Actualización de repaso — 14 de septiembre de 2026
+## Actualización de síntesis integradora — 14 de septiembre de 2026
 
-La clase de repaso integró el tramo publicado mediante preguntas conceptuales con gráficos, mini-casos geológicos y decisiones interpretativas. Se incorporó como capítulo 10b para que funcione como guía de estudio sin romper la secuencia teórica.
+La síntesis integradora consolida el tramo publicado mediante un resumen conceptual con gráficos, mini-casos geológicos y decisiones interpretativas. Se incorporó como capítulo 10b para cerrar la secuencia inferencial sin romper la continuidad teórica del manual.
 
 Además, el capítulo 10 quedó cerrado con:
 

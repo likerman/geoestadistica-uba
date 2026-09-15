@@ -296,7 +296,7 @@ El numerador es una diferencia; el denominador indica cuánto suelen variar las 
 
 La estandarización transforma una diferencia con unidades físicas en una distancia comparable. Más adelante, en un test de hipótesis, la misma lógica permitirá preguntar si una diferencia observada es suficientemente extrema bajo una hipótesis nula.
 
-## Parámetro, estimador y estimación
+## Parámetro, estimador y estimación {#sec-parametro-estimador-estimacion}
 
 La inferencia requiere distinguir tres niveles:
 
@@ -314,7 +314,7 @@ $$
 
 Ese valor no es “la media verdadera”. Es una estimación puntual de un parámetro no observado.
 
-## Una estimación puntual no alcanza
+## Una estimación puntual no alcanza {#sec-estimacion-puntual}
 
 Dos campañas pueden producir medias similares pero incertidumbres muy diferentes. Necesitamos acompañar la estimación con una medida de precisión.
 
@@ -337,7 +337,7 @@ $$
 z_{0.975}\approx1.96.
 $$
 
-## Qué significa 95 % de confianza {#sec-cobertura}
+## Qué significa 95 % de confianza {#sec-intervalos-confianza}
 
 La interpretación frecuentista se refiere al **procedimiento**, no a una probabilidad posterior sobre un parámetro fijo.
 
@@ -388,7 +388,7 @@ plt.show()
 
 La cobertura observada en una simulación finita puede ser 92 %, 97 % u otro valor cercano. El 95 % es una propiedad de largo plazo del procedimiento bajo el modelo.
 
-## Confianza, ancho y precisión no son lo mismo
+## Confianza, ancho y precisión no son lo mismo {#sec-sesgo-precision}
 
 Antes de introducir una distribución de referencia específica, podemos escribir un intervalo en forma genérica como
 
@@ -434,7 +434,7 @@ $$
 
 La palanca más directa es aumentar información efectiva. Bajo independencia, aumentar $n$ reduce el SE. En un problema espacial, agregar datos casi redundantes en una zona ya densamente muestreada puede producir mucho menos beneficio que mejorar la cobertura del dominio.
 
-## Cuando $\sigma$ es desconocida
+## Cuando $\sigma$ es desconocida {#sec-t-student}
 
 En problemas reales casi nunca conocemos la desviación estándar poblacional. La estimamos con $s$:
 

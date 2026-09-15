@@ -72,7 +72,7 @@ Razón entre desviación estándar y media, habitualmente expresada como porcent
 
 **Inglés:** *coverage*.
 
-Proporción de veces que un procedimiento de intervalo contiene el parámetro verdadero bajo repetición del muestreo y bajo los supuestos del modelo. En un intervalo de confianza frecuentista, el nivel nominal —por ejemplo 95 %— se refiere a esta propiedad del procedimiento, no a la probabilidad posterior de que un parámetro fijo esté dentro de un intervalo ya observado. Véase [Qué significa confianza: cobertura](capitulos/09-muestreo-e-inferencia.qmd#sec-cobertura).
+Proporción de veces que un procedimiento de intervalo contiene el parámetro verdadero bajo repetición del muestreo y bajo los supuestos del modelo. En un intervalo de confianza frecuentista, el nivel nominal —por ejemplo 95 %— se refiere a esta propiedad del procedimiento, no a la probabilidad posterior de que un parámetro fijo esté dentro de un intervalo ya observado. Véase [Qué significa confianza: cobertura](capitulos/09-muestreo-e-inferencia.qmd#sec-intervalos-confianza).
 
 ### Continuidad espacial {#glosario-continuidad-espacial}
 
@@ -496,7 +496,7 @@ Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel r
 
 **Inglés:** *bias*.
 
-Diferencia sistemática entre el valor esperado de un estimador y la cantidad objetivo, o, en sentido más amplio, distorsión sistemática introducida por observación, selección o medición. Aumentar $n$ puede reducir variabilidad muestral sin eliminar un sesgo persistente. Véase [Sesgo y precisión](capitulos/09-muestreo-e-inferencia.qmd#sec-sesgo-precision).
+Diferencia sistemática entre el valor esperado de un estimador y la cantidad objetivo, o, en sentido más amplio, distorsión sistemática introducida por observación, selección o medición. Aumentar $n$ puede reducir variabilidad muestral sin eliminar un sesgo persistente. Véase [Representatividad y diseño de muestreo](capitulos/02-poblacion-muestra-muestreo.qmd#representatividad-y-diseño-de-muestreo).
 
 ### Significación estadística {#glosario-significacion-estadistica}
 
