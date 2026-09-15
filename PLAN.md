@@ -20,7 +20,8 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Descriptiva | momentos, asimetría, curtosis, boxplot, QQ-plot y normalidad | 07 | estable |
 | Probabilidad | variable aleatoria, densidad, acumulación, normal, estandarización, cuantiles y QQ-plot | 08 | estable |
 | Inferencia | distribución muestral, TCL, error estándar, t e intervalos | 09 | estable |
-| Inferencia | comparación de medias, hipótesis, α, región crítica, p e IC-test | 10 | revisión docente — alineado con la clase vigente; falta el cierre sobre errores I/II, potencia y tamaño de efecto |
+| Inferencia | comparación de medias, hipótesis, α, región crítica, p, errores, potencia e IC-test | 10 | estable |
+| Repaso | integración conceptual para parcial: gráficos, inferencia, errores y potencia | 10b | estable |
 | Bivariado | correlación y regresión | 11 | borrador |
 | Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador |
 | Multivariado | cluster, PCA y LDA | 13 | borrador |
@@ -117,9 +118,11 @@ $$
 \rightarrow\text{IC}\rightarrow H_0\rightarrow t_{obs}\rightarrow\alpha,p\rightarrow\text{decisión}.
 $$
 
-## Próximo corte de trabajo
+## Actualización de repaso — 14 de septiembre de 2026
 
-Antes de pasar formalmente a correlación y regresión falta cerrar un tramo corto de inferencia:
+La clase de repaso integró el tramo publicado mediante preguntas conceptuales con gráficos, mini-casos geológicos y decisiones interpretativas. Se incorporó como capítulo 10b para que funcione como guía de estudio sin romper la secuencia teórica.
+
+Además, el capítulo 10 quedó cerrado con:
 
 1. error tipo I;
 2. error tipo II;
@@ -128,4 +131,4 @@ Antes de pasar formalmente a correlación y regresión falta cerrar un tramo cor
 5. relación entre potencia, tamaño muestral, variabilidad, efecto y $\alpha$;
 6. pseudorreplicación e independencia espacial como condición de validez.
 
-Una vez dado y auditado ese bloque, el capítulo 10 pasará de `revisión docente` a `estable` y el curso avanzará a correlación y regresión.
+Con este corte, el tramo de inferencia queda listo para pasar a correlación y regresión.

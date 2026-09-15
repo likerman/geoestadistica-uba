@@ -19,7 +19,7 @@ favicon: recursos/identidad/logo.png
 ::: {.portada-metadata}
 
 ::: {.portada-item}
-[AUTOR/A]{.portada-label}
+[DOCENTES]{.portada-label}
 
 [Docentes de Geoestadística]{.portada-valor}
 :::
@@ -59,7 +59,7 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre el tramo de la materia desarrollado hasta la **clase 7**: datos y muestreo; estadística descriptiva; probabilidad; distribución muestral e intervalos de confianza; distribución $t$ de Student y pruebas de hipótesis; errores tipo I y II, potencia y tamaño de efecto; muestras apareadas; comparación de varianzas mediante la distribución $F$; y análisis de frecuencias categóricas mediante $\chi^2$ de independencia.
+Esta versión cubre el tramo de la materia desarrollado hasta la **clase 7** y la clase de repaso: datos y muestreo; estadística descriptiva; probabilidad; distribución muestral e intervalos de confianza; distribución $t$ de Student y pruebas de hipótesis; errores tipo I y II, potencia y tamaño de efecto; muestras apareadas; comparación de varianzas mediante la distribución $F$; análisis de frecuencias categóricas mediante $\chi^2$ de independencia; y una guía integradora de estudio para el primer parcial.
 
 A lo largo de estos capítulos se refuerza una idea que será central en la segunda mitad de la materia: la inferencia clásica depende del diseño y de la cantidad de información efectivamente independiente. La pseudorreplicación y la dependencia espacial funcionan así como un puente hacia el núcleo específicamente geoestadístico.
 
