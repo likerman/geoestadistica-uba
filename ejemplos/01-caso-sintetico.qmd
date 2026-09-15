@@ -1,4 +1,4 @@
-# Laboratorio integrador: población sintética de arsénico
+# Laboratorio integrador: población sintética de arsénico {.unnumbered}
 
 Este laboratorio aplica los capítulos 01–08 sobre la **misma población sintética de 1000 pozos utilizada en las clases de 2026**. Los valores y coordenadas son completamente ficticios: permiten estudiar muestreo, distribución y espacialidad sin atribuir concentraciones a localizaciones reales.
 

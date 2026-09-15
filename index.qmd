@@ -59,7 +59,11 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre el tramo inicial de la materia: datos, muestreo, estadística descriptiva, probabilidad, distribución muestral, intervalos de confianza, distribución $t$ de Student y pruebas de hipótesis. Los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avancen las clases.
+Esta versión cubre el primer tramo conceptual del manual: datos y muestreo; estadística descriptiva; probabilidad; distribución muestral e intervalos de confianza; distribución $t$ de Student y pruebas de hipótesis; errores tipo I y II, potencia, tamaño de efecto, muestras apareadas y una síntesis integradora del recorrido desde el dato hasta la inferencia.
+
+A lo largo de estos capítulos se refuerza una idea que será central en la segunda mitad de la materia: la inferencia clásica depende del diseño y de la cantidad de información efectivamente independiente. La pseudorreplicación y la dependencia espacial funcionan así como un puente hacia el núcleo específicamente geoestadístico.
+
+Los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avance el desarrollo del manual.
 
 El texto debe leerse como un libro en construcción controlada: los capítulos publicados buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
 

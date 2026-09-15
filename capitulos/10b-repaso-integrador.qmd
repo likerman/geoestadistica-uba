@@ -1,0 +1,261 @@
+# Síntesis integradora: del dato a la inferencia {#sec-sintesis-integradora}
+
+## Propósito
+
+Este capítulo condensa el recorrido conceptual desarrollado hasta aquí. No introduce una teoría nueva: organiza los vínculos entre muestreo, descripción, probabilidad e inferencia para que puedan leerse como una misma cadena de razonamiento.
+
+La idea central es que una conclusión estadística nunca sale directamente de una fórmula. Sale de una secuencia de decisiones: qué población se quiere representar, cómo se obtuvo la muestra, qué variable se midió, qué modelo probabilístico se acepta como aproximación, qué incertidumbre se cuantifica y qué interpretación geológica queda autorizada por ese procedimiento.
+
+El recorrido puede resumirse así:
+
+$$
+\text{problema geológico}
+\to
+\text{datos}
+\to
+\text{descripción}
+\to
+\text{modelo probabilístico}
+\to
+\text{distribución muestral}
+\to
+\text{intervalo o prueba}
+\to
+\text{interpretación}.
+$$
+
+## El hilo conductor
+
+El primer paso consiste en separar la realidad geológica de la muestra disponible. Una población puede ser un conjunto de pozos, testigos, muestras de suelo, celdas de una grilla o mediciones potencialmente repetibles bajo un mismo diseño. La muestra es el subconjunto observado. Entre ambas aparece el problema clave de la representatividad: una muestra grande no garantiza una inferencia válida si el mecanismo de selección está sesgado respecto de la pregunta.
+
+En términos prácticos, antes de calcular una media o un p-valor conviene identificar:
+
+- la unidad de observación;
+- la variable medida y sus unidades;
+- el soporte espacial o físico de la medición;
+- el dominio sobre el que se quiere inferir;
+- el mecanismo de muestreo;
+- la posible dependencia entre observaciones.
+
+Esta lista parece administrativa, pero es estadísticamente decisiva. Dos conjuntos de datos con el mismo $n$ pueden contener cantidades de información muy distintas si uno cubre bien el dominio y el otro concentra observaciones en un sector particular.
+
+## Describir antes de modelar
+
+La estadística descriptiva no es un trámite previo a la inferencia: es la primera forma de control conceptual sobre los datos. Los gráficos y estadísticos resumen dimensiones distintas de la muestra y, por eso, deben leerse en conjunto.
+
+Un histograma muestra cómo se reparte la frecuencia entre intervalos, pero depende del ancho y posición de las clases. Una curva de densidad estimada suaviza la forma general, aunque incorpora una decisión de suavizado. La ECDF permite leer proporciones acumuladas sin agrupar los datos. El boxplot resume mediana, cuartiles y valores alejados, pero no reemplaza la lectura de la forma completa. El QQ-plot compara los cuantiles observados con los esperados bajo una distribución de referencia, por ejemplo una normal.
+
+```{python}
+#| label: fig-sintesis-descriptiva
+#| fig-cap: "Lecturas descriptivas complementarias para dos muestras sintéticas de arsénico: histograma/KDE, boxplot, ECDF y QQ-plot normal."
+#| fig-alt: "Cuatro paneles comparan dos muestras asimétricas de arsénico mediante histograma con densidad, boxplot, distribución acumulada empírica y QQ-plot."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+rng = np.random.default_rng(20260914)
+n = 50
+a = rng.lognormal(mean=np.log(14), sigma=0.45, size=n)
+b = rng.lognormal(mean=np.log(17), sigma=0.70, size=n)
+
+fig, axes = plt.subplots(2, 2, figsize=(11, 8), constrained_layout=True)
+
+bins = np.linspace(0, max(a.max(), b.max()) * 1.05, 18)
+axes[0, 0].hist(a, bins=bins, density=True, alpha=0.55,
+                color="#446681", label="Muestra A")
+axes[0, 0].hist(b, bins=bins, density=True, alpha=0.45,
+                color="#B56F3A", label="Muestra B")
+for datos, color in [(a, "#1D4162"), (b, "#8C4F25")]:
+    kde = stats.gaussian_kde(datos)
+    x = np.linspace(0, max(a.max(), b.max()) * 1.05, 300)
+    axes[0, 0].plot(x, kde(x), color=color, linewidth=2)
+axes[0, 0].set(title="Histograma y KDE", xlabel="As (µg/L)", ylabel="Densidad")
+axes[0, 0].legend()
+
+axes[0, 1].boxplot([a, b], labels=["A", "B"], patch_artist=True,
+                   boxprops={"facecolor": "#C4D0DA", "color": "#1D4162"},
+                   medianprops={"color": "#B56F3A", "linewidth": 2},
+                   whiskerprops={"color": "#1D4162"},
+                   capprops={"color": "#1D4162"})
+axes[0, 1].set(title="Boxplot", ylabel="As (µg/L)")
+
+for datos, etiqueta, color in [(a, "A", "#1D4162"), (b, "B", "#B56F3A")]:
+    x_ord = np.sort(datos)
+    p = np.arange(1, len(x_ord) + 1) / len(x_ord)
+    axes[1, 0].step(x_ord, p, where="post", color=color, label=etiqueta)
+axes[1, 0].axvline(10, color="#6D899F", linestyle="--", label="10 µg/L")
+axes[1, 0].set(title="ECDF", xlabel="As (µg/L)", ylabel="Proporción acumulada")
+axes[1, 0].legend()
+
+osm, osr = stats.probplot(b, dist="norm", fit=False)
+axes[1, 1].scatter(osm, osr, color="#B56F3A", alpha=0.8)
+slope, intercept, *_ = stats.linregress(osm, osr)
+xline = np.array([min(osm), max(osm)])
+axes[1, 1].plot(xline, intercept + slope*xline, color="#1D4162")
+axes[1, 1].set(title="QQ-plot normal: muestra B",
+               xlabel="Cuantiles normales teóricos",
+               ylabel="Cuantiles observados")
+
+plt.show()
+```
+
+La comparación entre media y mediana es especialmente importante en variables geoquímicas. Cuando la distribución es asimétrica a derecha, la mediana suele describir mejor un valor típico robusto, mientras que la media conserva una interpretación de balance aditivo. Ninguna de las dos es “la” medida correcta en abstracto: la elección depende de la pregunta.
+
+La dispersión también requiere precisión conceptual. La desviación estándar mide heterogeneidad entre observaciones; el error estándar mide incertidumbre de un estadístico, por ejemplo de la media. Bajo independencia y varianza finita,
+
+$$
+SE(\bar X)=\frac{\sigma}{\sqrt n}.
+$$
+
+Por eso aumentar $n$ reduce la incertidumbre de la media, pero no vuelve homogénea a la población. Si las nuevas observaciones incorporan sectores antes no muestreados, la desviación estándar observada incluso puede aumentar.
+
+## De la descripción al modelo probabilístico
+
+La probabilidad entra cuando dejamos de describir únicamente los datos observados y empezamos a razonar sobre resultados posibles bajo un modelo. Ese paso exige supuestos. En la inferencia clásica elemental, los supuestos habituales son independencia, igualdad de distribución dentro del grupo considerado, varianza finita y una forma de distribución suficientemente compatible con el procedimiento usado.
+
+La normal no debe leerse como una afirmación literal sobre la naturaleza de toda variable geológica. Funciona muchas veces como modelo de referencia, como aproximación para errores o como consecuencia aproximada de promediar muchas contribuciones. Cuando la variable es positiva, asimétrica y con valores extremos, una transformación o un modelo alternativo puede ser más razonable.
+
+El teorema central del límite justifica que, bajo condiciones amplias, la distribución de la media muestral tienda a aproximarse a una normal al aumentar $n$. Lo que se vuelve aproximadamente normal es la distribución muestral de $\bar X$, no necesariamente la distribución de los datos originales.
+
+## Intervalos, pruebas y decisiones
+
+Un intervalo de confianza resume un procedimiento de estimación con cobertura. Un IC95 % no significa que haya 95 % de probabilidad de que el parámetro fijo esté dentro del intervalo ya calculado. Significa que, si se repitiera el procedimiento bajo las mismas condiciones, aproximadamente 95 % de los intervalos construidos de esa manera cubrirían el parámetro.
+
+Una prueba de hipótesis organiza una decisión frente a un modelo nulo. En una prueba bilateral para una media,
+
+$$
+H_0:\mu=\mu_0,
+\qquad
+H_1:\mu\ne\mu_0,
+$$
+
+el estadístico
+
+$$
+t_{obs}=\frac{\bar x-\mu_0}{s/\sqrt n}
+$$
+
+mide cuántos errores estándar separan a la media observada del valor propuesto por $H_0$. El p-valor es la probabilidad, calculada bajo $H_0$ y el modelo asumido, de obtener un estadístico tan extremo como el observado o más extremo.
+
+La decisión formal depende de un nivel $\alpha$:
+
+- si $p \le \alpha$, se rechaza $H_0$;
+- si $p > \alpha$, no se rechaza $H_0$.
+
+La segunda frase es deliberadamente cuidadosa. No rechazar $H_0$ no equivale a demostrar que $H_0$ sea verdadera. Puede significar que el efecto no existe, que el efecto es pequeño, que la variabilidad es grande, que el tamaño muestral es insuficiente o que el diseño no aporta suficiente información efectiva.
+
+## Variabilidad muestral y errores de decisión
+
+Los errores tipo I y tipo II no son fallas operativas del cálculo, sino consecuencias inevitables de decidir con muestras finitas.
+
+El error tipo I ocurre cuando se rechaza $H_0$ siendo verdadera. Su probabilidad se controla mediante $\alpha$:
+
+$$
+P(\text{rechazar }H_0\mid H_0\text{ verdadera})=\alpha.
+$$
+
+El error tipo II ocurre cuando no se rechaza $H_0$ aunque existe un efecto real específico:
+
+$$
+P(\text{no rechazar }H_0\mid H_1\text{ verdadera})=\beta.
+$$
+
+La potencia es $1-\beta$: la probabilidad de detectar el efecto bajo una alternativa concreta.
+
+La simulación siguiente muestra el mecanismo con una prueba t bilateral para una media. Se generan muchas muestras posibles. En el panel izquierdo, $H_0$ es verdadera; aun así, algunas muestras caen en la región crítica y producen rechazos por variabilidad muestral. En el panel derecho, la media verdadera está desplazada; aun así, algunas muestras no alcanzan la región crítica y producen no rechazos.
+
+```{python}
+#| label: fig-simulacion-error-i-ii
+#| fig-cap: "Errores de decisión por variabilidad muestral en una prueba t bilateral. Bajo H0 aparecen rechazos espurios —error tipo I—; bajo una alternativa real aparecen no rechazos —error tipo II—."
+#| fig-alt: "Dos histogramas de estadísticos t simulados. En el caso nulo se resaltan en azul oscuro los rechazos erróneos; en el caso alternativo se resaltan en gris los no rechazos."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+rng = np.random.default_rng(20260915)
+
+alpha = 0.05
+n = 12
+repeticiones = 6000
+mu0 = 0.0
+sigma = 1.0
+mu_alt = 0.55
+gl = n - 1
+tcrit = stats.t.ppf(1 - alpha / 2, df=gl)
+
+
+def simular_t(mu_verdadera):
+    muestras = rng.normal(loc=mu_verdadera, scale=sigma, size=(repeticiones, n))
+    medias = muestras.mean(axis=1)
+    desvios = muestras.std(axis=1, ddof=1)
+    return (medias - mu0) / (desvios / np.sqrt(n))
+
+
+t_h0 = simular_t(mu0)
+t_h1 = simular_t(mu_alt)
+rechaza_h0 = np.abs(t_h0) >= tcrit
+rechaza_h1 = np.abs(t_h1) >= tcrit
+
+error_tipo_i = rechaza_h0.mean()
+potencia = rechaza_h1.mean()
+error_tipo_ii = 1 - potencia
+
+bins = np.linspace(-5.5, 5.5, 60)
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.8), sharey=True, constrained_layout=True)
+
+axes[0].hist(t_h0[~rechaza_h0], bins=bins, density=True, color="#C4D0DA",
+             edgecolor="white", label="no rechaza")
+axes[0].hist(t_h0[rechaza_h0], bins=bins, density=True, color="#1D4162",
+             edgecolor="white", label="rechaza")
+axes[0].set_title(r"$H_0$ verdadera")
+axes[0].text(0.03, 0.92, fr"error tipo I $\approx$ {error_tipo_i:.3f}",
+             transform=axes[0].transAxes, color="#1D4162")
+
+axes[1].hist(t_h1[rechaza_h1], bins=bins, density=True, color="#B56F3A",
+             edgecolor="white", label="rechaza")
+axes[1].hist(t_h1[~rechaza_h1], bins=bins, density=True, color="#6D899F",
+             edgecolor="white", alpha=0.65, label="no rechaza")
+axes[1].set_title(r"Alternativa verdadera: $\mu=0.55$")
+axes[1].text(0.03, 0.92, fr"error tipo II $\approx$ {error_tipo_ii:.3f}",
+             transform=axes[1].transAxes, color="#1D4162")
+axes[1].text(0.03, 0.84, fr"potencia $\approx$ {potencia:.3f}",
+             transform=axes[1].transAxes, color="#8C4F25")
+
+for ax in axes:
+    ax.axvline(-tcrit, color="#243746", linestyle="--", linewidth=1.2)
+    ax.axvline(tcrit, color="#243746", linestyle="--", linewidth=1.2)
+    ax.set_xlabel("estadístico t")
+    ax.grid(alpha=0.18)
+    ax.legend()
+
+axes[0].set_ylabel("densidad")
+plt.show()
+```
+
+Este ejemplo es útil porque muestra por qué la decisión no es una propiedad fija de la naturaleza sino del cruce entre efecto, variabilidad, tamaño muestral y regla de decisión. Una muestra puede llevar a rechazar $H_0$ aun si el modelo nulo es cierto; otra puede no rechazarlo aunque exista una diferencia real. Por eso el resultado debe interpretarse junto con el tamaño del efecto, el intervalo de confianza y el diseño de muestreo.
+
+## Integración con problemas geológicos
+
+En un problema geológico o hidrogeoquímico, la significación estadística no alcanza por sí sola. Una diferencia puede ser estadísticamente detectable y geológicamente irrelevante si su magnitud es mínima frente a la escala del proceso. También puede ser geológicamente importante y no alcanzar significación si la muestra es pequeña, ruidosa o dependiente.
+
+La inferencia clásica trabaja con una noción de información efectiva que suele descansar en la independencia. En datos espaciales, esa independencia rara vez puede asumirse sin examen. Mediciones muy próximas pueden parecer muchas réplicas, pero si comparten el mismo patrón espacial aportan menos información que el mismo número de observaciones independientes dispersas en el dominio.
+
+Este punto abre el puente hacia la geoestadística propiamente dicha: cuando importa dónde está cada dato, la dependencia deja de ser una molestia y pasa a ser el objeto central de estudio.
+
+## Qué queda integrado
+
+Al cerrar este tramo, el lector debería poder justificar:
+
+- qué población intenta representar una muestra;
+- qué parte del comportamiento de los datos se ve en cada gráfico descriptivo;
+- cuándo conviene usar media, mediana, desviación estándar, IQR o coeficiente de variación;
+- por qué el error estándar no mide lo mismo que la desviación estándar;
+- qué representa una distribución muestral;
+- cómo se conectan intervalo de confianza, prueba de hipótesis y p-valor;
+- qué significan error tipo I, error tipo II y potencia;
+- por qué no rechazar una hipótesis nula no prueba ausencia de efecto;
+- por qué una conclusión estadística debe revisarse a la luz del soporte, el dominio, el diseño y la posible dependencia espacial.
+
+La síntesis no cierra el problema: prepara el terreno. A partir de aquí, el manual incorporará de manera explícita coordenadas, continuidad espacial, variogramas y estimación en lugares no muestreados.
