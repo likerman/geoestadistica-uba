@@ -12,9 +12,9 @@ favicon: recursos/identidad/logo.png
 
 ![](recursos/identidad/banner_youtube.png){.portada-imagen fig-alt="Geoestadística - Ciencias Geológicas FCEN UBA"}
 
-[Manual de Geoestadística]{.portada-titulo}
+[Fundamentos teóricos y ejemplos geológicos]{.portada-titulo}
 
-[Fundamentos teóricos y ejemplos geológicos]{.portada-subtitulo}
+[Manual en construcción para la materia de Geoestadística]{.portada-subtitulo}
 
 ::: {.portada-metadata}
 
@@ -36,7 +36,7 @@ favicon: recursos/identidad/logo.png
 
 # Propósito
 
-Este manual desarrolla las ideas fundamentales de la geoestadística desde los primeros problemas de descripción de datos hasta la modelización de la dependencia espacial y la estimación por kriging.
+Este manual desarrolla progresivamente las ideas fundamentales que conducen hacia la geoestadística: comienza con problemas de descripción de datos, muestreo, probabilidad e inferencia, y avanza hacia el estudio de relaciones entre variables y, más adelante, de la dependencia espacial.
 
 La pregunta que organiza el recorrido es sencilla: **¿qué cambia cuando, además del valor observado, importa dónde fue observado?** Antes de responderla necesitamos comprender qué puede —y qué no puede— decir la estadística clásica sobre una muestra.
 
@@ -48,8 +48,8 @@ A lo largo del texto volveremos sobre concentraciones de arsénico medidas en po
 - estudiar su distribución y sus valores extremos;
 - comparar muestras y discutir representatividad;
 - incorporar las coordenadas de cada pozo;
-- reconocer continuidad, anisotropía y escalas espaciales;
-- estimar en lugares no muestreados y cuantificar incertidumbre.
+- preparar la transición hacia continuidad, anisotropía y escalas espaciales;
+- discutir, en etapas posteriores, cómo estimar en lugares no muestreados y cuantificar incertidumbre.
 
 Los datos reales definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporarlos. Mientras tanto, los ejemplos reproducibles utilizan una población sintética de 1000 pozos para mantener continuidad entre capítulos sin atribuir valores a localizaciones reales.
 
@@ -59,13 +59,11 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre el primer tramo conceptual del manual: datos y muestreo; estadística descriptiva; probabilidad; distribución muestral e intervalos de confianza; distribución $t$ de Student y pruebas de hipótesis; errores tipo I y II, potencia y tamaño de efecto; muestras apareadas; comparación de varianzas mediante la distribución $F$; análisis de frecuencias categóricas mediante $\chi^2$ de independencia; y una síntesis integradora del recorrido desde el dato hasta la inferencia.
+Esta versión cubre el primer tramo conceptual del manual: datos y muestreo; estadística descriptiva; probabilidad; distribución muestral e intervalos de confianza; distribución $t$ de Student y pruebas de hipótesis; errores tipo I y II, potencia y tamaño de efecto; muestras apareadas; comparación de varianzas mediante la distribución $F$; análisis de frecuencias categóricas mediante $\chi^2$ de independencia; correlación; regresión lineal simple; y una síntesis integradora del recorrido desde el dato hasta la inferencia.
 
 A lo largo de estos capítulos se refuerza una idea que será central en la segunda mitad de la materia: la inferencia clásica depende del diseño y de la cantidad de información efectivamente independiente. La pseudorreplicación y la dependencia espacial funcionan así como un puente hacia el núcleo específicamente geoestadístico.
 
-Los capítulos espaciales —variable regionalizada, variograma y kriging— se incorporarán progresivamente a medida que avance el desarrollo del manual.
-
-El texto debe leerse como un libro en construcción controlada: los capítulos publicados buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
+Los capítulos espaciales se incorporarán progresivamente cuando formen parte del tramo publicado del manual. Hasta entonces, los capítulos visibles buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
 
 ## Alcance
 

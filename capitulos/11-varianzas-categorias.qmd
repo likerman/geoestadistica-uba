@@ -180,11 +180,11 @@ $$
 \frac{(n-1)S^2}{\sigma_0^2}\sim\chi^2_{n-1}.
 $$
 
-Sin embargo, en la clase 7 la comparación de **dos varianzas** se trabajó con la distribución $F$, mientras que $\chi^2$ se introdujo para **frecuencias categóricas**. Mantener separados estos dos usos evita confundir problemas estadísticos diferentes.
+En este manual, la comparación de **dos varianzas** se trabaja con la distribución $F$, mientras que $\chi^2$ se introduce para **frecuencias categóricas**. Mantener separados estos dos usos evita confundir problemas estadísticos diferentes.
 
 ## De variables cuantitativas a categorías
 
-Supongamos ahora que en cada observación registramos una categoría litológica y el sector al que pertenece. La pregunta de clase fue:
+Supongamos ahora que en cada observación registramos una categoría litológica y el sector al que pertenece. La pregunta estadística es:
 
 > ¿la proporción de litologías observadas cambia entre dos sectores?
 
@@ -243,7 +243,7 @@ $$
 \boxed{\chi^2=\sum\frac{(O-E)^2}{E}}.
 $$
 
-Para la tabla de clase,
+Para esta tabla,
 
 $$
 \chi^2_{obs}\approx10.78.
@@ -344,7 +344,7 @@ Un test $\chi^2$ significativo indica asociación, pero no explica por sí solo 
 
 ## ¿Qué test usamos en cada caso? {#sec-eleccion-test}
 
-La síntesis de la clase puede organizarse así:
+La síntesis puede organizarse así:
 
 | Pregunta estadística | Tipo de estructura | Procedimiento trabajado |
 |---|---|---|
@@ -355,7 +355,7 @@ La síntesis de la clase puede organizarse así:
 | dos varianzas | cuantitativa, grupos independientes | $F$ |
 | frecuencias observadas en categorías | categórica / tabla de contingencia | $\chi^2$ |
 
-Ejemplos geológicos de la clase:
+Ejemplos geológicos:
 
 - espesor medio de una capa de ceniza frente a 35 cm → $t$ de una muestra;
 - velocidad sísmica media entre dos unidades → $t$ de dos muestras;
@@ -398,4 +398,4 @@ $$
 
 ## Síntesis
 
-La clase 7 amplía la inferencia más allá de comparar medias. Una diferencia geológica puede expresarse como cambio de posición, de variabilidad, de respuesta dentro de pares o de frecuencias categóricas. Cada estructura conduce a un estadístico de referencia distinto, pero la lógica es la misma: formular la pregunta, identificar la unidad de observación, construir lo esperado bajo $H_0$, medir cuán extremo es lo observado y volver a interpretar el resultado en términos del proceso geológico.
+Este capítulo amplía la inferencia más allá de comparar medias. Una diferencia geológica puede expresarse como cambio de posición, de variabilidad, de respuesta dentro de pares o de frecuencias categóricas. Cada estructura conduce a un estadístico de referencia distinto, pero la lógica es la misma: formular la pregunta, identificar la unidad de observación, construir lo esperado bajo $H_0$, medir cuán extremo es lo observado y volver a interpretar el resultado en términos del proceso geológico.

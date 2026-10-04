@@ -84,7 +84,7 @@ por lo que dividir por $n-1$ hace insesgada a $s^2$ como estimador de $\sigma^2$
 
 ### Qué cambia con dependencia espacial
 
-El resultado anterior utiliza independencia. Si las observaciones están correlacionadas, la esperanza de la suma de cuadrados contiene términos de covarianza y la varianza muestral convencional no conserva automáticamente el mismo insesgamiento. Además, $n$ observaciones próximas pueden equivaler a menos de $n$ unidades independientes para estimar una media.
+El resultado anterior utiliza independencia. Si las observaciones están correlacionadas, las propiedades de los estimadores de varianza y, sobre todo, de las fórmulas de incertidumbre basadas en $n$ cambian y dependen de la estructura de covarianzas. En particular, $n$ observaciones próximas pueden equivaler a menos de $n$ unidades independientes para estimar una media.
 
 Esto no vuelve inútil a $s^2$ como resumen descriptivo. Sí impide interpretar mecánicamente fórmulas inferenciales derivadas para muestras independientes. La geometría y el modelo de dependencia serán necesarios para cuantificar un tamaño efectivo o la incertidumbre de una estimación espacial.
 

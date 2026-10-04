@@ -258,4 +258,4 @@ Al cerrar este tramo, el lector debería poder justificar:
 - por qué no rechazar una hipótesis nula no prueba ausencia de efecto;
 - por qué una conclusión estadística debe revisarse a la luz del soporte, el dominio, el diseño y la posible dependencia espacial.
 
-La síntesis no cierra el problema: prepara el terreno. A partir de aquí, el manual incorporará de manera explícita coordenadas, continuidad espacial, variogramas y estimación en lugares no muestreados.
+La síntesis no cierra el problema: prepara el terreno. El paso siguiente consiste en estudiar relaciones entre variables y, luego, incorporar de manera explícita coordenadas, continuidad espacial e incertidumbre en lugares no muestreados.

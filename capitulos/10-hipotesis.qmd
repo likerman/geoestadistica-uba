@@ -276,13 +276,13 @@ El intervalo muestra un conjunto de valores compatibles con los datos; el test p
 
 ## Una media frente a una referencia: t de una muestra
 
-La clase 7 retomó la misma lógica con un intervalo arenoso del Miembro Avilé. La población de referencia tenía una porosidad media de
+La misma lógica puede aplicarse a un intervalo arenoso del Miembro Avilé. La población de referencia tenía una porosidad media de
 
 $$
 \mu_0=8.8\%,
 $$
 
-y en el pozo AV-X1 se contaba con $n=25$ mediciones cuya media era 1.7 puntos porcentuales mayor. La pregunta era:
+y en el pozo AV-X1 se contaba con $n=25$ mediciones cuya media era 1.7 puntos porcentuales mayor. La pregunta estadística es:
 
 > ¿es la porosidad media del intervalo compatible con la media de referencia de Avilé?
 

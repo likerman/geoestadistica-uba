@@ -28,6 +28,13 @@ Dependencia de una propiedad o estructura espacial respecto de la dirección. En
 
 Propiedad que describe falta de simetría de una distribución. El coeficiente basado en momentos es $\gamma_1=\mu_3/\sigma^3$. Un valor positivo suele asociarse con una cola derecha más extensa, pero un coeficiente cercano a cero no demuestra simetría. Véase [Forma de la distribución](capitulos/07-forma-diagnostico.qmd#asimetría).
 
+
+### Asociación {#glosario-asociacion}
+
+**Inglés:** *association*.
+
+Relación estadística entre variables observadas conjuntamente. Puede expresarse mediante diferencias entre grupos, correlaciones, pendientes, patrones en una tabla o estructuras más complejas. Una asociación no implica por sí sola causalidad: puede surgir por un mecanismo causal, por una variable confundente, por mezcla de dominios, por sesgos de muestreo o por dependencia espacial. Véase [Asociación no es causalidad](capitulos/11-correlacion-regresion.qmd#asociación-no-es-causalidad).
+
 ## B
 
 ### Bigote de un boxplot {#glosario-bigote}
@@ -79,6 +86,19 @@ Proporción de veces que un procedimiento de intervalo contiene el parámetro ve
 **Inglés:** *spatial continuity*.
 
 Comportamiento sistemático de la semejanza o disimilitud entre valores al cambiar su separación espacial. Puede depender de distancia, dirección y soporte. No significa que todo par cercano sea semejante; se refiere al comportamiento estadístico de conjuntos de pares.
+
+
+### Correlación de Pearson {#glosario-correlacion-pearson}
+
+**Inglés:** *Pearson correlation*. **Símbolo:** $r$ para muestra, $\rho$ para población.
+
+Medida adimensional de asociación lineal entre dos variables cuantitativas. Se obtiene estandarizando la covarianza por las desviaciones estándar de ambas variables: $r=s_{XY}/(s_Xs_Y)$. Toma valores entre $-1$ y $1$. Resume dirección e intensidad lineal, pero no demuestra causalidad ni detecta por sí sola curvatura, mezcla de dominios, valores influyentes o dependencia espacial. Véase [Pearson: covarianza estandarizada](capitulos/11-correlacion-regresion.qmd#pearson-covarianza-estandarizada).
+
+### Covarianza {#glosario-covarianza}
+
+**Inglés:** *covariance*. **Símbolo muestral:** $s_{XY}$.
+
+Promedio corregido de los productos de desviaciones de dos variables respecto de sus medias: $s_{XY}=(n-1)^{-1}\sum_i(x_i-\bar{x})(y_i-\bar{y})$. Su signo indica covariación lineal positiva o negativa. Su magnitud depende de las unidades de ambas variables, por lo que suele estandarizarse para obtener la correlación. Véase [Covarianza: variación conjunta](capitulos/11-correlacion-regresion.qmd#covarianza-variación-conjunta).
 
 ### Cuantil {#glosario-cuantil}
 
@@ -216,6 +236,13 @@ Conjunto de resultados posibles de un experimento aleatorio o, equivalentemente,
 
 Promedio ponderado por probabilidades de los valores posibles de una variable aleatoria, cuando existe. Es una propiedad de una distribución o modelo; no es idéntica a la media obtenida en una muestra particular.
 
+
+### Extrapolación {#glosario-extrapolacion}
+
+**Inglés:** *extrapolation*.
+
+Uso de un modelo ajustado para predecir o interpretar fuera del rango de datos, del dominio geológico o de las condiciones bajo las cuales fue calibrado. Suele ser mucho más dependiente de los supuestos que la interpolación y puede producir conclusiones engañosas aun cuando el ajuste dentro del rango observado parezca bueno. Véase [Extrapolación: donde el modelo se vuelve frágil](capitulos/11-correlacion-regresion.qmd#extrapolación-donde-el-modelo-se-vuelve-frágil).
+
 ### Exceso de curtosis {#glosario-exceso-curtosis}
 
 **Inglés:** *excess kurtosis*. **Símbolo:** $\gamma_2$.
@@ -284,6 +311,13 @@ Valor o afirmación de referencia bajo la cual se calcula la distribución del e
 
 ## I
 
+
+### Intercepto {#glosario-intercepto}
+
+**Inglés:** *intercept*. **Símbolo usual:** $b_0$ o $\beta_0$.
+
+En una regresión lineal simple, valor esperado por el modelo para $Y$ cuando $X=0$: $\hat{Y}=b_0+b_1X$. Su interpretación científica sólo es directa si $X=0$ pertenece al dominio relevante o tiene sentido geológico. Fuera de ese contexto, puede ser principalmente un parámetro necesario para posicionar la recta. Véase [El modelo de regresión lineal simple](capitulos/11-correlacion-regresion.qmd#el-modelo-de-regresión-lineal-simple).
+
 ### Inferencia {#glosario-inferencia}
 
 **Inglés:** *inference*.
@@ -323,6 +357,13 @@ Función no negativa, generalmente simétrica y de integral uno, utilizada para 
 Familia de estimadores lineales espaciales que asignan pesos utilizando la geometría de los datos y un modelo de dependencia, bajo restricciones específicas. Según la variante, busca insesgamiento y mínima varianza dentro de una clase de estimadores. No es sinónimo genérico de interpolación.
 
 ## L
+
+
+### Leverage {#glosario-leverage}
+
+**Español:** apalancamiento.
+
+Medida de cuán alejada está una observación en el espacio de las variables explicativas respecto del centro del diseño. En regresión lineal simple, puntos con valores extremos de $X$ pueden tener alto leverage y modificar fuertemente la pendiente ajustada, especialmente si además tienen residuos grandes. Alto leverage no implica error: indica influencia potencial que debe investigarse. Véase [Leverage e influencia](capitulos/11-correlacion-regresion.qmd#leverage-e-influencia).
 
 ### Localización {#glosario-localizacion}
 
@@ -408,6 +449,13 @@ Observación alejada respecto de un patrón o criterio descriptivo. La etiqueta 
 
 Cantidad fija —aunque generalmente desconocida— que caracteriza una población o modelo, como $\mu$, $\sigma^2$ o un percentil poblacional. Se distingue de un estadígrafo, que se calcula sobre una muestra y varía entre muestras.
 
+
+### Pendiente {#glosario-pendiente}
+
+**Inglés:** *slope*. **Símbolo usual:** $b_1$ o $\beta_1$.
+
+En una regresión lineal simple, cambio esperado en $Y$ por una unidad de aumento en $X$, bajo el modelo ajustado. Tiene unidades de $Y/X$ y debe interpretarse dentro del rango y dominio de los datos. En regresión simple con intercepto, $b_1=r(s_Y/s_X)$, lo que conecta pendiente y correlación sin volverlas equivalentes conceptualmente. Véase [Mínimos cuadrados ordinarios](capitulos/11-correlacion-regresion.qmd#mínimos-cuadrados-ordinarios).
+
 ### PDF {#glosario-pdf}
 
 **Inglés:** *probability density function*. **Notación habitual:** $f(x)$.
@@ -465,6 +513,25 @@ Probabilidad, calculada bajo la hipótesis nula y el modelo elegido, de obtener 
 Gráfico que compara cuantiles observados con cuantiles de una distribución teórica o de otra muestra. Una relación aproximadamente lineal indica compatibilidad en forma, no una prueba definitiva de que el modelo sea verdadero.
 
 ## R
+
+
+### Regresión lineal {#glosario-regresion-lineal}
+
+**Inglés:** *linear regression*.
+
+Modelo que representa la esperanza condicional de una variable respuesta como función lineal de una o más variables explicativas. En regresión lineal simple, $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$. El modelo separa una componente sistemática de un término de error y requiere revisar residuos, dominio de aplicación, valores influyentes y supuestos de independencia. Véase [El modelo de regresión lineal simple](capitulos/11-correlacion-regresion.qmd#el-modelo-de-regresión-lineal-simple).
+
+### Residuo {#glosario-residuo}
+
+**Inglés:** *residual*. **Símbolo frecuente:** $e_i$.
+
+Diferencia entre el valor observado y el valor ajustado por un modelo: $e_i=y_i-\hat{y}_i$. Los residuos permiten diagnosticar curvatura no modelada, heterocedasticidad, valores influyentes, cambios de dominio y dependencia residual. No son idénticos a los errores teóricos $\varepsilon_i$, porque se calculan después de ajustar el modelo. Véase [Residuos: lo que el modelo no explica](capitulos/11-correlacion-regresion.qmd#residuos-lo-que-el-modelo-no-explica).
+
+### R cuadrado {#glosario-r-cuadrado}
+
+**Inglés:** *R-squared*. **Símbolo:** $R^2$.
+
+Proporción de la variabilidad de la respuesta explicada por el modelo lineal, bajo la descomposición usada en mínimos cuadrados con intercepto. En regresión lineal simple con intercepto, $R^2=r^2$. Un valor alto no demuestra causalidad, validez predictiva fuera del dominio ni ausencia de problemas en los residuos. Véase [$R^2$: variabilidad explicada](capitulos/11-correlacion-regresion.qmd#r2-variabilidad-explicada).
 
 ### Rango {#glosario-rango}
 
