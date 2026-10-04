@@ -1,4 +1,839 @@
-# Correlación y regresión
+# Correlación y regresión {#sec-correlacion-regresion}
 
-Capítulo planificado. Tratará relaciones bivariadas, supuestos y límites causales, antes de incorporar dependencia espacial.
+## Objetivos
 
+Al finalizar este capítulo, el lector debería poder:
+
+- pasar de una mirada univariada a una mirada bivariada sin perder la unidad observacional;
+- interpretar un diagrama de dispersión antes de calcular coeficientes;
+- construir la covarianza desde productos de desviaciones respecto de las medias;
+- definir el coeficiente de correlación de Pearson como covarianza estandarizada;
+- distinguir signo, intensidad lineal y forma de la relación;
+- formular el test clásico de significación de Pearson y sus supuestos;
+- separar significación estadística, magnitud de efecto y relevancia geológica;
+- reconocer el efecto de observaciones atípicas e influyentes;
+- distinguir asociación de causalidad;
+- formular el modelo de regresión lineal simple como señal más error;
+- interpretar pendiente, intercepto, residuos y $R^2$;
+- diferenciar intervalos para la media condicional de intervalos de predicción;
+- identificar límites de extrapolación, mezcla de dominios y dependencia espacial residual.
+
+## De una variable a dos variables
+
+Hasta ahora estudiamos variables geológicas una por vez: su centro, su dispersión, su forma, su incertidumbre muestral y su contraste con hipótesis. Pero muchas preguntas geológicas son relacionales. No preguntan sólo cuánto SiO$_2$ hay en una roca, sino si el cociente K$_2$O/CaO cambia sistemáticamente cuando cambia SiO$_2$; no sólo cuál es la temperatura en una perforación, sino cómo varía con la profundidad; no sólo cuál es la porosidad, sino cómo se relaciona con la permeabilidad.
+
+El objeto de análisis deja de ser una lista de valores
+
+$$
+x_1,x_2,\ldots,x_n
+$$
+
+y pasa a ser una lista de pares observados sobre la misma unidad:
+
+$$
+(x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n).
+$$
+
+Cada par debe corresponder a una misma roca, muestra, pozo, tramo o localización. Si $X$ e $Y$ provienen de unidades mal vinculadas, cualquier coeficiente posterior resume una correspondencia artificial.
+
+::: {.callout-important title="La unidad observacional no es un detalle"}
+Correlacionar exige pares válidos. El tamaño muestral $n$ es el número de unidades con ambas variables medidas y comparables. En geología esto obliga a revisar soporte, dominio, litología, procedencia, tratamiento de datos faltantes y consistencia de unidades.
+:::
+
+Como en capítulos anteriores, usaremos datos sintéticos y didácticos con magnitudes geológicas plausibles. El ejemplo conductor será una suite magmática sintética en la que $X$ representa SiO$_2$ en porcentaje en peso e $Y$ representa K$_2$O/CaO. No es un muestreo real: sirve para enseñar conceptos con geometría controlada.
+
+```{python}
+#| label: setup-correlacion-regresion
+#| include: false
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+rng = np.random.default_rng(20260925)
+
+n = 20
+sio2 = np.linspace(50, 72, n) + rng.normal(0, 1.4, n)
+k2o_cao = 0.12 + 0.018*(sio2 - 50) + rng.normal(0, 0.13, n)
+magmas = pd.DataFrame({"SiO2": sio2, "K2O_CaO": k2o_cao})
+
+# Paleta simple coherente con el manual.
+azul = "#2D6CDF"
+naranja = "#D95F02"
+dorado = "#D99A20"
+verde = "#6A8F3A"
+gris = "#666666"
+
+plt.rcParams.update({
+    "figure.dpi": 120,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+})
+```
+
+## El diagrama de dispersión
+
+El primer gráfico de una relación bivariada es el diagrama de dispersión. Cada punto representa una unidad observacional con dos mediciones.
+
+```{python}
+#| label: fig-scatter-sio2-k2ocao
+#| fig-cap: "Diagrama de dispersión para una suite magmática sintética. Cada punto representa una roca con SiO2 y K2O/CaO medidos sobre la misma unidad."
+#| fig-alt: "Nube de puntos con tendencia positiva entre SiO2 y K2O/CaO."
+
+fig, ax = plt.subplots(figsize=(6.8, 4.6))
+ax.scatter(magmas["SiO2"], magmas["K2O_CaO"], s=55, color=azul, edgecolor="white")
+ax.set_xlabel("SiO$_2$ (% en peso)")
+ax.set_ylabel("K$_2$O/CaO")
+ax.set_title("De una variable a una relación bivariada")
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+Antes de calcular una correlación conviene mirar, al menos, cinco rasgos:
+
+1. **Dirección:** ¿$Y$ tiende a aumentar o disminuir cuando aumenta $X$?
+2. **Forma:** ¿la relación parece aproximadamente lineal, curva o más compleja?
+3. **Intensidad:** ¿los puntos se agrupan cerca de una tendencia o están muy dispersos?
+4. **Grupos:** ¿hay dominios, litologías, facies o poblaciones mezcladas?
+5. **Observaciones atípicas:** ¿hay puntos que podrían dominar el resumen numérico?
+
+Esta lectura visual no es ornamental. Un único número colapsa una geometría bidimensional y puede ocultar curvatura, mezcla de dominios o influencia extrema [@davis_2002; @mckillup_dyar_2010].
+
+## Covarianza: variación conjunta
+
+La varianza mide dispersión de una variable alrededor de su media. La covarianza extiende esa idea a dos variables.
+
+Para cada observación calculamos dos desviaciones:
+
+$$
+x_i-\bar x,
+$$
+
+$$
+y_i-\bar y.
+$$
+
+Si multiplicamos esas desviaciones, el signo del producto indica si ambas variables se alejaron de sus medias en el mismo sentido o en sentidos opuestos:
+
+| Posición del punto | Producto $(x_i-\bar x)(y_i-\bar y)$ | Aporte |
+|---|---:|---|
+| $x_i>\bar x$ e $y_i>\bar y$ | positivo | covariación positiva |
+| $x_i<\bar x$ e $y_i<\bar y$ | positivo | covariación positiva |
+| $x_i>\bar x$ e $y_i<\bar y$ | negativo | covariación negativa |
+| $x_i<\bar x$ e $y_i>\bar y$ | negativo | covariación negativa |
+
+La covarianza muestral resume esos productos:
+
+$$
+s_{XY}=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y).
+$$
+
+```{python}
+#| label: fig-covarianza-cuadrantes
+#| fig-cap: "La covarianza se construye a partir de productos de desviaciones respecto de las medias. Los cuadrantes I y III aportan productos positivos; los cuadrantes II y IV, productos negativos."
+#| fig-alt: "Scatterplot dividido por líneas en las medias de X e Y, con cuadrantes positivos y negativos para la covarianza."
+
+x = magmas["SiO2"].to_numpy()
+y = magmas["K2O_CaO"].to_numpy()
+xbar, ybar = x.mean(), y.mean()
+
+fig, ax = plt.subplots(figsize=(6.8, 4.8))
+ax.scatter(x, y, s=55, color=azul, edgecolor="white")
+ax.axvline(xbar, color=gris, linestyle="--", linewidth=1.5)
+ax.axhline(ybar, color=gris, linestyle="--", linewidth=1.5)
+ax.text(xbar+0.4, ybar+0.02, "+", fontsize=18, color=verde)
+ax.text(xbar-3.0, ybar-0.08, "+", fontsize=18, color=verde)
+ax.text(xbar+0.4, ybar-0.08, "−", fontsize=18, color=naranja)
+ax.text(xbar-3.0, ybar+0.02, "−", fontsize=18, color=naranja)
+ax.set_xlabel("SiO$_2$ (% en peso)")
+ax.set_ylabel("K$_2$O/CaO")
+ax.set_title("Productos de desviaciones y signo de la covarianza")
+ax.grid(alpha=0.2)
+plt.show()
+```
+
+El signo de $s_{XY}$ informa dirección de covariación lineal neta. Su magnitud, sin embargo, depende de las unidades:
+
+$$
+[s_{XY}]=[X][Y].
+$$
+
+Cambiar de porcentaje a fracción, o de metros a kilómetros, cambia el número aunque la nube conserve la misma forma. Por eso la covarianza es fundamental para construir el razonamiento, pero no es todavía una medida directamente comparable entre pares de variables.
+
+## Pearson: covarianza estandarizada
+
+El coeficiente de correlación de Pearson divide la covarianza por la dispersión de ambas variables:
+
+$$
+r=\frac{s_{XY}}{s_Xs_Y}.
+$$
+
+Equivalente:
+
+$$
+r=\frac{\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y)}
+{\sqrt{\sum_{i=1}^{n}(x_i-\bar x)^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar y)^2}}.
+$$
+
+El resultado es adimensional y queda acotado:
+
+$$
+-1\leq r\leq 1.
+$$
+
+El signo indica dirección. El valor absoluto $|r|$ indica intensidad de la asociación **lineal**. La palabra lineal es esencial: una relación curva fuerte puede tener $r$ cercano a cero.
+
+```{python}
+#| label: tbl-correlacion-ejemplo
+#| tbl-cap: "Covarianza y correlación de Pearson para la suite magmática sintética."
+
+cov_xy = np.cov(x, y, ddof=1)[0, 1]
+r_xy = np.corrcoef(x, y)[0, 1]
+pd.DataFrame({
+    "cantidad": ["n", "covarianza muestral", "r de Pearson"],
+    "valor": [len(x), cov_xy, r_xy]
+})
+```
+
+Una lectura útil es distinguir cuatro afirmaciones:
+
+- $r>0$: la tendencia lineal es creciente;
+- $r<0$: la tendencia lineal es decreciente;
+- $|r|$ grande: los puntos se ordenan cerca de una recta;
+- $r\approx0$: hay poca asociación lineal, no necesariamente ausencia de relación.
+
+```{python}
+#| label: fig-geometrias-pearson
+#| fig-cap: "Geometrías distintas y coeficientes de Pearson. Pearson resume asociación lineal, no cualquier forma de relación."
+#| fig-alt: "Cuatro paneles: relación positiva, negativa, curva y sin patrón lineal, con r indicado en cada caso."
+
+rng2 = np.random.default_rng(123)
+def serie(kind, n=80):
+    xx = np.linspace(-3, 3, n)
+    if kind == "positiva":
+        yy = xx + rng2.normal(0, 0.8, n)
+    elif kind == "negativa":
+        yy = -xx + rng2.normal(0, 0.8, n)
+    elif kind == "curva":
+        yy = xx**2 + rng2.normal(0, 0.8, n)
+    else:
+        yy = rng2.normal(0, 1.4, n)
+    return xx, yy
+
+fig, axes = plt.subplots(1, 4, figsize=(13.5, 3.3), constrained_layout=True)
+for ax, kind in zip(axes, ["positiva", "negativa", "curva", "nula"]):
+    xx, yy = serie(kind)
+    rr = np.corrcoef(xx, yy)[0, 1]
+    ax.scatter(xx, yy, s=22, color=azul, alpha=0.8, edgecolor="white", linewidth=0.3)
+    ax.set_title(f"{kind}\nr = {rr:.2f}")
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.grid(alpha=0.2)
+plt.show()
+```
+
+::: {.callout-warning title="Pearson no reemplaza al gráfico"}
+Dos conjuntos de datos pueden tener el mismo $r$ y geometrías muy distintas. Pearson no detecta por sí solo curvatura, agrupamientos, heterocedasticidad, cambios de dominio ni mecanismos geológicos.
+:::
+
+## Inferencia: de $r$ muestral a $\rho$ poblacional
+
+El coeficiente que calculamos con una muestra es $r$. El parámetro poblacional correspondiente suele escribirse $\rho$.
+
+Como en capítulos anteriores, la pregunta inferencial no es sólo “¿cuánto vale el estadístico observado?”, sino:
+
+> ¿qué evidencia aporta este $r$ sobre una asociación lineal poblacional?
+
+El contraste clásico plantea:
+
+$$
+H_0:\rho=0,
+$$
+
+$$
+H_1:\rho\neq0.
+$$
+
+Bajo $H_0$ y los supuestos clásicos, el estadístico
+
+$$
+t=r\sqrt{\frac{n-2}{1-r^2}}
+$$
+
+sigue una distribución $t$ con
+
+$$
+\nu=n-2
+$$
+
+grados de libertad.
+
+```{python}
+#| label: tbl-test-pearson
+#| tbl-cap: "Test clásico bilateral para correlación de Pearson nula en el ejemplo sintético."
+
+res = stats.pearsonr(x, y)
+t_obs = r_xy * np.sqrt((len(x)-2)/(1-r_xy**2))
+p_val = 2 * stats.t.sf(abs(t_obs), df=len(x)-2)
+pd.DataFrame({
+    "estadístico": ["r", "t", "gl", "p-valor bilateral"],
+    "valor": [r_xy, t_obs, len(x)-2, p_val]
+})
+```
+
+La interpretación del [p-valor](../glosario.qmd#glosario-pvalor) es la misma que antes: mide cuán extremo sería obtener un estadístico como el observado, o más extremo, si $H_0$ y el modelo fueran adecuados. No es la probabilidad de que $H_0$ sea verdadera ni una medida directa de importancia geológica.
+
+Los supuestos que sostienen el test clásico incluyen:
+
+- pares observacionales independientes;
+- relación lineal como objeto de interés;
+- ausencia de influencia extrema dominante;
+- normalidad bivariada para el resultado exacto clásico en muestras pequeñas.
+
+En un curso de geoestadística aparece una advertencia adicional: si las muestras están espacialmente autocorrelacionadas, $n$ pares no equivalen necesariamente a $n$ unidades independientes de información. El p-valor puede volverse demasiado optimista [@cressie_1993; @chiles_delfiner_2012].
+
+## Magnitud, significación y tamaño muestral
+
+$r$, $p$ y $n$ cuentan cosas distintas:
+
+| Cantidad | Qué informa | Qué no informa por sí sola |
+|---|---|---|
+| $r$ | dirección e intensidad lineal muestral | evidencia inferencial o causalidad |
+| $p$ | compatibilidad con $H_0$ bajo supuestos | magnitud geológica del efecto |
+| $n$ | precisión potencial y grados de libertad | independencia real ni calidad del diseño |
+
+Con $n$ muy grande, correlaciones pequeñas pueden ser estadísticamente significativas. Con $n$ muy pequeño, correlaciones grandes pueden no alcanzar evidencia suficiente. Esta distinción continúa la lógica de los capítulos de inferencia: significación estadística y relevancia científica no son sinónimos.
+
+```{python}
+#| label: fig-r-p-n
+#| fig-cap: "El mismo valor de r puede producir evidencias distintas según el tamaño muestral."
+#| fig-alt: "Tres distribuciones t con estadísticas observadas correspondientes a r fijo y n creciente."
+
+r0 = 0.35
+ns = [12, 40, 200]
+fig, ax = plt.subplots(figsize=(7.2, 4.4))
+for n0, color in zip(ns, [dorado, azul, verde]):
+    df = n0 - 2
+    t0 = r0*np.sqrt(df/(1-r0**2))
+    xs = np.linspace(-4, 4, 400)
+    ax.plot(xs, stats.t.pdf(xs, df), color=color, label=f"n={n0}, t={t0:.2f}, p={2*stats.t.sf(abs(t0), df):.3f}")
+    ax.axvline(t0, color=color, linestyle="--", alpha=0.8)
+    ax.axvline(-t0, color=color, linestyle="--", alpha=0.8)
+ax.set_xlabel("t bajo H0")
+ax.set_ylabel("densidad")
+ax.set_title("Mismo r, distinto n")
+ax.legend()
+ax.grid(alpha=0.2)
+plt.show()
+```
+
+## Influencia y observaciones atípicas
+
+Una observación atípica no es automáticamente un error. Puede ser una roca real de otro dominio, una medición contaminada, una muestra alterada, un problema de carga de datos o la evidencia de un proceso que todavía no entendimos. Lo que sí es cierto es que algunos puntos pueden modificar fuertemente $r$.
+
+```{python}
+#| label: fig-influencia-correlacion
+#| fig-cap: "Una observación puede cambiar sustancialmente la correlación de Pearson. La decisión no debe ser borrarla automáticamente, sino investigar su origen geológico y analítico."
+#| fig-alt: "Dos scatterplots comparan una nube base y la misma nube con un punto extremo que incrementa la correlación."
+
+rng3 = np.random.default_rng(456)
+xx = rng3.normal(0, 1, 35)
+yy = rng3.normal(0, 1, 35)
+xx2 = np.r_[xx, 4.2]
+yy2 = np.r_[yy, 4.4]
+
+fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.2), sharex=True, sharey=True, constrained_layout=True)
+for ax, xx_i, yy_i, title in [
+    (axes[0], xx, yy, "sin punto extremo"),
+    (axes[1], xx2, yy2, "con punto extremo")
+]:
+    ax.scatter(xx_i, yy_i, s=42, color=azul, alpha=0.8, edgecolor="white")
+    if title.startswith("con"):
+        ax.scatter([4.2], [4.4], s=90, color=naranja, edgecolor="white", zorder=3)
+    rr = np.corrcoef(xx_i, yy_i)[0, 1]
+    ax.set_title(f"{title}\nr = {rr:.2f}")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.grid(alpha=0.2)
+plt.show()
+```
+
+El procedimiento correcto no es “eliminar outliers”. Es preguntar:
+
+- ¿la medición es físicamente posible?
+- ¿pertenece al mismo dominio geológico?
+- ¿hubo error analítico, de transcripción o de unidad?
+- ¿el resultado cambia si se analiza con y sin esa observación?
+- ¿conviene reportar un análisis de sensibilidad?
+
+## Correlación no implica causalidad
+
+Una correlación cuantifica asociación lineal. No identifica, por sí sola, el mecanismo que produjo la asociación. Al menos cinco explicaciones pueden generar una nube correlacionada:
+
+1. $X$ influye causalmente sobre $Y$;
+2. $Y$ influye causalmente sobre $X$;
+3. una tercera variable $Z$ influye sobre ambas;
+4. la asociación aparece por azar o por selección muestral;
+5. ambas variables comparten una tendencia común, por ejemplo espacial, estratigráfica o temporal.
+
+En geoquímica y sedimentología, además, variables composicionales pueden presentar asociaciones inducidas por cierre: las partes de una composición no varían libremente porque están condicionadas por una suma total [@tolosana_mueller_2021; @wackernagel_2003]. Por eso una correlación entre óxidos no debe interpretarse mecánicamente como relación causal directa sin revisar el marco composicional, petrológico y de muestreo.
+
+## Regresión: cambiamos la pregunta
+
+La correlación de Pearson es simétrica:
+
+$$
+r(X,Y)=r(Y,X).
+$$
+
+La regresión lineal simple cambia la pregunta. Ya no pregunta sólo si dos variables varían juntas, sino cómo cambia la respuesta $Y$ cuando cambia una variable explicativa $X$.
+
+En el ejemplo:
+
+$$
+X=\text{SiO}_2,
+$$
+
+$$
+Y=\text{K}_2\text{O}/\text{CaO}.
+$$
+
+Elegir $X$ e $Y$ depende de la pregunta geológica; no prueba causalidad. Podemos usar SiO$_2$ para describir la tendencia esperada de K$_2$O/CaO dentro de una suite, pero eso no significa que el porcentaje de SiO$_2$ sea una causa única o directa del cociente.
+
+## Modelo lineal: señal más error
+
+El modelo poblacional clásico es
+
+$$
+Y_i=\beta_0+\beta_1X_i+\varepsilon_i.
+$$
+
+La parte sistemática es
+
+$$
+\beta_0+\beta_1X_i,
+$$
+
+y el término $\varepsilon_i$ representa variabilidad no capturada por la recta: heterogeneidad geológica, procesos omitidos, error de medición o variabilidad natural.
+
+Bajo el supuesto
+
+$$
+\mathbb E(\varepsilon_i\mid X_i)=0,
+$$
+
+la media condicional de $Y$ es
+
+$$
+\mathbb E(Y\mid X=x)=\beta_0+\beta_1x.
+$$
+
+Los parámetros $\beta_0$ y $\beta_1$ son poblacionales. Sus estimaciones muestrales se escriben $b_0$ y $b_1$.
+
+La recta ajustada es
+
+$$
+\hat y_i=b_0+b_1x_i,
+$$
+
+y el residuo muestral es
+
+$$
+e_i=y_i-\hat y_i.
+$$
+
+El residuo $e_i$ no es lo mismo que el error poblacional $\varepsilon_i$: el primero se calcula respecto de una recta estimada; el segundo se define respecto de la media condicional verdadera, que no observamos.
+
+## Pendiente e intercepto
+
+La pendiente estimada $b_1$ mide el cambio esperado en $Y$ por una unidad de cambio en $X$:
+
+$$
+b_1=\frac{\Delta \hat y}{\Delta x}.
+$$
+
+Sus unidades son
+
+$$
+[b_1]=\frac{[Y]}{[X]}.
+$$
+
+En este ejemplo, $b_1$ se interpreta como cambio estimado de K$_2$O/CaO por punto porcentual de SiO$_2$.
+
+El intercepto $b_0$ es el valor estimado de $Y$ cuando $X=0$. Pero no siempre tiene interpretación geológica. Si nuestras rocas tienen entre 50 y 72 % de SiO$_2$, una roca con 0 % de SiO$_2$ está fuera del dominio del ejemplo. El intercepto puede ser necesario algebraicamente sin ser un valor petrologicamente significativo.
+
+## Mínimos cuadrados ordinarios
+
+Hay infinitas rectas posibles. Mínimos cuadrados ordinarios (OLS) elige $b_0$ y $b_1$ minimizando la suma de cuadrados de los residuos:
+
+$$
+SCE=\sum_{i=1}^{n}(y_i-\hat y_i)^2
+=\sum_{i=1}^{n}(y_i-b_0-b_1x_i)^2.
+$$
+
+La solución para la pendiente es
+
+$$
+b_1=\frac{\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y)}
+{\sum_{i=1}^{n}(x_i-\bar x)^2}
+=\frac{s_{XY}}{s_X^2}.
+$$
+
+Como
+
+$$
+r=\frac{s_{XY}}{s_Xs_Y},
+$$
+
+también se puede escribir
+
+$$
+b_1=r\frac{s_Y}{s_X}.
+$$
+
+Esta igualdad muestra la conexión entre correlación y regresión. Pero no las vuelve equivalentes: $r$ es adimensional y simétrico; $b_1$ depende de las unidades y de cuál variable se elige como explicativa.
+
+El intercepto estimado es
+
+$$
+b_0=\bar y-b_1\bar x.
+$$
+
+Por eso, con intercepto, la recta OLS pasa por el punto de medias:
+
+$$
+(\bar x,\bar y).
+$$
+
+```{python}
+#| label: fig-regresion-ols
+#| fig-cap: "Recta de mínimos cuadrados para la suite magmática sintética. La recta con intercepto pasa por el punto de medias."
+#| fig-alt: "Scatterplot con recta ajustada y punto de medias resaltado."
+
+slope, intercept, r_value, p_slope, se_slope = stats.linregress(x, y)
+xgrid = np.linspace(x.min(), x.max(), 200)
+yhat_grid = intercept + slope*xgrid
+
+fig, ax = plt.subplots(figsize=(6.8, 4.8))
+ax.scatter(x, y, s=55, color=azul, edgecolor="white")
+ax.plot(xgrid, yhat_grid, color=naranja, linewidth=2.5, label="recta OLS")
+ax.scatter([xbar], [ybar], s=100, color=dorado, edgecolor="white", zorder=3, label="$(\\bar x,\\bar y)$")
+ax.set_xlabel("SiO$_2$ (% en peso)")
+ax.set_ylabel("K$_2$O/CaO")
+ax.set_title("Regresión lineal simple")
+ax.legend()
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+```{python}
+#| label: tbl-regresion-ejemplo
+#| tbl-cap: "Estimaciones principales de la regresión lineal simple."
+
+pd.DataFrame({
+    "cantidad": ["b0", "b1", "r", "R2", "p pendiente"],
+    "valor": [intercept, slope, r_value, r_value**2, p_slope]
+})
+```
+
+## Variabilidad total, explicada y residual
+
+Antes de incorporar $X$, una referencia simple para predecir $Y$ es su media $\bar y$. La desviación total de una observación es
+
+$$
+y_i-\bar y.
+$$
+
+La recta ajustada divide esa desviación en una parte representada por el modelo y una parte residual:
+
+$$
+y_i-\bar y=(\hat y_i-\bar y)+(y_i-\hat y_i).
+$$
+
+Al elevar al cuadrado y sumar, en OLS con intercepto se obtiene:
+
+$$
+SCT=SCR+SCE,
+$$
+
+donde
+
+$$
+SCT=\sum_{i=1}^{n}(y_i-\bar y)^2,
+$$
+
+$$
+SCR=\sum_{i=1}^{n}(\hat y_i-\bar y)^2,
+$$
+
+$$
+SCE=\sum_{i=1}^{n}(y_i-\hat y_i)^2.
+$$
+
+La igualdad no surge de cuadrar término a término; los productos cruzados se anulan al sumar por las propiedades del ajuste OLS con intercepto.
+
+## $R^2$: proporción de variabilidad representada
+
+El coeficiente de determinación es
+
+$$
+R^2=\frac{SCR}{SCT}=1-\frac{SCE}{SCT}.
+$$
+
+En regresión lineal simple con intercepto,
+
+$$
+R^2=r^2.
+$$
+
+Si $R^2=0.36$, podemos decir que la recta representa el 36 % de la variabilidad muestral observada de $Y$ respecto de su media. No podemos decir que $X$ “cause el 36 %” de $Y$.
+
+::: {.callout-warning title="$R^2$ no valida el modelo"}
+Un $R^2$ alto no demuestra causalidad, independencia, linealidad ni buena predicción fuera de muestra. Un $R^2$ bajo tampoco descarta que la relación sea científicamente relevante. Siempre debe mirarse la geometría, los residuos y el contexto geológico.
+:::
+
+## Residuos como diagnóstico
+
+Los residuos muestran qué queda sin representar por la recta. Un gráfico de residuos contra valores ajustados permite buscar patrones:
+
+- curvatura: sugiere media condicional no lineal;
+- embudo: sugiere varianza no constante;
+- grupos: sugiere dominios mezclados;
+- patrones espaciales: sugieren dependencia residual.
+
+```{python}
+#| label: fig-residuos-regresion
+#| fig-cap: "Diagnóstico básico de residuos: una recta puede resumir una tendencia, pero los residuos muestran si queda estructura sistemática no modelada."
+#| fig-alt: "Panel izquierdo con scatterplot y recta; panel derecho con residuos frente a ajustados."
+
+fitted = intercept + slope*x
+resid = y - fitted
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), constrained_layout=True)
+axes[0].scatter(x, y, s=50, color=azul, edgecolor="white")
+axes[0].plot(xgrid, yhat_grid, color=naranja, linewidth=2.2)
+axes[0].set_xlabel("SiO$_2$ (% en peso)")
+axes[0].set_ylabel("K$_2$O/CaO")
+axes[0].set_title("Ajuste")
+axes[0].grid(alpha=0.25)
+
+axes[1].scatter(fitted, resid, s=50, color=verde, edgecolor="white")
+axes[1].axhline(0, color=gris, linestyle="--")
+axes[1].set_xlabel("$\\hat y_i$")
+axes[1].set_ylabel("$e_i=y_i-\\hat y_i$")
+axes[1].set_title("Residuos")
+axes[1].grid(alpha=0.25)
+plt.show()
+```
+
+El residuo no es basura estadística. En geología puede contener información sobre procesos omitidos: cambios litológicos, alteración, mezcla, zonación espacial o mediciones realizadas con distinto soporte.
+
+## Supuestos de la regresión lineal
+
+Calcular una recta OLS es fácil. Usarla para inferir requiere supuestos:
+
+1. **Linealidad de la media condicional:** $\mathbb E(Y\mid X=x)=\beta_0+\beta_1x$.
+2. **Independencia:** los errores de observaciones distintas no están correlacionados.
+3. **Varianza constante:** $\operatorname{Var}(\varepsilon\mid X)=\sigma^2$.
+4. **Normalidad condicional:** necesaria para inferencia exacta clásica en muestras pequeñas.
+
+La normalidad no se refiere a que $X$ sea normal ni a que la distribución marginal de $Y$ sea normal. Se refiere a los errores condicionales, dentro del modelo. En datos espaciales, la independencia suele ser el supuesto más delicado: muestras cercanas pueden compartir historia y producir residuos autocorrelacionados.
+
+## Inferencia sobre la pendiente
+
+La hipótesis clásica sobre la pendiente es
+
+$$
+H_0:\beta_1=0,
+$$
+
+$$
+H_1:\beta_1\neq0.
+$$
+
+El estadístico es
+
+$$
+t=\frac{b_1}{SE(b_1)},
+$$
+
+con $n-2$ grados de libertad bajo los supuestos clásicos.
+
+En regresión lineal simple con intercepto, el test bilateral de pendiente nula coincide numéricamente con el test bilateral de $\rho=0$ para Pearson. Esta equivalencia no elimina la diferencia conceptual entre correlación y regresión.
+
+Un reporte mínimo debería incluir pendiente con unidades, intervalo de confianza, $R^2$, gráfico de dispersión y diagnóstico residual. Reportar sólo “$p<0.05$” empobrece la interpretación.
+
+## Estimar la media no es predecir una observación individual
+
+Para un valor $x_0$, la recta produce un valor ajustado:
+
+$$
+\hat y_0=b_0+b_1x_0.
+$$
+
+Pero hay dos preguntas distintas:
+
+1. ¿cuál es la media esperada de $Y$ para unidades con $X=x_0$?
+2. ¿cuál será el valor de $Y$ para una nueva unidad individual con $X=x_0$?
+
+La segunda tiene mayor incertidumbre porque incluye, además de la incertidumbre sobre la media condicional, la variabilidad individual alrededor de la recta. Por eso el intervalo de predicción es más ancho que el intervalo de confianza para la media.
+
+```{python}
+#| label: fig-ic-prediccion
+#| fig-cap: "Intervalo de confianza para la media condicional e intervalo de predicción para una nueva observación. El intervalo de predicción es más ancho porque incluye variabilidad individual."
+#| fig-alt: "Scatterplot con recta de regresión, banda de confianza y banda de predicción más ancha."
+
+n = len(x)
+xmean = x.mean()
+Sxx = np.sum((x-xmean)**2)
+sigma_hat = np.sqrt(np.sum(resid**2)/(n-2))
+tcrit = stats.t.ppf(0.975, df=n-2)
+
+ygrid = intercept + slope*xgrid
+se_mean = sigma_hat*np.sqrt(1/n + (xgrid-xmean)**2/Sxx)
+se_pred = sigma_hat*np.sqrt(1 + 1/n + (xgrid-xmean)**2/Sxx)
+
+fig, ax = plt.subplots(figsize=(7.2, 4.8))
+ax.scatter(x, y, s=50, color=azul, edgecolor="white", alpha=0.9)
+ax.plot(xgrid, ygrid, color=naranja, linewidth=2.2, label="recta")
+ax.fill_between(xgrid, ygrid-tcrit*se_mean, ygrid+tcrit*se_mean, color=azul, alpha=0.18, label="IC media 95%")
+ax.fill_between(xgrid, ygrid-tcrit*se_pred, ygrid+tcrit*se_pred, color=dorado, alpha=0.18, label="IP individual 95%")
+ax.set_xlabel("SiO$_2$ (% en peso)")
+ax.set_ylabel("K$_2$O/CaO")
+ax.set_title("Media condicional vs observación individual")
+ax.legend()
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+## Interpolación y extrapolación
+
+Interpolar es estimar dentro del rango de $X$ observado. Extrapolar es usar la recta fuera de ese rango.
+
+La ecuación siempre devuelve un número, pero el sistema geológico no está obligado a mantener la misma relación fuera del dominio muestreado. En una suite magmática, al extrapolar a composiciones no observadas podrían cambiar procesos de diferenciación, mezcla, cristalización o alteración. Incluso dentro del rango numérico, una nueva roca debe pertenecer a un dominio geológico comparable.
+
+::: {.callout-important title="La recta matemática se prolonga; el dominio geológico no necesariamente"}
+La extrapolación combina incertidumbre estadística con incertidumbre de modelo. Las bandas calculadas bajo el modelo lineal no incorporan automáticamente la posibilidad de que la relación cambie de mecanismo fuera del rango observado.
+:::
+
+## Leverage e influencia en regresión
+
+En regresión conviene distinguir tres conceptos:
+
+- **residuo:** separación vertical entre dato y recta ajustada;
+- **leverage:** posición extrema en $X$ respecto de $\bar x$;
+- **influencia:** cambio del ajuste al incluir o excluir una observación.
+
+Para regresión simple con intercepto, el leverage de la observación $i$ es
+
+$$
+h_{ii}=\frac{1}{n}+\frac{(x_i-\bar x)^2}{\sum_{j=1}^{n}(x_j-\bar x)^2}.
+$$
+
+Un punto con leverage alto no necesariamente es influyente si sigue la tendencia. Pero si combina leverage alto y residuo grande, puede rotar la recta de manera importante.
+
+```{python}
+#| label: fig-leverage-influencia
+#| fig-cap: "Un punto extremo en X y alejado de la tendencia puede modificar la pendiente ajustada. No debe eliminarse automáticamente: debe investigarse su origen geológico."
+#| fig-alt: "Dos rectas de regresión comparan el ajuste sin y con un punto sintético influyente."
+
+x_ext = np.r_[x, 80]
+y_ext = np.r_[y, y.min() - 0.05]
+s1 = stats.linregress(x, y)
+s2 = stats.linregress(x_ext, y_ext)
+xgrid2 = np.linspace(x_ext.min(), x_ext.max(), 200)
+
+fig, ax = plt.subplots(figsize=(7.2, 4.8))
+ax.scatter(x, y, s=50, color=azul, edgecolor="white", label="datos base")
+ax.scatter([80], [y.min()-0.05], s=100, color=naranja, edgecolor="white", label="punto sintético")
+ax.plot(xgrid2, s1.intercept + s1.slope*xgrid2, color=azul, linewidth=2, label="sin punto")
+ax.plot(xgrid2, s2.intercept + s2.slope*xgrid2, color=naranja, linewidth=2, label="con punto")
+ax.set_xlabel("SiO$_2$ (% en peso)")
+ax.set_ylabel("K$_2$O/CaO")
+ax.set_title("Leverage e influencia")
+ax.legend()
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+## Mezcla de dominios y paradoja de Simpson
+
+Una recta global puede mezclar dominios que no deberían modelarse juntos. Si dos suites, facies o unidades tienen medias diferentes, la tendencia agregada puede reflejar principalmente la separación entre grupos, no el comportamiento interno de cada grupo.
+
+```{python}
+#| label: fig-mezcla-dominios
+#| fig-cap: "Una tendencia global puede diferir de las tendencias internas si se mezclan dominios geológicos."
+#| fig-alt: "Scatterplot con dos grupos; la recta global tiene pendiente positiva mientras las rectas internas son negativas."
+
+rng4 = np.random.default_rng(789)
+xA = rng4.normal(52, 1.2, 24)
+yA = 0.58 - 0.015*(xA-52) + rng4.normal(0, 0.035, 24)
+xB = rng4.normal(66, 1.2, 24)
+yB = 0.92 - 0.015*(xB-66) + rng4.normal(0, 0.035, 24)
+Xg = np.r_[xA, xB]
+Yg = np.r_[yA, yB]
+g = np.array(["Dominio A"]*len(xA) + ["Dominio B"]*len(xB))
+sg = stats.linregress(Xg, Yg)
+sA = stats.linregress(xA, yA)
+sB = stats.linregress(xB, yB)
+xg = np.linspace(Xg.min(), Xg.max(), 200)
+
+fig, ax = plt.subplots(figsize=(7.2, 4.8))
+ax.scatter(xA, yA, s=50, color=azul, edgecolor="white", label="Dominio A")
+ax.scatter(xB, yB, s=50, color=verde, edgecolor="white", label="Dominio B")
+ax.plot(xg, sg.intercept + sg.slope*xg, color=naranja, linewidth=2.4, label="global")
+ax.plot(xg, sA.intercept + sA.slope*xg, color=azul, linestyle="--", label="A")
+ax.plot(xg, sB.intercept + sB.slope*xg, color=verde, linestyle="--", label="B")
+ax.set_xlabel("SiO$_2$ (% en peso)")
+ax.set_ylabel("K$_2$O/CaO")
+ax.set_title("Una recta global puede ocultar dominios")
+ax.legend(ncol=2)
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+No se deben separar grupos sólo para mejorar un ajuste. La separación debe justificarse por litología, facies, alteración, procedencia, evolución, soporte o diseño de muestreo.
+
+## Correlación, regresión y dependencia espacial
+
+Este capítulo sigue dentro de la estadística clásica, pero prepara el ingreso a la geoestadística espacial. Tanto el test de Pearson como la inferencia de regresión suponen independencia de las unidades observacionales. En datos geológicos, esa independencia puede fallar por proximidad espacial, continuidad estratigráfica, muestreo en transectas, campañas sesgadas o agrupamiento de muestras.
+
+Una pregunta clave para el próximo bloque será:
+
+> después de retirar una tendencia o relación sistemática, ¿los residuos siguen dependiendo de dónde fueron medidos?
+
+Si la respuesta es sí, la estructura espacial no es un detalle residual: debe modelarse explícitamente mediante herramientas geoestadísticas como covarianza espacial y variograma [@isaaks_srivastava_1989; @chiles_delfiner_2012; @goovaerts_1997].
+
+## Errores frecuentes
+
+- calcular $r$ sin mirar el scatterplot;
+- interpretar $r\approx0$ como ausencia absoluta de relación;
+- confundir correlación significativa con importancia geológica;
+- interpretar $p$ como probabilidad de que no exista relación;
+- asumir causalidad a partir de asociación;
+- ignorar unidades al interpretar una pendiente;
+- atribuir sentido geológico al intercepto fuera del dominio observado;
+- usar $R^2$ como prueba de validez del modelo;
+- extrapolar porque la ecuación permite calcular un número;
+- eliminar puntos influyentes sin investigar su origen;
+- mezclar dominios geológicos no comparables;
+- olvidar que la dependencia espacial puede invalidar la inferencia clásica.
+
+## Preguntas de revisión
+
+1. ¿Por qué el scatterplot debe preceder al cálculo de Pearson?
+2. ¿Qué informa el signo de la covarianza? ¿Por qué su magnitud no es fácilmente comparable entre pares de variables?
+3. ¿Por qué Pearson es una covarianza estandarizada?
+4. ¿Qué significa $r\approx0$ y qué no significa?
+5. ¿Cómo se transforma $r$ en un estadístico $t$ para evaluar $H_0:\rho=0$?
+6. ¿Por qué un $p$ pequeño no implica causalidad?
+7. ¿En qué se diferencian correlación y regresión?
+8. ¿Qué unidades tiene la pendiente de una regresión?
+9. ¿Por qué $R^2$ no debe interpretarse como porcentaje de causalidad?
+10. ¿Por qué un intervalo de predicción es más ancho que un intervalo para la media condicional?
+11. ¿Qué diferencia hay entre residuo, leverage e influencia?
+12. ¿Cómo puede la dependencia espacial afectar la inferencia sobre correlación o pendiente?
+
+## Puente al bloque espacial
+
+La correlación y la regresión permiten estudiar relaciones entre variables. La geoestadística espacial agrega otra dimensión: la posición. A partir de ahora, además de preguntar si $X$ e $Y$ varían conjuntamente, preguntaremos si valores y residuos se parecen más cuando están cerca, si esa semejanza cambia con la distancia y si podemos modelarla para estimar en lugares no muestreados.
