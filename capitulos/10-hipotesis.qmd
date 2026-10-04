@@ -545,4 +545,4 @@ $$
 \boxed{\text{pregunta}\to\text{diseño}\to\text{estimador}\to\text{SE}\to\text{estadístico}\to\text{distribución de referencia}\to p/IC\to\text{decisión}\to\text{magnitud y contexto}}
 $$
 
-La decisión nunca debe separarse del diseño. El error tipo I controla falsos rechazos mediante $\alpha$; el error tipo II conduce a la potencia; la potencia depende de cuánto efecto queremos detectar y de cuánta información independiente tenemos. En geociencias, esa última frase abre directamente el problema espacial: más datos no siempre significan más réplicas independientes.
+La decisión nunca debe separarse del diseño. El error tipo I controla falsos rechazos mediante $lpha$; el error tipo II conduce a la potencia; la potencia depende de cuánto efecto queremos detectar y de cuánta información independiente tenemos. En geociencias, esa última frase abre directamente el problema espacial: más datos no siempre significan más réplicas independientes.

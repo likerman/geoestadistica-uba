@@ -49,6 +49,17 @@ book:
         - capitulos/11-varianzas-categorias.qmd
         - capitulos/10b-repaso-integrador.qmd
     - ejemplos/01-caso-sintetico.qmd
+    - part: "IV. Relaciones entre variables"
+      chapters:
+        - capitulos/11-correlacion-regresion.qmd
+        - capitulos/12-anova.qmd
+        - capitulos/13-metodos-multivariados.qmd
+    - part: "V. Geoestadística espacial"
+      chapters:
+        - capitulos/14-variable-regionalizada.qmd
+        - capitulos/15-variograma.qmd
+        - capitulos/16-kriging.qmd
+        - capitulos/17-cierre.qmd
     - glosario.qmd
     - referencias.qmd
 
