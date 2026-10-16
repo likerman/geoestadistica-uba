@@ -5,7 +5,7 @@
 - relacionar momentos centrales con dispersión, asimetría y curtosis;
 - distinguir simetría, modalidad y peso de colas;
 - construir e interpretar boxplots y gráficos de violín;
-- investigar valores atípicos sin confundirlos con errores;
+- investigar [valores atípicos u outliers](../glosario.qmd#glosario-outlier) sin confundirlos con errores;
 - comprender qué significa —y qué no— asumir normalidad.
 
 ## Momentos

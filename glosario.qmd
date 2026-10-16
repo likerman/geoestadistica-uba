@@ -32,7 +32,7 @@ Parámetro de suavizado de una estimación de densidad por kernels. Controla la 
 
 **Inglés:** *anisotropy*.
 
-Dependencia de una propiedad o estructura espacial respecto de la dirección. En geoestadística implica que la continuidad, el alcance o la variabilidad pueden diferir entre vectores de separación con distinta orientación. No debe inferirse únicamente de la forma visual de un mapa; requiere analizar pares, direcciones y soporte.
+Dependencia de una propiedad o estructura espacial respecto de la dirección. En geoestadística implica que la continuidad, el alcance o la variabilidad pueden diferir entre vectores de separación con distinta orientación. En la **anisotropía geométrica** cambia el alcance según la dirección y la meseta se conserva aproximadamente; en la **anisotropía zonal** puede cambiar también la meseta. No debe inferirse únicamente de la forma visual de un mapa: requiere analizar pares, direcciones, tolerancias, cobertura y soporte.
 
 ### Asimetría {#glosario-asimetria}
 
@@ -45,7 +45,7 @@ Propiedad que describe falta de simetría de una distribución. El coeficiente b
 
 **Inglés:** *association*.
 
-Relación estadística entre variables observadas conjuntamente. Puede expresarse mediante diferencias entre grupos, correlaciones, pendientes, patrones en una tabla o estructuras más complejas. Una asociación no implica por sí sola causalidad: puede surgir por un mecanismo causal, por una variable confundente, por mezcla de dominios, por sesgos de muestreo o por dependencia espacial. Véase [Asociación no es causalidad](capitulos/11-correlacion-regresion.qmd#asociación-no-es-causalidad).
+Relación estadística entre variables observadas conjuntamente. Puede expresarse mediante diferencias entre grupos, correlaciones, pendientes, patrones en una tabla o estructuras más complejas. Una asociación no implica por sí sola causalidad: puede surgir por un mecanismo causal, por una variable confundente, por mezcla de dominios, por sesgos de muestreo o por dependencia espacial. Véase [Correlación no implica causalidad](capitulos/11-correlacion-regresion.qmd#sec-asociacion-causalidad).
 
 ## B
 
@@ -62,6 +62,12 @@ Segmento que se extiende desde una caja hasta el valor observado más extremo ad
 Representación basada en mediana, cuartiles, intervalo intercuartílico y una regla para bigotes y puntos externos. Facilita comparar posición y dispersión robustas entre grupos, pero no muestra adecuadamente modalidad, densidad ni tamaño muestral. Véase [Boxplot](capitulos/07-forma-diagnostico.qmd#boxplot).
 
 ## C
+
+### Centroide {#glosario-centroide}
+
+**Inglés:** *centroid*.
+
+Vector de medias de las variables para las observaciones de un grupo. En $k$-means actúa como representante del grupo y se actualiza en cada iteración. No tiene por qué coincidir con una observación real y su interpretación depende de la escala y de las variables utilizadas.
 
 ### CDF {#glosario-cdf}
 
@@ -132,6 +138,12 @@ Cuarto momento central estandarizado, $\beta_2=\mu_4/\sigma^4$. Es especialmente
 
 Valor registrado para una variable sobre una unidad de observación, mediante un procedimiento y un soporte determinados. Un dato espacial incluye al menos valor y localización, además de metadatos necesarios para interpretarlo. No es sinónimo del sistema físico observado.
 
+### Dato axial {#glosario-dato-axial}
+
+**Inglés:** *axial data*.
+
+Orientación para la cual un eje carece de sentido positivo intrínseco: $\theta$ y $\theta+180^\circ$ representan la misma dirección. Los rumbos de fracturas son un ejemplo habitual. No deben promediarse como datos lineales ordinarios; una estrategia consiste en trabajar con el ángulo duplicado y volver luego a la escala axial.
+
 ### Densidad de probabilidad {#glosario-densidad}
 
 **Inglés:** *probability density function*. **Notación habitual:** $f(x)$.
@@ -193,6 +205,12 @@ Representación arbórea de las fusiones producidas por un agrupamiento jerárqu
 Distancia entre dos vectores definida por $d(\mathbf x_i,\mathbf x_j)=\sqrt{\sum_k(x_{ik}-x_{jk})^2}$. Su interpretación depende de la escala, las variables y la geometría del espacio. No siempre es apropiada para datos composicionales, angulares o mixtos. Véase [Distancia como definición de semejanza](capitulos/13-metodos-multivariados.qmd#distancia-como-definición-de-semejanza).
 
 ## E
+
+### Enlace de agrupamiento {#glosario-enlace}
+
+**Inglés:** *linkage criterion*.
+
+Regla que define la distancia entre grupos durante un agrupamiento jerárquico. Enlace simple usa el par más cercano; enlace completo, el más lejano; enlace promedio, el promedio entre pares; Ward elige la fusión que menos incrementa la inercia intragrupo. Distintos enlaces pueden producir dendrogramas diferentes con la misma matriz de distancias.
 
 ### Efecto pepita {#glosario-efecto-pepita}
 
@@ -277,7 +295,7 @@ Promedio ponderado por probabilidades de los valores posibles de una variable al
 
 **Inglés:** *extrapolation*.
 
-Uso de un modelo ajustado para predecir o interpretar fuera del rango de datos, del dominio geológico o de las condiciones bajo las cuales fue calibrado. Suele ser mucho más dependiente de los supuestos que la interpolación y puede producir conclusiones engañosas aun cuando el ajuste dentro del rango observado parezca bueno. Véase [Extrapolación: donde el modelo se vuelve frágil](capitulos/11-correlacion-regresion.qmd#extrapolación-donde-el-modelo-se-vuelve-frágil).
+Uso de un modelo ajustado para predecir o interpretar fuera del rango de datos, del dominio geológico o de las condiciones bajo las cuales fue calibrado. Suele ser mucho más dependiente de los supuestos que la interpolación y puede producir conclusiones engañosas aun cuando el ajuste dentro del rango observado parezca bueno. Véase [Interpolación y extrapolación](capitulos/11-correlacion-regresion.qmd#sec-interpolacion-extrapolacion).
 
 ### Exceso de curtosis {#glosario-exceso-curtosis}
 
@@ -327,6 +345,12 @@ Número de cantidades que pueden variar independientemente después de imponer r
 
 ## H
 
+### H-scattergram {#glosario-h-scattergram}
+
+**Inglés:** *h-scattergram*.
+
+Diagrama de dispersión que compara $z(\mathbf u)$ con $z(\mathbf u+\mathbf h)$ para pares asignados a una clase de separación. Permite observar la apertura de la nube, puntos dominantes, asimetrías o mezclas que un único valor de semivarianza resume.
+
 ### Histograma {#glosario-histograma}
 
 **Inglés:** *histogram*.
@@ -347,6 +371,12 @@ Valor o afirmación de referencia bajo la cual se calcula la distribución del e
 
 ## I
 
+### Inercia intragrupo {#glosario-inercia-intragrupo}
+
+**Inglés:** *within-cluster sum of squares* o *within-cluster inertia*.
+
+Suma de distancias cuadráticas de cada observación al centroide de su grupo. Es el criterio que minimiza $k$-means y disminuye al aumentar $K$; por eso su descenso, sin penalización ni interpretación, no determina por sí solo cuántos grupos conservar.
+
 ### IDW {#glosario-idw}
 
 **Inglés:** *inverse distance weighting*.
@@ -358,7 +388,7 @@ Interpolador determinista que asigna pesos proporcionales a una potencia negativ
 
 **Inglés:** *intercept*. **Símbolo usual:** $b_0$ o $\beta_0$.
 
-En una regresión lineal simple, valor esperado por el modelo para $Y$ cuando $X=0$: $\hat{Y}=b_0+b_1X$. Su interpretación científica sólo es directa si $X=0$ pertenece al dominio relevante o tiene sentido geológico. Fuera de ese contexto, puede ser principalmente un parámetro necesario para posicionar la recta. Véase [El modelo de regresión lineal simple](capitulos/11-correlacion-regresion.qmd#el-modelo-de-regresión-lineal-simple).
+En una regresión lineal simple, valor esperado por el modelo para $Y$ cuando $X=0$: $\hat{Y}=b_0+b_1X$. Su interpretación científica sólo es directa si $X=0$ pertenece al dominio relevante o tiene sentido geológico. Fuera de ese contexto, puede ser principalmente un parámetro necesario para posicionar la recta. Véase [Pendiente e intercepto](capitulos/11-correlacion-regresion.qmd#sec-pendiente-intercepto).
 
 ### Inferencia {#glosario-inferencia}
 
@@ -398,6 +428,12 @@ Función no negativa, generalmente simétrica y de integral uno, utilizada para 
 
 Familia de estimadores lineales espaciales que asigna pesos utilizando la geometría de los datos y un modelo de dependencia, bajo restricciones específicas. Según la variante, busca insesgamiento y mínima varianza dentro de una clase de estimadores. No es sinónimo genérico de interpolación. Véase [Kriging ordinario](capitulos/16-kriging.qmd#kriging-ordinario).
 
+### Kriging ordinario {#glosario-kriging-ordinario}
+
+**Inglés:** *ordinary kriging*.
+
+Variante de kriging que combina linealmente los datos con pesos que suman uno. La restricción asegura insesgamiento cuando la media local es desconocida pero constante. Los pesos se resuelven conjuntamente a partir del variograma o la covarianza y de la geometría muestral.
+
 ### Kriging de bloques {#glosario-kriging-bloques}
 
 **Inglés:** *block kriging*.
@@ -405,6 +441,8 @@ Familia de estimadores lineales espaciales que asigna pesos utilizando la geomet
 Variante cuyo objetivo es el promedio de una variable sobre un área o volumen, no el valor en un punto. Utiliza covarianzas o variogramas promediados entre datos y bloque, y dentro del bloque. Cambiar el soporte modifica pesos, estimación e incertidumbre. Véase [Kriging puntual y kriging de bloques](capitulos/16-kriging.qmd#kriging-puntual-y-kriging-de-bloques).
 
 ### K-means {#glosario-kmeans}
+
+**Inglés:** *k-means clustering*.
 
 Algoritmo de agrupamiento que asigna observaciones a $K$ centroides para minimizar la suma de cuadrados intragrupo. Requiere elegir $K$ y puede depender de la inicialización; favorece grupos aproximadamente compactos en el espacio definido por las variables y escalas seleccionadas. Véase [K-means](capitulos/13-metodos-multivariados.qmd#k-means).
 
@@ -421,7 +459,7 @@ Clase de separaciones utilizada para agrupar pares espaciales aproximadamente eq
 
 **Español:** apalancamiento.
 
-Medida de cuán alejada está una observación en el espacio de las variables explicativas respecto del centro del diseño. En regresión lineal simple, puntos con valores extremos de $X$ pueden tener alto leverage y modificar fuertemente la pendiente ajustada, especialmente si además tienen residuos grandes. Alto leverage no implica error: indica influencia potencial que debe investigarse. Véase [Leverage e influencia](capitulos/11-correlacion-regresion.qmd#leverage-e-influencia).
+Medida de cuán alejada está una observación en el espacio de las variables explicativas respecto del centro del diseño. En regresión lineal simple, puntos con valores extremos de $X$ pueden tener alto leverage y modificar fuertemente la pendiente ajustada, especialmente si además tienen residuos grandes. Alto leverage no implica error: indica influencia potencial que debe investigarse. Véase [Leverage e influencia](capitulos/11-correlacion-regresion.qmd#sec-leverage-influencia).
 
 ### Localización {#glosario-localizacion}
 
@@ -431,11 +469,23 @@ Posición espacial asociada a una observación. Puede incluir coordenadas horizo
 
 ## M
 
+### Matriz de distancias {#glosario-matriz-distancias}
+
+**Inglés:** *distance matrix* o *dissimilarity matrix*.
+
+Matriz simétrica $D=(d_{ij})$ que reúne la distancia o disimilitud entre cada par de observaciones, con ceros en la diagonal. Su interpretación depende de la métrica, la escala de las variables y el tratamiento de valores faltantes.
+
 ### Meseta {#glosario-meseta}
 
 **Inglés:** *sill*.
 
 Nivel al que se estabiliza un modelo de variograma acotado. La meseta total suele ser la suma del efecto pepita y la contribución estructurada. Bajo estacionariedad de segundo orden y covarianza nula a gran distancia, se relaciona con la varianza del proceso. Véase [Cómo leer un variograma](capitulos/15-variograma.qmd#cómo-leer-un-variograma).
+
+### Modelo de variograma {#glosario-modelo-variograma}
+
+**Inglés:** *variogram model*.
+
+Función matemáticamente autorizada ajustada a un variograma experimental para representar continuidad a cualquier separación necesaria. Puede combinar efecto pepita y estructuras esféricas, exponenciales, gaussianas u otras. No es el variograma experimental ni una curva elegida sólo por cercanía visual: debe ser válida y geológicamente defendible.
 
 ### Media aritmética {#glosario-media}
 
@@ -591,19 +641,19 @@ Gráfico que compara cuantiles observados con cuantiles de una distribución te�
 
 **Inglés:** *linear regression*.
 
-Modelo que representa la esperanza condicional de una variable respuesta como función lineal de una o más variables explicativas. En regresión lineal simple, $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$. El modelo separa una componente sistemática de un término de error y requiere revisar residuos, dominio de aplicación, valores influyentes y supuestos de independencia. Véase [El modelo de regresión lineal simple](capitulos/11-correlacion-regresion.qmd#el-modelo-de-regresión-lineal-simple).
+Modelo que representa la esperanza condicional de una variable respuesta como función lineal de una o más variables explicativas. En regresión lineal simple, $Y_i=\beta_0+\beta_1X_i+\varepsilon_i$. El modelo separa una componente sistemática de un término de error y requiere revisar residuos, dominio de aplicación, valores influyentes y supuestos de independencia. Véase [Modelo lineal: señal más error](capitulos/11-correlacion-regresion.qmd#sec-modelo-lineal).
 
 ### Residuo {#glosario-residuo}
 
 **Inglés:** *residual*. **Símbolo frecuente:** $e_i$.
 
-Diferencia entre el valor observado y el valor ajustado por un modelo: $e_i=y_i-\hat{y}_i$. Los residuos permiten diagnosticar curvatura no modelada, heterocedasticidad, valores influyentes, cambios de dominio y dependencia residual. No son idénticos a los errores teóricos $\varepsilon_i$, porque se calculan después de ajustar el modelo. Véase [Residuos: lo que el modelo no explica](capitulos/11-correlacion-regresion.qmd#residuos-lo-que-el-modelo-no-explica).
+Diferencia entre el valor observado y el valor ajustado por un modelo: $e_i=y_i-\hat{y}_i$. Los residuos permiten diagnosticar curvatura no modelada, heterocedasticidad, valores influyentes, cambios de dominio y dependencia residual. No son idénticos a los errores teóricos $\varepsilon_i$, porque se calculan después de ajustar el modelo. Véase [Residuos como diagnóstico](capitulos/11-correlacion-regresion.qmd#sec-residuos-regresion).
 
 ### R cuadrado {#glosario-r-cuadrado}
 
 **Inglés:** *R-squared*. **Símbolo:** $R^2$.
 
-Proporción de la variabilidad de la respuesta explicada por el modelo lineal, bajo la descomposición usada en mínimos cuadrados con intercepto. En regresión lineal simple con intercepto, $R^2=r^2$. Un valor alto no demuestra causalidad, validez predictiva fuera del dominio ni ausencia de problemas en los residuos. Véase [$R^2$: variabilidad explicada](capitulos/11-correlacion-regresion.qmd#r2-variabilidad-explicada).
+Proporción de la variabilidad de la respuesta representada por el modelo lineal, bajo la descomposición usada en mínimos cuadrados con intercepto. En regresión lineal simple con intercepto, $R^2=r^2$. Un valor alto no demuestra causalidad, validez predictiva fuera del dominio ni ausencia de problemas en los residuos. Véase [$R^2$: proporción de variabilidad representada](capitulos/11-correlacion-regresion.qmd#sec-r-cuadrado).
 
 ### Rango {#glosario-rango}
 
@@ -741,11 +791,23 @@ Función que describe una propiedad distribuida en el espacio y exhibe simultán
 
 Esperanza o promedio corregido de desviaciones cuadráticas respecto de la media. Mide dispersión en unidades al cuadrado y es sensible a extremos. Bajo el esquema clásico, $s^2=(n-1)^{-1}\sum_i(x_i-\bar{x})^2$ es insesgada para $\sigma^2$. En inferencia conviene distinguir explícitamente el parámetro poblacional $\sigma^2$, fijo pero desconocido, del estadístico muestral $s^2$, que cambia entre muestras y se usa para contrastar hipótesis sobre la variabilidad. Véase [Varianza poblacional y varianza muestral](capitulos/11-varianzas-categorias.qmd#varianza-poblacional-y-varianza-muestral).
 
+### Varianza de kriging {#glosario-varianza-kriging}
+
+**Inglés:** *kriging variance*.
+
+Varianza teórica del error de estimación bajo el modelo de continuidad, la geometría, el vecindario y las restricciones del kriging adoptado. No es el error observado en una localización ni incorpora automáticamente incertidumbre en parámetros, tendencia, dominios o modelo.
+
 ### Variograma {#glosario-variograma}
 
 **Inglés:** *variogram*. **Símbolo:** $2\gamma(\mathbf h)$; para la semivarianza se usa $\gamma(\mathbf h)$.
 
 Función que caracteriza la variabilidad de incrementos entre localizaciones separadas por un vector $\mathbf h$. Bajo condiciones apropiadas, $2\gamma(\mathbf h)=\operatorname{Var}[Z(\mathbf u+\mathbf h)-Z(\mathbf u)]$. En el uso aplicado suele llamarse variograma a la semivarianza; el manual indicará la convención.
+
+### Variograma experimental {#glosario-variograma-experimental}
+
+**Inglés:** *experimental variogram* o *sample variogram*.
+
+Estimación de la semivarianza obtenida al agrupar diferencias cuadráticas entre pares en clases de separación. Depende de la realización observada, la geometría muestral, los lags, las tolerancias y el número de pares. Sus puntos no constituyen todavía un modelo válido para kriging.
 
 ### Valla de Tukey {#glosario-valla-tukey}
 

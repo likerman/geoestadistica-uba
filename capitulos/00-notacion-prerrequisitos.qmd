@@ -1,4 +1,4 @@
-# Notación y lenguaje probabilístico mínimo
+# Notación y lenguaje probabilístico mínimo {.unnumbered}
 
 Este capítulo reúne las convenciones necesarias para leer las fórmulas de la primera parte. No sustituye el desarrollo sistemático de probabilidad e inferencia que aparecerá más adelante; evita utilizar símbolos sin definir.
 
@@ -94,5 +94,13 @@ Por ejemplo, $\bar X$ es un estimador de $\mu$ y $\bar x=18.4$ es una estimació
 | $z(\mathbf u)$ | valor observado en $\mathbf u$ |
 | $V$ | soporte de una observación o bloque |
 | $h$ o $\mathbf h$ | separación espacial |
+| $\mathcal N(\mathbf h)$ | conjunto de pares asignados a una clase de separación |
+| $C(\mathbf h)$ | covarianza para la separación $\mathbf h$ |
+| $\gamma(\mathbf h)$ | semivariograma para la separación $\mathbf h$ |
+| $\lambda_i$ | peso asignado a la observación $i$ en un estimador lineal |
+| $\mu$ | multiplicador de Lagrange del sistema de kriging ordinario |
+| $D=(d_{ij})$ | matriz de distancias o disimilitudes |
+| $K$ | número de grupos en un particionamiento |
+| $W_K$ | inercia intragrupo para una partición en $K$ grupos |
 
 Salvo indicación contraria, los logaritmos serán naturales y se escribirán $\log x$ o $\ln x$. Toda concentración deberá acompañarse por su unidad y toda coordenada por su sistema de referencia.

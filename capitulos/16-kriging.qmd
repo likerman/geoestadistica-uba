@@ -14,6 +14,10 @@ Al finalizar este capítulo, el lector debería poder:
 - distinguir kriging puntual de kriging de bloques;
 - evaluar sensibilidad y validación predictiva.
 
+::: {.callout-tip title="Notebook reproducible"}
+El sistema, los mapas y los cambios de modelo pueden explorarse en [Kriging ordinario, sensibilidad y validación](../ejemplos/03_kriging.ipynb).
+:::
+
 ## El problema de estimar donde no medimos
 
 Disponemos de observaciones $z(\mathbf u_1),\ldots,z(\mathbf u_n)$ y queremos estimar el valor en una localización no muestreada $\mathbf u_0$. Un estimador lineal tiene la forma
@@ -39,7 +43,7 @@ Kriging utiliza un modelo de continuidad. Una muestra puede recibir menos peso n
 
 ## Kriging ordinario
 
-En [kriging ordinario](../glosario.qmd#glosario-kriging) se supone una media local desconocida pero constante dentro del vecindario de estimación. Para obtener insesgamiento bajo ese supuesto se impone
+En [kriging ordinario](../glosario.qmd#glosario-kriging-ordinario) se supone una media local desconocida pero constante dentro del vecindario de estimación. Para obtener insesgamiento bajo ese supuesto se impone
 
 $$
 \sum_{i=1}^{n}\lambda_i=1.
@@ -97,6 +101,33 @@ $$
 
 El sistema de kriging ordinario puede formularse directamente con valores de $\gamma$. Esto permite trabajar bajo hipótesis intrínsecas aun cuando una covarianza global no sea el punto de partida. No deben mezclarse fórmulas de covarianza y variograma sin revisar signos y convenciones [@cressie_1993; @chiles_delfiner_2012].
 
+Con la convención adoptada aquí, si $\Gamma_{ij}=\gamma(\mathbf u_i-\mathbf u_j)$ y $(\boldsymbol\gamma_0)_i=\gamma(\mathbf u_i-\mathbf u_0)$, el sistema es
+
+$$
+\begin{bmatrix}
+\boldsymbol\Gamma & \mathbf 1\\
+\mathbf 1^\mathsf T & 0
+\end{bmatrix}
+\begin{bmatrix}
+\boldsymbol\lambda\\
+m
+\end{bmatrix}
+=
+\begin{bmatrix}
+\boldsymbol\gamma_0\\
+1
+\end{bmatrix},
+$$
+
+y la varianza de kriging se calcula como
+
+$$
+\sigma_K^2(\mathbf u_0)=
+\boldsymbol\lambda^\mathsf T\boldsymbol\gamma_0+m.
+$$
+
+El signo de $m$ depende de cómo se defina el multiplicador. Estas dos expresiones forman un par inseparable: cambiar el signo en el sistema obliga a cambiarlo también en la varianza.
+
 ## Ejemplo numérico reproducible
 
 ```{python}
@@ -115,29 +146,36 @@ coords_k = np.array([
 z_k = np.array([182, 188, 199, 179, 194, 207, 185, 203], dtype=float)
 u0 = np.array([2.7, 3.1])
 
-def cov_exp(a, b, alcance=2.7, meseta=64.0, pepita=4.0):
+def cov_exp(a, b, alcance=2.7, var_estructura=64.0,
+            var_error=0.0, misma_muestra=False):
     a = np.atleast_2d(a); b = np.atleast_2d(b)
     d = np.sqrt(((a[:,None,:]-b[None,:,:])**2).sum(axis=2))
-    out = meseta*np.exp(-d/alcance)
-    if a.shape == b.shape and np.array_equal(a, b):
-        out = out + np.eye(len(a))*pepita
+    out = var_estructura*np.exp(-d/alcance)
+    if misma_muestra:
+        out = out + np.eye(len(a))*var_error
     return out
 
 def kriging_ordinario(coords, valores, objetivo, alcance=2.7,
-                      meseta=64.0, pepita=4.0):
-    C = cov_exp(coords, coords, alcance, meseta, pepita)
-    c0 = cov_exp(coords, np.atleast_2d(objetivo), alcance, meseta, 0).ravel()
+                      var_estructura=64.0, var_error=4.0,
+                      predecir_observacion=False):
+    C = cov_exp(coords, coords, alcance, var_estructura,
+                var_error, misma_muestra=True)
+    c0 = cov_exp(coords, np.atleast_2d(objetivo), alcance,
+                 var_estructura).ravel()
     A = np.block([[C, np.ones((len(coords),1))],
                   [np.ones((1,len(coords))), np.zeros((1,1))]])
     b = np.r_[c0, 1.0]
     sol = np.linalg.solve(A, b)
     lam, mu = sol[:-1], sol[-1]
     estimado = lam @ valores
-    varianza = meseta + pepita - lam @ c0 - mu
+    var_objetivo = var_estructura + (var_error if predecir_observacion else 0.0)
+    varianza = var_objetivo - lam @ c0 - mu
     return estimado, max(varianza, 0.0), lam
 
 estimado, var_k, pesos = kriging_ordinario(coords_k, z_k, u0)
 ```
+
+En este ejemplo separamos deliberadamente una componente espacial continua (`var_estructura`) de un error independiente de observación (`var_error`). El objetivo predeterminado es el campo latente: por eso el error se agrega a la diagonal de los datos, pero no a la covarianza dato–objetivo ni a la varianza del objetivo. Si quisiéramos predecir una **nueva medición** —campo más error instrumental— usaríamos `predecir_observacion=True`. Esta distinción evita tratar toda pepita como si tuviera una única causa física.
 
 ```{python}
 #| label: tbl-pesos-kriging
@@ -148,7 +186,7 @@ pd.DataFrame({
     "distancia": np.linalg.norm(coords_k-u0, axis=1),
     "valor": z_k,
     "peso": pesos,
-}).sort_values("distancia")
+}).sort_values("distancia").style.hide(axis="index")
 ```
 
 ```{python}
@@ -209,7 +247,7 @@ Una grilla más fina produce una imagen con más píxeles, no más información.
 
 ## Qué significa la varianza de kriging
 
-La varianza de kriging cuantifica la dispersión teórica del error bajo:
+La [varianza de kriging](../glosario.qmd#glosario-varianza-kriging) cuantifica la dispersión teórica del error bajo:
 
 - el modelo de continuidad adoptado;
 - la configuración de observaciones y el vecindario;
@@ -232,6 +270,34 @@ Al aumentar la proporción de pepita manteniendo la meseta total, disminuye la f
 
 Si multiplicamos todo el variograma por una constante positiva —conservando su forma relativa, incluida la proporción pepita/meseta— los pesos de kriging ordinario permanecen iguales. La estimación no cambia, pero la varianza de kriging se multiplica por esa constante. Este resultado distingue la geometría relativa de continuidad de la escala absoluta de incertidumbre.
 
+El efecto conjunto puede verse sin convertir la elección del modelo en una caja negra. En la figura siguiente se mantienen los mismos datos y objetivo, y se modifican sólo hipótesis de continuidad y error.
+
+```{python}
+#| label: fig-sensibilidad-kriging
+#| fig-cap: "Sensibilidad de los pesos y de la incertidumbre a distintas hipótesis de alcance y error de observación."
+#| fig-alt: "Tres grupos de barras comparan pesos de kriging por muestra; sobre cada grupo se informa la estimación y la desviación estándar."
+
+escenarios = [
+    ("alcance corto", dict(alcance=1.3, var_error=4.0)),
+    ("referencia", dict(alcance=2.7, var_error=4.0)),
+    ("más error", dict(alcance=2.7, var_error=20.0)),
+]
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.8), sharey=True,
+                         constrained_layout=True)
+for ax, (nombre, pars) in zip(axes, escenarios):
+    pr, va, lam = kriging_ordinario(coords_k, z_k, u0, **pars)
+    colores = np.where(lam >= 0, "#446681", "#B56F3A")
+    ax.bar(np.arange(1, len(lam)+1), lam, color=colores)
+    ax.axhline(0, color="black", linewidth=0.7)
+    ax.set(title=f"{nombre}\n$\\hat z$={pr:.1f}; DE={np.sqrt(va):.1f}",
+           xlabel="Muestra", xticks=np.arange(1, len(lam)+1))
+axes[0].set_ylabel("Peso")
+plt.show()
+```
+
+La figura no identifica un modelo «ganador»: muestra qué conclusiones dependen de decisiones razonables. Una interpretación robusta debe señalar cuáles rasgos persisten y cuáles cambian.
+
 ## Kriging puntual y kriging de bloques
 
 Kriging puntual estima $Z(\mathbf u_0)$. El [kriging de bloques](../glosario.qmd#glosario-kriging-bloques) estima un promedio espacial:
@@ -248,6 +314,51 @@ $$
 
 y la varianza del objetivo requiere la covarianza promedio dentro del bloque. No alcanza con hacer kriging en el centro geométrico. Cambiar el soporte cambia la cantidad estimada, los pesos y la incertidumbre [@remy_boucher_wu_2009].
 
+Las integrales suelen aproximarse discretizando el bloque con puntos internos. Si $\{\mathbf v_q\}_{q=1}^Q$ representa esa discretización,
+
+$$
+C(\mathbf u_i,B)\approx\frac{1}{Q}\sum_{q=1}^Q C(\mathbf u_i-\mathbf v_q),
+\qquad
+C(B,B)\approx\frac{1}{Q^2}\sum_{q=1}^Q\sum_{r=1}^Q
+C(\mathbf v_q-\mathbf v_r).
+$$
+
+```{python}
+#| label: fig-kriging-bloques
+#| fig-cap: "Objetivo puntual y bloque rectangular discretizado. El kriging de bloques integra covarianzas sobre todo el soporte."
+#| fig-alt: "Mapa de las observaciones, un objetivo puntual y una malla de puntos dentro de un bloque rectangular."
+
+bx = np.linspace(2.1, 3.3, 9)
+by = np.linspace(2.5, 3.7, 9)
+BXX, BYY = np.meshgrid(bx, by)
+puntos_bloque = np.column_stack([BXX.ravel(), BYY.ravel()])
+
+C_datos = cov_exp(coords_k, coords_k, var_error=4.0,
+                  misma_muestra=True)
+c_bloque = cov_exp(coords_k, puntos_bloque).mean(axis=1)
+C_bb = cov_exp(puntos_bloque, puntos_bloque).mean()
+A = np.block([[C_datos, np.ones((len(coords_k), 1))],
+              [np.ones((1, len(coords_k))), np.zeros((1, 1))]])
+sol_b = np.linalg.solve(A, np.r_[c_bloque, 1.0])
+pesos_b, mu_b = sol_b[:-1], sol_b[-1]
+estimado_b = pesos_b @ z_k
+var_b = C_bb - pesos_b @ c_bloque - mu_b
+
+fig, ax = plt.subplots(figsize=(6.3, 5.1))
+ax.scatter(coords_k[:, 0], coords_k[:, 1], s=65, color="#1D4162",
+           edgecolor="white", label="datos")
+ax.scatter(puntos_bloque[:, 0], puntos_bloque[:, 1], s=12,
+           color="#B56F3A", alpha=0.55, label="discretización del bloque")
+ax.scatter(*u0, marker="*", s=220, color="#D99A20", edgecolor="black",
+           label="objetivo puntual")
+ax.set(xlabel="Este", ylabel="Norte", aspect="equal",
+       title=f"Bloque: estimación={estimado_b:.1f}; DE={np.sqrt(max(var_b, 0)):.1f}")
+ax.legend(loc="best")
+plt.show()
+```
+
+La discretización debe ser suficientemente fina para estabilizar los promedios de covarianza. La menor varianza frecuente en un bloque no significa conocer cada punto con más precisión: el promedio espacial es una cantidad más suave que el valor puntual.
+
 ## Validación
 
 Una comparación honesta entre IDW, kriging isotrópico y anisotrópico utiliza observaciones no empleadas para ajustar y estimar. En validación cruzada se retira una observación por vez; en validación externa se reserva un conjunto independiente.
@@ -261,6 +372,46 @@ RMSE=\sqrt{\frac{1}{m}\sum_i e_i^2}.
 $$
 
 También deben inspeccionarse errores estandarizados por la desviación de kriging, patrones espaciales y desempeño por dominios. Un método más complejo no es mejor por definición; la superioridad debe demostrarse sobre datos de control.
+
+```{python}
+#| label: fig-validacion-cruzada-kriging
+#| fig-cap: "Validación cruzada dejar-uno-fuera para IDW y kriging ordinario en el ejemplo sintético."
+#| fig-alt: "Dos paneles comparan valores observados y predichos y muestran los residuos de IDW y kriging por muestra."
+
+def idw(coords, valores, objetivo, potencia=2):
+    d = np.linalg.norm(coords - np.asarray(objetivo), axis=1)
+    w = d**(-potencia)
+    return np.sum(w*valores)/np.sum(w)
+
+pred_idw, pred_ok, sd_ok = [], [], []
+for k in range(len(z_k)):
+    conservar = np.arange(len(z_k)) != k
+    pred_idw.append(idw(coords_k[conservar], z_k[conservar], coords_k[k]))
+    pr, va, _ = kriging_ordinario(coords_k[conservar], z_k[conservar],
+                                  coords_k[k])
+    pred_ok.append(pr)
+    sd_ok.append(np.sqrt(va))
+pred_idw, pred_ok, sd_ok = map(np.asarray, (pred_idw, pred_ok, sd_ok))
+
+fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.1), constrained_layout=True)
+lim = [min(z_k.min(), pred_idw.min(), pred_ok.min())-2,
+       max(z_k.max(), pred_idw.max(), pred_ok.max())+2]
+axes[0].scatter(z_k, pred_idw, label="IDW", color="#B56F3A")
+axes[0].scatter(z_k, pred_ok, label="Kriging", color="#1D4162")
+axes[0].plot(lim, lim, "--", color="gray")
+axes[0].set(xlim=lim, ylim=lim, xlabel="Observado", ylabel="Predicho")
+axes[0].legend()
+indices = np.arange(1, len(z_k)+1)
+axes[1].axhline(0, color="gray", linewidth=0.8)
+axes[1].plot(indices, z_k-pred_idw, "o-", label="IDW", color="#B56F3A")
+axes[1].errorbar(indices, z_k-pred_ok, yerr=sd_ok, fmt="s-",
+                 label="Kriging ± 1 DE", color="#1D4162", capsize=3)
+axes[1].set(xlabel="Muestra retirada", ylabel="Error observado − predicho")
+axes[1].legend()
+plt.show()
+```
+
+Con ocho datos este resultado es ilustrativo, no una competencia concluyente. Además, si el variograma se ajustó con todos los datos antes de retirar cada punto, la validación no es completamente externa al ajuste. Una evaluación rigurosa debe reproducir dentro de cada partición todas las decisiones aprendidas a partir de los datos.
 
 ## Cuándo conviene utilizar kriging
 
@@ -291,3 +442,11 @@ Kriging es defendible cuando:
 3. ¿Qué supuestos quedan fuera de la varianza clásica de kriging?
 4. ¿Por qué escalar todo el variograma puede dejar iguales los pesos?
 5. ¿Qué cambia al pasar de un punto a un bloque?
+
+::: {.callout-tip title="Pistas para revisar" collapse="true"}
+1. IDW usa distancia; kriging agrega un modelo de continuidad y la redundancia entre datos.
+2. Cada peso depende de todos los demás mediante un sistema lineal.
+3. La varianza clásica condiciona en modelo, geometría y parámetros; no incluye toda incertidumbre epistemológica.
+4. Al escalar por igual todas las covarianzas o semivarianzas se conserva la geometría relativa del sistema.
+5. Un bloque cambia el objetivo a un promedio espacial y exige integrar covarianzas sobre su soporte.
+:::

@@ -6,11 +6,11 @@ Al finalizar este capítulo, el lector debería poder:
 
 - explicar por qué comparar medias no alcanza para responder todas las preguntas geológicas;
 - distinguir varianza poblacional $\sigma^2$ de varianza muestral $s^2$ en un contraste;
-- formular y analizar una comparación de dos varianzas mediante un test $F$;
+- formular y analizar una comparación de dos varianzas mediante un [test $F$](../glosario.qmd#glosario-test-f);
 - interpretar la distribución $F$ y sus dos grados de libertad;
 - reconocer los supuestos y la sensibilidad del test $F$ a valores extremos y no normalidad;
 - construir frecuencias esperadas bajo independencia en una tabla de contingencia;
-- calcular e interpretar un estadístico $\chi^2$ de independencia;
+- calcular e interpretar un [test $\chi^2$ de independencia](../glosario.qmd#glosario-test-chi-cuadrado);
 - relacionar los grados de libertad con las restricciones de una tabla;
 - elegir un test a partir de la pregunta geológica, el tipo de dato y el diseño.
 
@@ -63,7 +63,7 @@ $$
 
 es un estadístico calculado con una muestra. Cambia entre muestras y se utiliza para aprender sobre $\sigma^2$.
 
-En una prueba sobre varianzas, por lo tanto, no comparamos dos números como si fueran exactos. Preguntamos si el cociente observado entre varianzas muestrales es compatible con lo que esperaríamos si las varianzas poblacionales fueran iguales.
+En una prueba sobre varianzas, por lo tanto, no comparamos dos números como si fueran exactos. Preguntamos si el cociente observado entre varianzas muestrales es compatible con lo que esperaríamos si las varianzas poblacionales fueran iguales [@mckillup_dyar_2010; @davis_2002].
 
 ## Dos varianzas: el test F
 
@@ -89,7 +89,7 @@ Si $H_0$ es verdadera, esperamos cocientes cercanos a 1. Valores muy alejados de
 
 ## La distribución F
 
-La distribución $F$ toma sólo valores no negativos y está determinada por **dos** grados de libertad:
+La [distribución $F$](../glosario.qmd#glosario-distribucion-f) toma sólo valores no negativos y está determinada por **dos** grados de libertad [@mckillup_dyar_2010]:
 
 $$
 \nu_1=n_1-1,\qquad \nu_2=n_2-1.
@@ -167,14 +167,14 @@ p_bilateral = min(p_bilateral, 1.0)
 pd.DataFrame({
     "cantidad": ["media A", "media B", "varianza A", "varianza B", "F", "p bilateral"],
     "valor": [facies_a.mean(), facies_b.mean(), s2_a, s2_b, f_obs, p_bilateral],
-})
+}).style.hide(axis="index")
 ```
 
 El objetivo del ejemplo no es memorizar una rutina, sino separar dos preguntas: **posición** y **variabilidad**.
 
 ## ¿Y la distribución chi-cuadrado en pruebas de varianza?
 
-La distribución $\chi^2$ también aparece en la inferencia clásica de una **sola** varianza normal, porque bajo $H_0:\sigma^2=\sigma_0^2$ se cumple
+La [distribución $\chi^2$](../glosario.qmd#glosario-chi-cuadrado) también aparece en la inferencia clásica de una **sola** varianza normal, porque bajo $H_0:\sigma^2=\sigma_0^2$ se cumple [@mckillup_dyar_2010]
 
 $$
 \frac{(n-1)S^2}{\sigma_0^2}\sim\chi^2_{n-1}.
@@ -184,7 +184,7 @@ En este manual, la comparación de **dos varianzas** se trabaja con la distribuc
 
 ## De variables cuantitativas a categorías
 
-Supongamos ahora que en cada observación registramos una categoría litológica y el sector al que pertenece. La pregunta estadística es:
+Supongamos ahora que en cada observación registramos una categoría litológica y el sector al que pertenece. Organizamos los conteos en una [tabla de contingencia](../glosario.qmd#glosario-tabla-contingencia). La pregunta estadística es:
 
 > ¿la proporción de litologías observadas cambia entre dos sectores?
 
@@ -215,7 +215,7 @@ Independencia significa que conocer el sector no cambia la distribución de prob
 
 ## Frecuencias esperadas
 
-Bajo independencia, la frecuencia esperada de la celda $(i,j)$ es
+Bajo independencia, la [frecuencia esperada](../glosario.qmd#glosario-frecuencia-esperada) de la celda $(i,j)$ es
 
 $$
 E_{ij}=\frac{(\text{total fila }i)(\text{total columna }j)}{N}.
@@ -314,7 +314,7 @@ resultado = pd.DataFrame({
     "cantidad": ["chi2 observado", "grados de libertad", "p-valor"],
     "valor": [f"{chi2:.2f}", str(dof), f"{p:.4f}"],
 })
-resultado
+resultado.style.hide(axis="index")
 ```
 
 ```{python}

@@ -43,6 +43,22 @@ El entorno mínimo utiliza NumPy, pandas, Matplotlib, Seaborn y SciPy. Puede ins
 python -m pip install -r requirements.txt
 ```
 
+La guía [Cómo ejecutar los ejemplos](capitulos/00-ejecutar-codigo.qmd) explica el uso local y en Google Colab. Los notebooks descargables cubren:
+
+- el caso sintético de arsénico;
+- variograma experimental y anisotropía;
+- kriging ordinario, sensibilidad y validación;
+- semejanza y agrupamiento multivariado.
+
+Antes de publicar cambios conviene ejecutar:
+
+```bash
+python scripts/check_manual.py
+quarto render --to html
+```
+
+El primer control revisa referencias bibliográficas, enlaces locales, anclas del glosario, caracteres de control, identificadores y estructura de notebooks. El render completo ejecuta además las figuras y tablas integradas en los capítulos.
+
 ## Criterio editorial
 
 Cada capítulo debe distinguir con claridad:

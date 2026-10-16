@@ -12,8 +12,8 @@ Al finalizar este capítulo, el lector debería poder:
 - interpretar correctamente la decisión de rechazar o no rechazar $H_0$;
 - distinguir error tipo I, error tipo II y potencia;
 - explicar cómo cambian la potencia con el tamaño muestral, la magnitud del efecto, la variabilidad y $\alpha$;
-- diferenciar significación estadística de importancia geológica;
-- reconocer cuándo corresponde una prueba $t$ de una muestra, de dos muestras independientes o apareada;
+- diferenciar [significación estadística](../glosario.qmd#glosario-significacion-estadistica) de importancia geológica;
+- reconocer cuándo corresponde una prueba $t$ de una muestra, de dos muestras independientes o de [muestras apareadas](../glosario.qmd#glosario-muestras-apareadas);
 - detectar pseudorreplicación y explicar por qué la independencia efectiva importa en geociencias.
 
 ## Del intervalo a una afirmación puntual
@@ -86,7 +86,7 @@ $$
 s_p^2=\frac{(n_6-1)s_6^2+(n_7-1)s_7^2}{n_6+n_7-2}.
 $$
 
-El error estándar de la diferencia es
+El [error estándar](../glosario.qmd#glosario-error-estandar) de la diferencia es
 
 $$
 SE(\bar X_7-\bar X_6)=s_p\sqrt{\frac{1}{n_7}+\frac{1}{n_6}}.
@@ -118,7 +118,7 @@ $$
 H_0:\Delta=0,
 $$
 
-y para una comparación bilateral
+y para una comparación bilateral la [hipótesis alternativa](../glosario.qmd#glosario-hipotesis-alternativa) es
 
 $$
 H_1:\Delta\neq0.
@@ -177,7 +177,7 @@ $$
 \alpha=0.05.
 $$
 
-En una prueba bilateral, $\alpha/2=0.025$ queda en cada cola. Con $\nu=30$,
+En una prueba bilateral, la [región crítica](../glosario.qmd#glosario-region-critica) reparte $\alpha/2=0.025$ en cada cola. Con $\nu=30$,
 
 $$
 t_{crit}=t_{0.975,30}\approx2.042.
@@ -506,7 +506,7 @@ pd.DataFrame({
         f"{t_obs:.2f}",
         f"{p:.3f}",
     ],
-})
+}).style.hide(axis="index")
 ```
 
 ## Errores frecuentes
@@ -545,4 +545,4 @@ $$
 \boxed{\text{pregunta}\to\text{diseño}\to\text{estimador}\to\text{SE}\to\text{estadístico}\to\text{distribución de referencia}\to p/IC\to\text{decisión}\to\text{magnitud y contexto}}
 $$
 
-La decisión nunca debe separarse del diseño. El error tipo I controla falsos rechazos mediante $lpha$; el error tipo II conduce a la potencia; la potencia depende de cuánto efecto queremos detectar y de cuánta información independiente tenemos. En geociencias, esa última frase abre directamente el problema espacial: más datos no siempre significan más réplicas independientes.
+La decisión nunca debe separarse del diseño. El error tipo I controla falsos rechazos mediante $\alpha$; el error tipo II conduce a la potencia; la potencia depende de cuánto efecto queremos detectar y de cuánta información independiente tenemos. En geociencias, esa última frase abre directamente el problema espacial: más datos no siempre significan más réplicas independientes.

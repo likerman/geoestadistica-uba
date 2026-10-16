@@ -12,6 +12,7 @@ $geo-blanco-calido: #F4F3F1;
 $geo-arena: #C5AB93;
 $geo-roca: #BDB9B6;
 $geo-cobre: #B56F3A;
+$geo-cobre-texto: #8F4F28;
 
 $primary: $geo-azul-oscuro;
 $secondary: $geo-azul-pizarra;
@@ -113,7 +114,7 @@ a {
 }
 
 a:hover {
-  color: $geo-cobre;
+  color: $geo-cobre-texto;
   text-decoration-color: $geo-cobre;
 }
 
@@ -149,6 +150,19 @@ a:hover {
 .sidebar nav[role="doc-toc"] ul,
 .sidebar .sidebar-menu-container {
   font-size: 0.96rem;
+}
+
+#TOC {
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  font-size: 0.88rem;
+  line-height: 1.32;
+  padding-right: 0.35rem;
+}
+
+#TOC .nav-link {
+  padding-block: 0.18rem;
 }
 
 .sidebar-item .active,
@@ -187,6 +201,11 @@ a:hover {
 
 /* Oculta la imagen de portada automática de Quarto */
 .portada-inicial .quarto-cover-image {
+  display: none !important;
+}
+
+/* Conserva un título semántico para navegación sin repetirlo en la portada. */
+.portada-inicial h1.titulo-estructural {
   display: none !important;
 }
 
@@ -261,7 +280,7 @@ a:hover {
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: $geo-azul-gris;
+  color: $geo-azul-pizarra;
   margin-bottom: 0.3rem;
 }
 

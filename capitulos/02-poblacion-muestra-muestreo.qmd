@@ -4,7 +4,7 @@
 
 - delimitar una población de acuerdo con la pregunta;
 - distinguir población, muestra, parámetro y estadístico;
-- evaluar representatividad y sesgo de selección;
+- evaluar representatividad y [sesgo](../glosario.qmd#glosario-sesgo) de selección;
 - comparar diseños regular, aleatorio y preferencial;
 - separar inferencia sobre una población de predicción local.
 

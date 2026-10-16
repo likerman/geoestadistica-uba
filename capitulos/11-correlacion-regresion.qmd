@@ -7,16 +7,16 @@ Al finalizar este capítulo, el lector debería poder:
 - pasar de una mirada univariada a una mirada bivariada sin perder la unidad observacional;
 - interpretar un diagrama de dispersión antes de calcular coeficientes;
 - construir la covarianza desde productos de desviaciones respecto de las medias;
-- definir el coeficiente de correlación de Pearson como covarianza estandarizada;
+- definir el [coeficiente de correlación de Pearson](../glosario.qmd#glosario-correlacion-pearson) como covarianza estandarizada;
 - distinguir signo, intensidad lineal y forma de la relación;
 - formular el test clásico de significación de Pearson y sus supuestos;
 - separar significación estadística, magnitud de efecto y relevancia geológica;
 - reconocer el efecto de observaciones atípicas e influyentes;
-- distinguir asociación de causalidad;
-- formular el modelo de regresión lineal simple como señal más error;
-- interpretar pendiente, intercepto, residuos y $R^2$;
+- distinguir [asociación](../glosario.qmd#glosario-asociacion) de causalidad;
+- formular el modelo de [regresión lineal](../glosario.qmd#glosario-regresion-lineal) simple como señal más error;
+- interpretar [pendiente](../glosario.qmd#glosario-pendiente), [intercepto](../glosario.qmd#glosario-intercepto), [residuos](../glosario.qmd#glosario-residuo) y [$R^2$](../glosario.qmd#glosario-r-cuadrado);
 - diferenciar intervalos para la media condicional de intervalos de predicción;
-- identificar límites de extrapolación, mezcla de dominios y dependencia espacial residual.
+- identificar límites de [extrapolación](../glosario.qmd#glosario-extrapolacion), [leverage](../glosario.qmd#glosario-leverage), mezcla de dominios y dependencia espacial residual.
 
 ## De una variable a dos variables
 
@@ -123,7 +123,7 @@ Si multiplicamos esas desviaciones, el signo del producto indica si ambas variab
 | $x_i>\bar x$ e $y_i<\bar y$ | negativo | covariación negativa |
 | $x_i<\bar x$ e $y_i>\bar y$ | negativo | covariación negativa |
 
-La covarianza muestral resume esos productos:
+La [covarianza](../glosario.qmd#glosario-covarianza) muestral resume esos productos:
 
 $$
 s_{XY}=\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar x)(y_i-\bar y).
@@ -193,7 +193,7 @@ r_xy = np.corrcoef(x, y)[0, 1]
 pd.DataFrame({
     "cantidad": ["n", "covarianza muestral", "r de Pearson"],
     "valor": [len(x), cov_xy, r_xy]
-})
+}).style.hide(axis="index")
 ```
 
 Una lectura útil es distinguir cuatro afirmaciones:
@@ -278,7 +278,7 @@ p_val = 2 * stats.t.sf(abs(t_obs), df=len(x)-2)
 pd.DataFrame({
     "estadístico": ["r", "t", "gl", "p-valor bilateral"],
     "valor": [r_xy, t_obs, len(x)-2, p_val]
-})
+}).style.hide(axis="index")
 ```
 
 La interpretación del [p-valor](../glosario.qmd#glosario-pvalor) es la misma que antes: mide cuán extremo sería obtener un estadístico como el observado, o más extremo, si $H_0$ y el modelo fueran adecuados. No es la probabilidad de que $H_0$ sea verdadera ni una medida directa de importancia geológica.
@@ -366,7 +366,7 @@ El procedimiento correcto no es “eliminar outliers”. Es preguntar:
 - ¿el resultado cambia si se analiza con y sin esa observación?
 - ¿conviene reportar un análisis de sensibilidad?
 
-## Correlación no implica causalidad
+## Correlación no implica causalidad {#sec-asociacion-causalidad}
 
 Una correlación cuantifica asociación lineal. No identifica, por sí sola, el mecanismo que produjo la asociación. Al menos cinco explicaciones pueden generar una nube correlacionada:
 
@@ -400,7 +400,7 @@ $$
 
 Elegir $X$ e $Y$ depende de la pregunta geológica; no prueba causalidad. Podemos usar SiO$_2$ para describir la tendencia esperada de K$_2$O/CaO dentro de una suite, pero eso no significa que el porcentaje de SiO$_2$ sea una causa única o directa del cociente.
 
-## Modelo lineal: señal más error
+## Modelo lineal: señal más error {#sec-modelo-lineal}
 
 El modelo poblacional clásico es
 
@@ -444,7 +444,7 @@ $$
 
 El residuo $e_i$ no es lo mismo que el error poblacional $\varepsilon_i$: el primero se calcula respecto de una recta estimada; el segundo se define respecto de la media condicional verdadera, que no observamos.
 
-## Pendiente e intercepto
+## Pendiente e intercepto {#sec-pendiente-intercepto}
 
 La pendiente estimada $b_1$ mide el cambio esperado en $Y$ por una unidad de cambio en $X$:
 
@@ -533,7 +533,7 @@ plt.show()
 pd.DataFrame({
     "cantidad": ["b0", "b1", "r", "R2", "p pendiente"],
     "valor": [intercept, slope, r_value, r_value**2, p_slope]
-})
+}).style.hide(axis="index")
 ```
 
 ## Variabilidad total, explicada y residual
@@ -572,7 +572,7 @@ $$
 
 La igualdad no surge de cuadrar término a término; los productos cruzados se anulan al sumar por las propiedades del ajuste OLS con intercepto.
 
-## $R^2$: proporción de variabilidad representada
+## $R^2$: proporción de variabilidad representada {#sec-r-cuadrado}
 
 El coeficiente de determinación es
 
@@ -623,7 +623,7 @@ $$
 En regresión lineal simple con intercepto, el contraste global y el contraste bilateral de la pendiente son equivalentes:
 
 $$
-F=t_{b_1}^{,2}.
+F=t_{b_1}^{2}.
 $$
 
 La prueba $t$ responde por un coeficiente particular; la prueba $F$ evalúa el modelo en conjunto. Con un solo predictor ambas preguntas coinciden, pero dejan de ser idénticas cuando el modelo contiene varios predictores [@mckillup_dyar_2010; @davis_2002].
@@ -647,10 +647,10 @@ pd.DataFrame({
     "gl": [1, len(x)-2, len(x)-1],
     "CM": [cm_reg, cm_err, np.nan],
     "F": [f_obs, np.nan, np.nan],
-})
+}).style.hide(axis="index")
 ```
 
-## Residuos como diagnóstico
+## Residuos como diagnóstico {#sec-residuos-regresion}
 
 Los residuos muestran qué queda sin representar por la recta. Un gráfico de residuos contra valores ajustados permite buscar patrones:
 
@@ -787,7 +787,7 @@ ax.grid(alpha=0.25)
 plt.show()
 ```
 
-## Interpolación y extrapolación
+## Interpolación y extrapolación {#sec-interpolacion-extrapolacion}
 
 Interpolar es estimar dentro del rango de $X$ observado. Extrapolar es usar la recta fuera de ese rango.
 
@@ -797,7 +797,7 @@ La ecuación siempre devuelve un número, pero el sistema geológico no está ob
 La extrapolación combina incertidumbre estadística con incertidumbre de modelo. Las bandas calculadas bajo el modelo lineal no incorporan automáticamente la posibilidad de que la relación cambie de mecanismo fuera del rango observado.
 :::
 
-## Leverage e influencia en regresión
+## Leverage e influencia en regresión {#sec-leverage-influencia}
 
 En regresión conviene distinguir tres conceptos:
 

@@ -1,0 +1,52 @@
+# Cómo ejecutar los ejemplos {.unnumbered}
+
+El contenido conceptual puede leerse sin programar. El código cumple otra función: permite reconstruir figuras, modificar supuestos y comprobar con datos sintéticos qué cambia cuando cambia una decisión. Todos los ejemplos usan semillas fijas para que el resultado sea reproducible.
+
+## Tres formas de trabajar
+
+### Código integrado en cada capítulo
+
+Los bloques con el rótulo **Código** pueden copiarse y ejecutarse en un notebook. Los capítulos muestran también su resultado para que la lectura no dependa de tener Python instalado.
+
+### Notebooks descargables
+
+Los recorridos prácticos más extensos están disponibles como notebooks:
+
+- [Caso sintético de arsénico](../ejemplos/01_caso_arsenico_sintetico.ipynb)
+- [Variograma experimental y anisotropía](../ejemplos/02_variograma.ipynb)
+- [Kriging ordinario, sensibilidad y validación](../ejemplos/03_kriging.ipynb)
+- [Semejanza y agrupamiento multivariado](../ejemplos/04_clustering.ipynb)
+
+Cada archivo puede descargarse desde el navegador y abrirse en JupyterLab, Jupyter Notebook, VS Code o Google Colab. En Colab, use **Archivo → Subir notebook** y seleccione el archivo descargado.
+
+### Repositorio completo
+
+Quien quiera reconstruir el manual puede clonar el [repositorio público](https://github.com/likerman/geoestadistica-uba), crear un entorno de Python e instalar las dependencias declaradas:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+En Windows, la activación habitual es `.venv\Scripts\activate`. Después puede iniciarse Jupyter con `jupyter lab` o renderizarse el libro con `quarto render`.
+
+## Qué debe poder modificarse
+
+Un ejemplo útil no es una receta cerrada. Conviene cambiar de a una variable y volver a ejecutar:
+
+- tamaño y geometría de la muestra;
+- semilla aleatoria;
+- ancho de lag y tolerancia angular;
+- alcance, meseta y componente de error;
+- escala de las variables y número de grupos.
+
+Después de cada cambio hay que interpretar el resultado: no basta con obtener una figura sin errores.
+
+::: {.callout-tip title="Si un notebook no se ejecuta" collapse="true"}
+Compruebe primero que se ejecutaron las celdas en orden, que el entorno contiene las bibliotecas de `requirements.txt` y que el notebook se abrió desde la raíz del repositorio. Reiniciar el kernel y ejecutar **Run all** elimina estados ocultos acumulados durante pruebas parciales.
+:::
+
+::: {.callout-important title="Datos y alcance"}
+Los notebooks incluidos utilizan datos sintéticos o ejemplos docentes. Su objetivo es comprender métodos y decisiones; no sustituyen el control de calidad, la definición de dominios ni la validación necesaria para una aplicación profesional.
+:::

@@ -1,12 +1,14 @@
 ---
-title: "Manual de Geoestadística"
 subtitle: "Fundamentos teóricos y ejemplos geológicos"
 author: "Docentes de Geoestadística"
 date: "2026-08-14"
 date-format: long
+number-sections: false
 body-classes: portada-inicial
 favicon: recursos/identidad/logo.png
 ---
+
+# Manual de Geoestadística {.unnumbered .titulo-estructural}
 
 ::: {.portada-manual}
 
@@ -34,9 +36,9 @@ favicon: recursos/identidad/logo.png
 
 :::
 
-# Propósito
+# Propósito {.unnumbered}
 
-Este manual desarrolla progresivamente las ideas fundamentales que conducen hacia la geoestadística: comienza con problemas de descripción de datos, muestreo, probabilidad e inferencia, y avanza hacia el estudio de relaciones entre variables y, más adelante, de la dependencia espacial.
+Este manual desarrolla progresivamente las ideas fundamentales que conducen hacia la geoestadística: comienza con problemas de descripción de datos, muestreo, probabilidad e inferencia, y avanza hacia el estudio de relaciones entre variables, la dependencia espacial, el variograma y la estimación por kriging.
 
 La pregunta que organiza el recorrido es sencilla: **¿qué cambia cuando, además del valor observado, importa dónde fue observado?** Antes de responderla necesitamos comprender qué puede —y qué no puede— decir la estadística clásica sobre una muestra.
 

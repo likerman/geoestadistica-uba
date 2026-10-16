@@ -13,6 +13,10 @@ Al finalizar este capítulo, el lector debería poder:
 - reconocer el papel de inicialización y función objetivo;
 - adaptar la representación a datos axiales de fracturas.
 
+::: {.callout-tip title="Notebook reproducible"}
+El recorrido práctico puede ejecutarse y modificarse en [Semejanza y agrupamiento multivariado](../ejemplos/04_clustering.ipynb).
+:::
+
 ## Una muestra, muchas variables
 
 Una roca, suelo o muestra de agua suele describirse mediante varias propiedades. Si medimos $p$ variables sobre $n$ unidades, organizamos los datos en una matriz
@@ -40,7 +44,7 @@ Una distancia pequeña significa semejanza **según esas variables y esa escala*
 
 ## Estandarizar antes de comparar
 
-Una opción habitual es transformar cada variable en z-scores:
+Una opción habitual es aplicar una [estandarización](../glosario.qmd#glosario-estandarizacion) y transformar cada variable en z-scores:
 
 $$
 z_{ik}=\frac{x_{ik}-\bar x_k}{s_k}.
@@ -86,7 +90,7 @@ plt.show()
 
 ## Matriz de distancias
 
-Al calcular todos los pares obtenemos una matriz simétrica:
+Al calcular todos los pares obtenemos una [matriz de distancias](../glosario.qmd#glosario-matriz-distancias) simétrica:
 
 $$
 \mathbf D=
@@ -110,7 +114,7 @@ pd.DataFrame(squareform(pdist(Z)),
 
 ## Agrupamiento jerárquico aglomerativo
 
-El [agrupamiento jerárquico](../glosario.qmd#glosario-agrupamiento-jerarquico) comienza con cada observación como grupo individual y fusiona iterativamente los grupos más próximos. Cuando un grupo contiene varias observaciones debemos definir distancia entre grupos o **enlace**:
+El [agrupamiento jerárquico](../glosario.qmd#glosario-agrupamiento-jerarquico) comienza con cada observación como grupo individual y fusiona iterativamente los grupos más próximos. Cuando un grupo contiene varias observaciones debemos definir distancia entre grupos o [**enlace**](../glosario.qmd#glosario-enlace):
 
 - **simple:** menor distancia entre miembros; puede producir cadenas;
 - **completo:** mayor distancia; favorece grupos compactos;
@@ -141,7 +145,7 @@ Elegir un corte horizontal produce una partición. Un salto grande entre alturas
 
 ## K-means
 
-[K-means](../glosario.qmd#glosario-kmeans) busca $K$ centroides y una asignación de observaciones que minimice la suma de cuadrados intragrupo:
+[K-means](../glosario.qmd#glosario-kmeans) busca $K$ [centroides](../glosario.qmd#glosario-centroide) y una asignación de observaciones que minimice la [inercia intragrupo](../glosario.qmd#glosario-inercia-intragrupo):
 
 $$
 W_K=\sum_{g=1}^{K}\sum_{i\in C_g}
@@ -198,7 +202,7 @@ donde $a(i)$ es su distancia media al propio grupo y $b(i)$ la menor distancia m
 
 ## Familias de fracturas: la representación importa
 
-Los rumbos son datos **axiales**: $0^\circ$ y $180^\circ$ representan la misma orientación. La diferencia convencional falla cerca del límite; $179^\circ$ y $1^\circ$ están separados por $2^\circ$ de orientación, no por $178^\circ$.
+Los rumbos son [datos **axiales**](../glosario.qmd#glosario-dato-axial): $0^\circ$ y $180^\circ$ representan la misma orientación. La diferencia convencional falla cerca del límite; $179^\circ$ y $1^\circ$ están separados por $2^\circ$ de orientación, no por $178^\circ$.
 
 Una representación compatible transforma cada rumbo $\theta$ en
 

@@ -56,7 +56,7 @@ plt.show()
 
 ## Variable regionalizada y campo aleatorio
 
-La expresión [variable regionalizada](../glosario.qmd#glosario-variable-regionalizada) destaca que una propiedad varía en un dominio y combina irregularidad local con organización espacial. Para construir inferencia, la geoestadística suele modelar esa realización observada mediante un [campo aleatorio](../glosario.qmd#glosario-campo-aleatorio):
+La expresión [variable regionalizada](../glosario.qmd#glosario-variable-regionalizada) destaca que una propiedad varía en un [dominio](../glosario.qmd#glosario-dominio) y combina irregularidad local con organización espacial. Para construir inferencia, la geoestadística suele modelar esa realización observada mediante un [campo aleatorio](../glosario.qmd#glosario-campo-aleatorio):
 
 $$
 \{Z(\mathbf u):\mathbf u\in D\}.

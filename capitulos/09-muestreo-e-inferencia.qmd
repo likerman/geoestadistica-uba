@@ -8,12 +8,12 @@ Al finalizar este capítulo, el lector debería poder:
 - explicar por qué una media muestral cambia entre campañas;
 - derivar el centro y la variabilidad de $\bar X$ bajo supuestos clásicos;
 - diferenciar desviación estándar y error estándar;
-- explicar qué aporta el Teorema Central del Límite y qué no aporta;
+- explicar qué aporta el [Teorema Central del Límite](../glosario.qmd#glosario-tcl) y qué no aporta;
 - interpretar la estandarización como una distancia expresada en errores estándar;
-- distinguir parámetro, estimador y estimación;
-- construir e interpretar intervalos de confianza en términos de cobertura;
-- separar nivel de confianza, precisión y ancho del intervalo;
-- explicar por qué aparece la distribución $t$ de Student cuando $\sigma$ es desconocida;
+- distinguir parámetro, estimador, [estimación puntual](../glosario.qmd#glosario-estimacion-puntual) y estimación;
+- construir e interpretar [intervalos de confianza](../glosario.qmd#glosario-intervalo-confianza) en términos de [cobertura](../glosario.qmd#glosario-cobertura);
+- separar nivel de confianza, precisión y [margen de error](../glosario.qmd#glosario-margen-error);
+- explicar por qué aparece la distribución [$t$ de Student](../glosario.qmd#glosario-t-student) cuando $\sigma$ es desconocida;
 - reconocer cuándo la dependencia espacial vuelve demasiado optimistas las fórmulas clásicas.
 
 ## De describir una muestra a aprender sobre una población
@@ -68,7 +68,7 @@ Esta diferencia entre mayúscula y minúscula no es estética. $\bar X$ represen
 
 ## Distribución muestral {#sec-distribucion-muestral}
 
-La **distribución muestral** de un estadístico es la distribución que tendría ese estadístico si repitiéramos el mecanismo de muestreo muchas veces bajo las mismas condiciones [@mckillup_dyar_2010; @davis_2002].
+La [**distribución muestral**](../glosario.qmd#glosario-distribucion-muestral) de un estadístico es la distribución que tendría ese estadístico si repitiéramos el mecanismo de muestreo muchas veces bajo las mismas condiciones [@mckillup_dyar_2010; @davis_2002].
 
 Para la media:
 

@@ -7,17 +7,17 @@ Al finalizar este capítulo, el lector debería poder:
 - distinguir una proporción observada de una probabilidad definida bajo un modelo;
 - diferenciar variable aleatoria, realización, evento y valor observado;
 - interpretar funciones de densidad y de distribución acumulada;
-- relacionar histograma, KDE, ECDF, PDF y CDF sin confundir sus significados;
+- relacionar histograma, KDE, ECDF, [PDF](../glosario.qmd#glosario-pdf) y [CDF](../glosario.qmd#glosario-cdf) sin confundir sus significados;
 - utilizar la distribución normal como modelo de referencia, no como forma obligatoria de los datos;
 - estandarizar valores e interpretar correctamente una puntuación $z$;
 - calcular probabilidades de cola y de intervalo;
-- obtener cuantiles e interpretar un QQ-plot como diagnóstico del modelo;
+- obtener cuantiles, elegir una [posición de graficación](../glosario.qmd#glosario-posicion-graficacion) e interpretar un [QQ-plot](../glosario.qmd#glosario-qqplot) como diagnóstico del modelo;
 - explicar por qué una cuenta matemáticamente correcta puede ser científicamente poco útil si el modelo es inadecuado;
 - distinguir la distribución de los datos de la distribución muestral que aparecerá en inferencia.
 
 ## De describir lo observado a modelar lo posible
 
-Hasta aquí describimos muestras mediante tablas, histogramas, ECDF, medidas de posición, dispersión y forma. Todas esas herramientas responden preguntas sobre valores que ya fueron observados. El paso hacia probabilidad cambia la pregunta: queremos representar valores que todavía no conocemos.
+Hasta aquí describimos muestras mediante tablas, histogramas, ECDF, medidas de posición, dispersión y forma. Todas esas herramientas responden preguntas sobre valores que ya fueron observados. El paso hacia la [probabilidad](../glosario.qmd#glosario-probabilidad) cambia la pregunta: queremos representar valores que todavía no conocemos.
 
 La transición conceptual es
 
@@ -31,7 +31,7 @@ $$
 \text{probabilidades y cuantiles}.
 $$
 
-Un modelo probabilístico es una representación matemática deliberadamente simplificada. No descubre por sí solo el mecanismo geológico y no tiene por qué reproducir cada irregularidad de una muestra. Su utilidad depende de la pregunta, del mecanismo de observación, del soporte, de los datos y de las consecuencias de equivocarse [@davis_2002; @mckillup_dyar_2010].
+Una [distribución teórica](../glosario.qmd#glosario-distribucion-teorica) o modelo probabilístico es una representación matemática deliberadamente simplificada. No descubre por sí solo el mecanismo geológico y no tiene por qué reproducir cada irregularidad de una muestra. Su utilidad depende de la pregunta, del mecanismo de observación, del soporte, de los datos y de las consecuencias de equivocarse [@davis_2002; @mckillup_dyar_2010].
 
 ::: {.callout-important title="Idea central"}
 Las probabilidades no salen directamente de los datos. Se calculan **bajo un modelo**. Si los parámetros del modelo se estiman con una muestra, la respuesta hereda tanto los supuestos del modelo como la incertidumbre de esa estimación.
@@ -117,7 +117,7 @@ La proporción observada puede estimar una probabilidad; no es automáticamente 
 
 ## Variable continua y densidad {#variable-continua-y-densidad}
 
-Una concentración suele modelarse como variable continua. En un modelo continuo,
+Una concentración suele modelarse como [variable continua](../glosario.qmd#glosario-variable-continua). En un modelo continuo,
 
 $$
 P(X=x)=0.

@@ -12,18 +12,22 @@ Al finalizar este capítulo, el lector debería poder:
 - comparar modelos esférico, exponencial y gaussiano;
 - analizar continuidad direccional y anisotropía.
 
+::: {.callout-tip title="Notebook reproducible"}
+El cálculo completo puede ejecutarse y modificarse en [Variograma experimental y anisotropía](../ejemplos/02_variograma.ipynb).
+:::
+
 ## De los pares a una función de distancia
 
 Para una separación $\mathbf h$, el estimador clásico de Matheron es
 
 $$
 \widehat\gamma(\mathbf h)=
-\frac{1}{2N(\mathbf h)}
-\sum_{(i,j)\in N(\mathbf h)}
+\frac{1}{2\lvert\mathcal N(\mathbf h)\rvert}
+\sum_{(i,j)\in \mathcal N(\mathbf h)}
 \left[z(\mathbf u_i)-z(\mathbf u_j)\right]^2,
 $$
 
-donde $N(\mathbf h)$ es el conjunto de pares compatibles con la separación y $N(\mathbf h)$ su cantidad. Cada punto experimental resume diferencias cuadráticas observadas, no una distancia geométrica aislada [@isaaks_srivastava_1989; @goovaerts_1997].
+donde $\mathcal N(\mathbf h)$ es el conjunto de pares compatibles con la clase de separación y $\lvert\mathcal N(\mathbf h)\rvert$ es su cantidad. Cada punto experimental resume diferencias cuadráticas observadas, no una distancia geométrica aislada [@isaaks_srivastava_1989; @goovaerts_1997].
 
 En datos irregulares casi nunca existen muchos pares con exactamente el mismo vector. Por eso se definen [**lags**](../glosario.qmd#glosario-lag) o clases de separación. Para un lag centrado en $h_k$ y de ancho $\Delta h$, se aceptan pares aproximadamente comprendidos entre
 
@@ -111,11 +115,11 @@ ax.grid(alpha=0.25)
 plt.show()
 ```
 
-El variograma experimental no es una curva exacta. Sus fluctuaciones dependen de la realización observada, la geometría del muestreo, los lags, los valores extremos y la cantidad de pares. Los pares tampoco son observaciones independientes: una misma muestra participa en muchos de ellos.
+El [variograma experimental](../glosario.qmd#glosario-variograma-experimental) no es una curva exacta. Sus fluctuaciones dependen de la realización observada, la geometría del muestreo, los lags, los valores extremos y la cantidad de pares. Los pares tampoco son observaciones independientes: una misma muestra participa en muchos de ellos.
 
 ## H-scattergram
 
-Para una clase de separación, el **h-scattergram** representa $z(\mathbf u)$ frente a $z(\mathbf u+\mathbf h)$. Una nube próxima a la diagonal indica semejanza; una nube abierta indica menor continuidad. La semivarianza condensa esa dispersión en un número, mientras el gráfico permite detectar asimetrías, mezclas y puntos dominantes.
+Para una clase de separación, el [**h-scattergram**](../glosario.qmd#glosario-h-scattergram) representa $z(\mathbf u)$ frente a $z(\mathbf u+\mathbf h)$. Una nube próxima a la diagonal indica semejanza; una nube abierta indica menor continuidad. La [semivarianza](../glosario.qmd#glosario-semivarianza) condensa esa dispersión en un número, mientras el gráfico permite detectar asimetrías, mezclas y puntos dominantes.
 
 ```{python}
 #| label: fig-h-scattergrams
@@ -159,7 +163,7 @@ El [**alcance**](../glosario.qmd#glosario-alcance) describe la escala a partir d
 
 ## Modelos autorizados
 
-Kriging necesita evaluar la continuidad para separaciones que no coinciden con los puntos experimentales. Se ajusta entonces un modelo matemático válido. Para $h>0$:
+Kriging necesita evaluar la continuidad para separaciones que no coinciden con los puntos experimentales. Se ajusta entonces un [modelo de variograma](../glosario.qmd#glosario-modelo-variograma) matemáticamente válido. Para $h>0$:
 
 **Esférico**
 
@@ -182,25 +186,31 @@ $$
 \gamma(h)=c_0+c\left[1-\exp\left(-\frac{h^2}{a^2}\right)\right].
 $$
 
-El gaussiano es muy suave cerca del origen; el exponencial crece más abruptamente; el esférico combina crecimiento inicial lineal con alcance finito. La elección debe reflejar el comportamiento a corta distancia, la geometría y la plausibilidad geológica, no sólo minimizar una discrepancia numérica [@chiles_delfiner_2012; @wackernagel_2003].
+El parámetro $a$ no representa exactamente lo mismo en los tres modelos. En el esférico es el alcance exacto; con las fórmulas anteriores, el exponencial alcanza aproximadamente el 95 % de su meseta estructurada en $3a$ y el gaussiano en $\sqrt{3}a$. El gaussiano es muy suave cerca del origen; el exponencial crece más abruptamente; el esférico combina crecimiento inicial lineal con alcance finito. La elección debe reflejar el comportamiento a corta distancia, la geometría y la plausibilidad geológica, no sólo minimizar una discrepancia numérica [@chiles_delfiner_2012; @wackernagel_2003].
 
 ```{python}
 #| label: fig-modelos-variograma
-#| fig-cap: "Modelos esférico, exponencial y gaussiano con la misma pepita y meseta, pero distinto comportamiento cerca del origen y del alcance."
+#| fig-cap: "Modelos esférico, exponencial y gaussiano con la misma pepita, meseta y alcance práctico al 95 %, pero distinto comportamiento cerca del origen."
 #| fig-alt: "Tres curvas de variograma comparadas sobre los mismos ejes."
 
 h = np.linspace(0, 700, 400)
-c0, c, a = 8, 60, 260
-esf = np.where(h < a, c0 + c*(1.5*h/a - 0.5*(h/a)**3), c0+c)
+c0, c, alcance_practico = 8, 60, 300
+a_esf = alcance_practico
+a_exp = alcance_practico/3
+a_gau = alcance_practico/np.sqrt(3)
+esf = np.where(h < a_esf,
+               c0 + c*(1.5*h/a_esf - 0.5*(h/a_esf)**3), c0+c)
 esf[0] = 0
-exp = c0 + c*(1-np.exp(-h/a)); exp[0] = 0
-gau = c0 + c*(1-np.exp(-(h/a)**2)); gau[0] = 0
+exp = c0 + c*(1-np.exp(-h/a_exp)); exp[0] = 0
+gau = c0 + c*(1-np.exp(-(h/a_gau)**2)); gau[0] = 0
 
 fig, ax = plt.subplots(figsize=(7.2, 4.5))
 ax.plot(h, esf, label="Esférico")
 ax.plot(h, exp, label="Exponencial")
 ax.plot(h, gau, label="Gaussiano")
 ax.axhline(c0+c, color="gray", linestyle="--", label="meseta")
+ax.axvline(alcance_practico, color="#B56F3A", linestyle=":",
+           label="alcance práctico (95 %)")
 ax.set(xlabel="Distancia", ylabel="Semivarianza")
 ax.legend(); ax.grid(alpha=0.25)
 plt.show()
@@ -210,7 +220,50 @@ plt.show()
 
 Un variograma omnidireccional mezcla todas las orientaciones. Para explorar anisotropía se seleccionan pares dentro de una tolerancia angular alrededor de direcciones elegidas. Si la variable es más continua Este–Oeste, esperamos menor semivarianza y mayor alcance en esa dirección que Norte–Sur.
 
-La anisotropía geométrica conserva aproximadamente la meseta y cambia el alcance con la dirección. La anisotropía zonal puede cambiar también la meseta. Antes de interpretarla hay que revisar número de pares, cobertura, tendencia, dominios y tolerancia angular.
+La [anisotropía](../glosario.qmd#glosario-anisotropia) geométrica conserva aproximadamente la meseta y cambia el alcance con la dirección. La anisotropía zonal puede cambiar también la meseta. Antes de interpretarla hay que revisar número de pares, cobertura, tendencia, dominios y tolerancia angular.
+
+El ejemplo siguiente reutiliza exactamente la muestra sintética anterior. Las direcciones se tratan como ejes —$0^\circ$ y $180^\circ$ son equivalentes— y se aceptan pares dentro de una tolerancia de $22.5^\circ$. Comparar las curvas sin mostrar esa tolerancia o el número de pares ocultaría una parte decisiva del cálculo.
+
+```{python}
+#| label: fig-variogramas-direccionales
+#| fig-cap: "Variogramas experimentales direccionales del campo sintético. La menor semivarianza Este–Oeste a distancias intermedias revela mayor continuidad en esa dirección."
+#| fig-alt: "Dos curvas de semivarianza por distancia, una Este-Oeste y otra Norte-Sur, con símbolos cuyo tamaño representa el número de pares."
+
+delta = coords[j] - coords[i]
+angulos = np.degrees(np.arctan2(delta[:, 1], delta[:, 0])) % 180
+
+def distancia_angular(angulos, direccion):
+    diferencia = np.abs(angulos - direccion)
+    return np.minimum(diferencia, 180 - diferencia)
+
+def variograma_direccional(direccion, tolerancia=22.5):
+    seleccion_direccion = distancia_angular(angulos, direccion) <= tolerancia
+    filas = []
+    for h0 in centros:
+        m = (seleccion_direccion & (dist >= h0-ancho/2)
+             & (dist < h0+ancho/2))
+        if m.sum() >= 5:
+            filas.append((dist[m].mean(), semi[m].mean(), m.sum()))
+    return pd.DataFrame(filas, columns=["distancia", "semivarianza", "n_pares"])
+
+fig, ax = plt.subplots(figsize=(7.2, 4.7))
+for direccion, etiqueta, color, marcador in [
+    (0, "Este–Oeste", "#1D4162", "o"),
+    (90, "Norte–Sur", "#B56F3A", "s"),
+]:
+    vd = variograma_direccional(direccion)
+    ax.plot(vd["distancia"], vd["semivarianza"], color=color, alpha=0.75)
+    ax.scatter(vd["distancia"], vd["semivarianza"],
+               s=18 + 1.5*vd["n_pares"], color=color,
+               marker=marcador, edgecolor="white", label=etiqueta)
+ax.set(xlabel="Distancia media del lag (m)", ylabel="Semivarianza",
+       title="Continuidad según la dirección")
+ax.legend(title="Tolerancia angular: ±22.5°")
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+La diferencia entre ambas curvas es coherente con el mecanismo usado para simular el campo, pero una sola realización no basta para declarar anisotropía en datos reales. La interpretación debe integrar el diseño de muestreo, la geología y un análisis de sensibilidad a lags y tolerancias.
 
 ## Transformaciones y variograma
 
@@ -252,3 +305,10 @@ $$
 2. ¿Qué información conserva un h-scattergram que el variograma resume?
 3. ¿Por qué exponencial y gaussiano necesitan un alcance práctico?
 4. ¿Qué cambia y qué no cambia al aplicar normal-score?
+
+::: {.callout-tip title="Pistas para revisar" collapse="true"}
+1. Un lag más ancho aumenta la cantidad de pares, pero mezcla separaciones menos parecidas.
+2. El h-scattergram conserva la geometría de la nube y permite reconocer puntos dominantes o mezclas.
+3. Exponencial y gaussiano llegan a la meseta sólo asintóticamente; por eso el alcance informado depende de una convención.
+4. Normal-score conserva el orden, pero modifica las diferencias y, por tanto, el variograma.
+:::

@@ -73,7 +73,7 @@ for datos, color in [(a, "#1D4162"), (b, "#8C4F25")]:
 axes[0, 0].set(title="Histograma y KDE", xlabel="As (µg/L)", ylabel="Densidad")
 axes[0, 0].legend()
 
-axes[0, 1].boxplot([a, b], labels=["A", "B"], patch_artist=True,
+axes[0, 1].boxplot([a, b], tick_labels=["A", "B"], patch_artist=True,
                    boxprops={"facecolor": "#C4D0DA", "color": "#1D4162"},
                    medianprops={"color": "#B56F3A", "linewidth": 2},
                    whiskerprops={"color": "#1D4162"},

@@ -43,7 +43,7 @@ pd.DataFrame({
     "población": resumen(datos["as_ug_l"]),
     "aleatoria": resumen(aleatoria["as_ug_l"]),
     "preferencial": resumen(preferencial["as_ug_l"]),
-}).round(2)
+}).round(2).style.hide(axis="index")
 ```
 
 La campaña aleatoria de referencia tiene $n=50$, media aproximadamente 18.01 µg/L, mediana 15.74 µg/L, desviación estándar muestral 10.97 µg/L, asimetría 1.66 y exceso de curtosis 3.13. Estos valores sirven como control de continuidad entre el manual, las presentaciones y los notebooks.
