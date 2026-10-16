@@ -454,7 +454,7 @@ $$
 
 La prueba $t$ apareada es, por lo tanto, una prueba $t$ de una muestra aplicada a las diferencias.
 
-En la clase se planteó el ejemplo de porosidad medida sobre las mismas muestras con dos métodos. El apareamiento conserva la correspondencia muestra a muestra y permite eliminar parte de la variabilidad entre unidades.
+Considérese la porosidad medida sobre las mismas muestras con dos métodos. El apareamiento conserva la correspondencia muestra a muestra y permite eliminar parte de la variabilidad entre unidades.
 
 ::: {.callout-warning title="No ignorar los pares"}
 Analizar datos apareados como si fueran dos grupos independientes descarta información del diseño. La unidad estadística correcta es el **par** y el supuesto de independencia se refiere a las diferencias entre pares, no a las dos mediciones dentro de un mismo par.

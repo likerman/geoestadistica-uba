@@ -22,12 +22,12 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Inferencia | distribución muestral, TCL, error estándar, t e intervalos | 09 | estable |
 | Inferencia | comparación de medias, hipótesis, α, región crítica, p, errores, potencia e IC-test | 10 | estable |
 | Síntesis | integración conceptual: gráficos, inferencia, errores y potencia | 10b | estable |
-| Bivariado | correlación y regresión | 11 | borrador |
+| Bivariado | correlación, regresión, ANOVA de la regresión e incertidumbre predictiva | 11 | revisión docente |
 | Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador |
-| Multivariado | cluster, PCA y LDA | 13 | borrador |
-| Espacial | variable regionalizada y supuestos | 14 | borrador |
-| Espacial | variograma | 15 | borrador |
-| Espacial | kriging | 16 | borrador |
+| Multivariado | semejanza, cluster jerárquico, k-means y familias de fracturas | 13 | revisión docente |
+| Espacial | variable regionalizada, pares, continuidad, anisotropía y estacionariedad | 14 | revisión docente |
+| Espacial | variograma experimental, modelos, transformaciones y anisotropía | 15 | revisión docente |
+| Espacial | IDW, kriging ordinario, bloques, sensibilidad y validación | 16 | revisión docente |
 | Integración | simulación, validación, comunicación y límites | 17 | borrador |
 
 ## Fuentes docentes vigentes para el tramo auditado
@@ -132,3 +132,22 @@ Además, el capítulo 10 quedó cerrado con:
 6. pseudorreplicación e independencia espacial como condición de validez.
 
 Con este corte, el tramo de inferencia queda listo para pasar a correlación y regresión.
+
+## Actualización espacial y multivariada — 15 de octubre de 2026
+
+Se contrastaron presentaciones, guiones y recursos reproducibles de las clases 9 a 12. La clase 9 de correlación ya estaba incorporada; esta actualización completó y publicó:
+
+1. descomposición ANOVA de la regresión, cuadrados medios, prueba $F$ y relación $F=t^2$;
+2. intervalos para la respuesta media e intervalos de predicción individual;
+3. observación espacial como valor, localización y soporte;
+4. pares, vector de separación, continuidad, anisotropía, tendencia y estacionariedad;
+5. variograma experimental, lags, h-scattergrams, pepita, meseta, alcance y modelos autorizados;
+6. transformaciones z-score, logarítmica y normal-score y sus consecuencias espaciales;
+7. IDW y kriging ordinario, sistemas en covarianzas y variogramas, pesos y redundancia;
+8. varianza de kriging, sensibilidad a los parámetros, estimación puntual y de bloques;
+9. validación predictiva y comunicación de incertidumbre;
+10. semejanza multivariada, estandarización, matriz de distancias, agrupamiento jerárquico y dendrogramas;
+11. $k$-means, inicialización, selección de $K$ y silueta;
+12. aplicación a rumbos axiales mediante la representación $(\cos2\theta,\sin2\theta)$.
+
+PCA y LDA permanecen fuera del índice porque no integran todavía el tramo desarrollado y publicado del manual.

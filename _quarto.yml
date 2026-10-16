@@ -51,6 +51,14 @@ book:
     - part: "IV. Relaciones entre variables"
       chapters:
         - capitulos/11-correlacion-regresion.qmd
+    - part: "V. Continuidad y estimación espacial"
+      chapters:
+        - capitulos/14-variable-regionalizada.qmd
+        - capitulos/15-variograma.qmd
+        - capitulos/16-kriging.qmd
+    - part: "VI. Análisis multivariado"
+      chapters:
+        - capitulos/13-metodos-multivariados.qmd
     - glosario.qmd
     - referencias.qmd
     - part: "Laboratorio"

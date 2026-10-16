@@ -48,8 +48,9 @@ A lo largo del texto volveremos sobre concentraciones de arsénico medidas en po
 - estudiar su distribución y sus valores extremos;
 - comparar muestras y discutir representatividad;
 - incorporar las coordenadas de cada pozo;
-- preparar la transición hacia continuidad, anisotropía y escalas espaciales;
-- discutir, en etapas posteriores, cómo estimar en lugares no muestreados y cuantificar incertidumbre.
+- reconocer continuidad, anisotropía y escalas espaciales;
+- estimar en lugares no muestreados y cuantificar incertidumbre bajo un modelo;
+- comparar muestras multivariadas e identificar agrupamientos exploratorios.
 
 Los datos reales definitivos, su procedencia y sus condiciones de uso se documentarán antes de incorporarlos. Mientras tanto, los ejemplos reproducibles utilizan una población sintética de 1000 pozos para mantener continuidad entre capítulos sin atribuir valores a localizaciones reales.
 
@@ -59,11 +60,11 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre el primer tramo conceptual del manual: datos y muestreo; estadística descriptiva; probabilidad; distribución muestral e intervalos de confianza; distribución $t$ de Student y pruebas de hipótesis; errores tipo I y II, potencia y tamaño de efecto; muestras apareadas; comparación de varianzas mediante la distribución $F$; análisis de frecuencias categóricas mediante $\chi^2$ de independencia; correlación; regresión lineal simple; y una síntesis integradora del recorrido desde el dato hasta la inferencia.
+Esta versión cubre datos y muestreo; estadística descriptiva; probabilidad e inferencia; pruebas de hipótesis; comparación de varianzas y frecuencias categóricas; correlación y regresión lineal; dependencia espacial; variograma experimental y modelos; anisotropía; IDW y kriging ordinario; incertidumbre, soporte y validación espacial; transformaciones; semejanza multivariada; agrupamiento jerárquico; $k$-means; y una aplicación a familias de fracturas.
 
-A lo largo de estos capítulos se refuerza una idea que será central en la segunda mitad de la materia: la inferencia clásica depende del diseño y de la cantidad de información efectivamente independiente. La pseudorreplicación y la dependencia espacial funcionan así como un puente hacia el núcleo específicamente geoestadístico.
+A lo largo de los capítulos se refuerza una idea central: la información depende del diseño, del soporte y de la estructura de dependencia. El variograma formaliza cómo cambia la disimilitud con la separación; kriging utiliza ese modelo y la geometría de las observaciones para estimar y cuantificar incertidumbre.
 
-Los capítulos espaciales se incorporarán progresivamente cuando formen parte del tramo publicado del manual. Hasta entonces, los capítulos visibles buscan ser autosuficientes y revisables; los temas aún no publicados no se reemplazan por apuntes incompletos.
+Los capítulos visibles buscan ser autosuficientes y revisables. Los temas que todavía no forman parte del tramo publicado no se reemplazan por capítulos vacíos ni apuntes incompletos.
 
 ## Alcance
 

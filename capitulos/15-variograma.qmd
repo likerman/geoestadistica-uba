@@ -1,4 +1,254 @@
-# Variograma
+# Variograma: medir y modelar continuidad {#sec-variograma}
 
-Capítulo planificado. Desarrollará variograma experimental, modelos, efecto pepita, meseta, alcance y anisotropía.
+## Objetivos
 
+Al finalizar este capítulo, el lector debería poder:
+
+- construir un variograma experimental a partir de pares;
+- explicar qué son lag, tolerancia y número de pares;
+- interpretar un h-scattergram;
+- reconocer efecto pepita, meseta y alcance;
+- distinguir variograma experimental de modelo autorizado;
+- comparar modelos esférico, exponencial y gaussiano;
+- analizar continuidad direccional y anisotropía.
+
+## De los pares a una función de distancia
+
+Para una separación $\mathbf h$, el estimador clásico de Matheron es
+
+$$
+\widehat\gamma(\mathbf h)=
+\frac{1}{2N(\mathbf h)}
+\sum_{(i,j)\in N(\mathbf h)}
+\left[z(\mathbf u_i)-z(\mathbf u_j)\right]^2,
+$$
+
+donde $N(\mathbf h)$ es el conjunto de pares compatibles con la separación y $N(\mathbf h)$ su cantidad. Cada punto experimental resume diferencias cuadráticas observadas, no una distancia geométrica aislada [@isaaks_srivastava_1989; @goovaerts_1997].
+
+En datos irregulares casi nunca existen muchos pares con exactamente el mismo vector. Por eso se definen [**lags**](../glosario.qmd#glosario-lag) o clases de separación. Para un lag centrado en $h_k$ y de ancho $\Delta h$, se aceptan pares aproximadamente comprendidos entre
+
+$$
+h_k-\frac{\Delta h}{2}
+\quad\text{y}\quad
+h_k+\frac{\Delta h}{2}.
+$$
+
+Lags estrechos conservan resolución pero contienen menos pares; lags anchos estabilizan el promedio a costa de mezclar escalas. Por eso cada punto debería leerse junto con su distancia media real y su número de pares.
+
+## Ejemplo reproducible
+
+El siguiente campo sintético tiene continuidad mayor en dirección Este–Oeste que Norte–Sur. Se genera con un modelo gaussiano anisótropo para que podamos conocer la estructura que intentaremos recuperar.
+
+```{python}
+#| label: setup-variograma
+#| include: false
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.spatial.distance import pdist, squareform
+
+rng = np.random.default_rng(20261009)
+n = 65
+coords = rng.uniform(0, 1000, size=(n, 2))
+dx = coords[:, None, 0] - coords[None, :, 0]
+dy = coords[:, None, 1] - coords[None, :, 1]
+d_aniso = np.sqrt((dx/360)**2 + (dy/110)**2)
+C = 64*np.exp(-(d_aniso**2)) + np.eye(n)*4
+valores = rng.multivariate_normal(np.full(n, 180.0), C)
+```
+
+```{python}
+#| label: fig-muestra-espacial-variograma
+#| fig-cap: "Muestra espacial sintética con continuidad anisótropa."
+#| fig-alt: "Mapa de puntos coloreados por temperatura sintética; aparecen franjas con mayor continuidad Este-Oeste."
+
+fig, ax = plt.subplots(figsize=(6.5, 5.3))
+sc = ax.scatter(coords[:,0], coords[:,1], c=valores, cmap="inferno",
+                s=65, edgecolor="white")
+ax.set(xlabel="Este (m)", ylabel="Norte (m)", title="Temperatura sintética")
+ax.set_aspect("equal")
+fig.colorbar(sc, ax=ax, label="Temperatura (°C)")
+plt.show()
+```
+
+## Construcción del variograma experimental
+
+Para cada par calculamos distancia y semidiferencia cuadrática:
+
+$$
+d_{ij}=\lVert\mathbf u_j-\mathbf u_i\rVert,
+\qquad
+g_{ij}=\frac{1}{2}\left[z(\mathbf u_j)-z(\mathbf u_i)\right]^2.
+$$
+
+Luego agrupamos $g_{ij}$ por clases de $d_{ij}$.
+
+```{python}
+#| label: fig-variograma-experimental
+#| fig-cap: "Variograma experimental omnidireccional. El tamaño de cada punto es proporcional al número de pares del lag."
+#| fig-alt: "Puntos de semivarianza que crecen con la distancia y se estabilizan; los tamaños indican cantidad de pares."
+
+i, j = np.triu_indices(n, k=1)
+dist = np.sqrt(np.sum((coords[j] - coords[i])**2, axis=1))
+semi = 0.5*(valores[j] - valores[i])**2
+
+ancho = 80
+centros = np.arange(40, 680, ancho)
+filas = []
+for h in centros:
+    m = (dist >= h-ancho/2) & (dist < h+ancho/2)
+    if m.sum() >= 8:
+        filas.append((dist[m].mean(), semi[m].mean(), m.sum()))
+vg = pd.DataFrame(filas, columns=["distancia", "semivarianza", "n_pares"])
+
+fig, ax = plt.subplots(figsize=(7.2, 4.5))
+ax.scatter(vg["distancia"], vg["semivarianza"],
+           s=20 + vg["n_pares"]*0.7, color="#1D4162", edgecolor="white")
+ax.set(xlabel="Distancia media del lag (m)", ylabel="Semivarianza",
+       title="Variograma experimental omnidireccional")
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+El variograma experimental no es una curva exacta. Sus fluctuaciones dependen de la realización observada, la geometría del muestreo, los lags, los valores extremos y la cantidad de pares. Los pares tampoco son observaciones independientes: una misma muestra participa en muchos de ellos.
+
+## H-scattergram
+
+Para una clase de separación, el **h-scattergram** representa $z(\mathbf u)$ frente a $z(\mathbf u+\mathbf h)$. Una nube próxima a la diagonal indica semejanza; una nube abierta indica menor continuidad. La semivarianza condensa esa dispersión en un número, mientras el gráfico permite detectar asimetrías, mezclas y puntos dominantes.
+
+```{python}
+#| label: fig-h-scattergrams
+#| fig-cap: "H-scattergrams para pares cercanos y lejanos. La nube suele abrirse al disminuir la continuidad."
+#| fig-alt: "Dos gráficos de valores emparejados; los pares cercanos se concentran más alrededor de la diagonal que los lejanos."
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4.2), constrained_layout=True)
+for ax, (a, b), titulo in zip(axes, [(0, 120), (420, 540)],
+                              ["Pares cercanos", "Pares lejanos"]):
+    m = (dist >= a) & (dist < b)
+    ax.scatter(valores[i[m]], valores[j[m]], alpha=0.65, color="#446681")
+    lim = [valores.min()-2, valores.max()+2]
+    ax.plot(lim, lim, "--", color="#B56F3A")
+    ax.set(xlim=lim, ylim=lim, xlabel=r"$z(\mathbf{u})$",
+           ylabel=r"$z(\mathbf{u}+\mathbf{h})$", title=titulo)
+    ax.grid(alpha=0.2)
+plt.show()
+```
+
+## Cómo leer un variograma
+
+### Efecto pepita
+
+Por definición, $\gamma(\mathbf 0)=0$. Sin embargo, para distancias positivas que tienden a cero el modelo puede presentar una discontinuidad $c_0$, llamada [**efecto pepita**](../glosario.qmd#glosario-efecto-pepita). Puede representar error de medición, variabilidad a escalas menores que el muestreo o ambas cosas. No permite separar esas causas sin información adicional.
+
+### Meseta
+
+La [**meseta**](../glosario.qmd#glosario-meseta) es el nivel al que se estabiliza un variograma acotado. Bajo estacionariedad de segundo orden y cuando la covarianza desaparece a gran distancia,
+
+$$
+\gamma(\mathbf h)=C(\mathbf 0)-C(\mathbf h)
+\quad\Longrightarrow\quad
+\gamma(\mathbf h)\to C(\mathbf 0).
+$$
+
+La meseta total suele escribirse $c_0+c$, donde $c$ es la meseta parcial o contribución estructurada.
+
+### Alcance
+
+El [**alcance**](../glosario.qmd#glosario-alcance) describe la escala a partir de la cual el modelo deja de mostrar dependencia apreciable. En el modelo esférico existe un alcance finito exacto. En modelos exponencial y gaussiano la meseta se alcanza asintóticamente, por lo que se informa un alcance práctico según una convención.
+
+## Modelos autorizados
+
+Kriging necesita evaluar la continuidad para separaciones que no coinciden con los puntos experimentales. Se ajusta entonces un modelo matemático válido. Para $h>0$:
+
+**Esférico**
+
+$$
+\gamma(h)=c_0+c\left[\frac{3}{2}\frac{h}{a}-\frac{1}{2}\left(\frac{h}{a}\right)^3\right],
+\quad 0<h<a,
+$$
+
+y $\gamma(h)=c_0+c$ para $h\ge a$.
+
+**Exponencial**
+
+$$
+\gamma(h)=c_0+c\left[1-\exp\left(-\frac{h}{a}\right)\right].
+$$
+
+**Gaussiano**
+
+$$
+\gamma(h)=c_0+c\left[1-\exp\left(-\frac{h^2}{a^2}\right)\right].
+$$
+
+El gaussiano es muy suave cerca del origen; el exponencial crece más abruptamente; el esférico combina crecimiento inicial lineal con alcance finito. La elección debe reflejar el comportamiento a corta distancia, la geometría y la plausibilidad geológica, no sólo minimizar una discrepancia numérica [@chiles_delfiner_2012; @wackernagel_2003].
+
+```{python}
+#| label: fig-modelos-variograma
+#| fig-cap: "Modelos esférico, exponencial y gaussiano con la misma pepita y meseta, pero distinto comportamiento cerca del origen y del alcance."
+#| fig-alt: "Tres curvas de variograma comparadas sobre los mismos ejes."
+
+h = np.linspace(0, 700, 400)
+c0, c, a = 8, 60, 260
+esf = np.where(h < a, c0 + c*(1.5*h/a - 0.5*(h/a)**3), c0+c)
+esf[0] = 0
+exp = c0 + c*(1-np.exp(-h/a)); exp[0] = 0
+gau = c0 + c*(1-np.exp(-(h/a)**2)); gau[0] = 0
+
+fig, ax = plt.subplots(figsize=(7.2, 4.5))
+ax.plot(h, esf, label="Esférico")
+ax.plot(h, exp, label="Exponencial")
+ax.plot(h, gau, label="Gaussiano")
+ax.axhline(c0+c, color="gray", linestyle="--", label="meseta")
+ax.set(xlabel="Distancia", ylabel="Semivarianza")
+ax.legend(); ax.grid(alpha=0.25)
+plt.show()
+```
+
+## Variogramas direccionales y anisotropía
+
+Un variograma omnidireccional mezcla todas las orientaciones. Para explorar anisotropía se seleccionan pares dentro de una tolerancia angular alrededor de direcciones elegidas. Si la variable es más continua Este–Oeste, esperamos menor semivarianza y mayor alcance en esa dirección que Norte–Sur.
+
+La anisotropía geométrica conserva aproximadamente la meseta y cambia el alcance con la dirección. La anisotropía zonal puede cambiar también la meseta. Antes de interpretarla hay que revisar número de pares, cobertura, tendencia, dominios y tolerancia angular.
+
+## Transformaciones y variograma
+
+El variograma depende de diferencias cuadráticas. Por eso transformar valores cambia la estructura que medimos:
+
+- el **z-score** cambia centro y escala, pero conserva la forma y las distancias relativas salvo un factor común;
+- el **logaritmo** comprime contrastes multiplicativos y puede reducir la influencia de valores altos;
+- [**normal-score**](../glosario.qmd#glosario-normal-score) conserva rangos, pero sustituye valores por cuantiles normales y modifica las diferencias absolutas.
+
+Normal-score gaussianiza la distribución marginal por construcción; no demuestra que el campo sea gaussiano y no es un requisito del kriging ordinario. Si la estimación se realiza en escala transformada, la retrotransformación merece tratamiento explícito porque, en general,
+
+$$
+g^{-1}\!\left(\mathbb E[g(Z)]\right)\neq \mathbb E[Z].
+$$
+
+## Decisiones que deben documentarse
+
+- variable, unidades, soporte y dominio;
+- tratamiento de tendencia y valores extremos;
+- ancho, tolerancias y distancia máxima;
+- número de pares por lag;
+- direcciones y tolerancias angulares;
+- modelo, parámetros y criterio de ajuste;
+- sensibilidad a decisiones alternativas.
+
+## Errores frecuentes
+
+- confundir variograma experimental con modelo teórico;
+- leer un punto ruidoso como estructura geológica;
+- ignorar el número y la redundancia de pares;
+- usar distancias demasiado grandes respecto del dominio;
+- interpretar pepita exclusivamente como error analítico;
+- aplicar normal-score automáticamente;
+- declarar anisotropía sin suficiente cobertura direccional.
+
+## Preguntas de revisión
+
+1. ¿Qué compromiso introduce el ancho de lag?
+2. ¿Qué información conserva un h-scattergram que el variograma resume?
+3. ¿Por qué exponencial y gaussiano necesitan un alcance práctico?
+4. ¿Qué cambia y qué no cambia al aplicar normal-score?

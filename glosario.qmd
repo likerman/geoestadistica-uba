@@ -4,6 +4,18 @@ Este glosario reúne los términos centrales del manual. Las definiciones son de
 
 ## A
 
+### Agrupamiento jerárquico {#glosario-agrupamiento-jerarquico}
+
+**Inglés:** *hierarchical clustering*.
+
+Familia de métodos que construye una jerarquía de grupos. En el enfoque aglomerativo, cada observación comienza como grupo individual y las fusiones sucesivas se determinan mediante una distancia y un criterio de enlace. El resultado depende de variables, escalado, distancia y enlace; no demuestra por sí solo la existencia de clases naturales. Véase [Agrupamiento jerárquico aglomerativo](capitulos/13-metodos-multivariados.qmd#agrupamiento-jerárquico-aglomerativo).
+
+### Alcance {#glosario-alcance}
+
+**Inglés:** *range*.
+
+Escala de separación a partir de la cual un modelo de variograma deja de mostrar dependencia espacial apreciable. En el modelo esférico existe un alcance finito; en modelos exponencial y gaussiano se utiliza un alcance práctico porque la meseta se aproxima asintóticamente. No debe confundirse con la extensión máxima del área de estudio. Véase [Cómo leer un variograma](capitulos/15-variograma.qmd#cómo-leer-un-variograma).
+
 ### Alfa {#glosario-alpha}
 
 **Inglés:** *alpha* o *significance level*. **Símbolo:** $\alpha$.
@@ -168,7 +180,31 @@ Modelo matemático que asigna probabilidades a los posibles valores de una varia
 
 Conjunto espacial, geológico y conceptual sobre el cual se considera definida una variable y dentro del cual se pretende interpretar o modelar su comportamiento. Delimitarlo determina el alcance de las conclusiones. Un dominio geoestadístico suele buscar una región en la que ciertos supuestos de continuidad y comportamiento sean razonables.
 
+### Dendrograma {#glosario-dendrograma}
+
+**Inglés:** *dendrogram*.
+
+Representación arbórea de las fusiones producidas por un agrupamiento jerárquico. La altura de unión indica la disimilitud de la fusión según el método elegido; el orden horizontal de las hojas puede rotarse y no constituye un eje cuantitativo. Un corte horizontal genera una partición, pero su elección requiere estabilidad e interpretación. Véase [Cómo leer un dendrograma](capitulos/13-metodos-multivariados.qmd#cómo-leer-un-dendrograma).
+
+### Distancia euclidiana {#glosario-distancia-euclidiana}
+
+**Inglés:** *Euclidean distance*.
+
+Distancia entre dos vectores definida por $d(\mathbf x_i,\mathbf x_j)=\sqrt{\sum_k(x_{ik}-x_{jk})^2}$. Su interpretación depende de la escala, las variables y la geometría del espacio. No siempre es apropiada para datos composicionales, angulares o mixtos. Véase [Distancia como definición de semejanza](capitulos/13-metodos-multivariados.qmd#distancia-como-definición-de-semejanza).
+
 ## E
+
+### Efecto pepita {#glosario-efecto-pepita}
+
+**Inglés:** *nugget effect*. **Símbolo frecuente:** $c_0$.
+
+Discontinuidad del modelo de variograma entre el origen, donde $\gamma(0)=0$, y separaciones positivas arbitrariamente pequeñas. Puede representar error de medición, variabilidad por debajo de la resolución de muestreo o ambas. Su causa no puede separarse sólo a partir del variograma. Véase [Cómo leer un variograma](capitulos/15-variograma.qmd#cómo-leer-un-variograma).
+
+### Estacionariedad {#glosario-estacionariedad}
+
+**Inglés:** *stationarity*.
+
+Hipótesis de invariancia estadística frente a traslaciones dentro de un dominio y una escala. En estacionariedad de segundo orden la media es constante y la covarianza depende sólo del vector de separación. En la hipótesis intrínseca se modelan incrementos mediante un variograma dependiente de la separación. No es una propiedad absoluta del sistema geológico. Véase [Dominio, tendencia y estacionariedad](capitulos/14-variable-regionalizada.qmd#dominio-tendencia-y-estacionariedad).
 
 ### ECDF {#glosario-ecdf}
 
@@ -311,6 +347,12 @@ Valor o afirmación de referencia bajo la cual se calcula la distribución del e
 
 ## I
 
+### IDW {#glosario-idw}
+
+**Inglés:** *inverse distance weighting*.
+
+Interpolador determinista que asigna pesos proporcionales a una potencia negativa de la distancia al objetivo. Favorece observaciones cercanas, pero no modela explícitamente continuidad, anisotropía ni redundancia entre muestras y no produce una varianza probabilística del error. Véase [IDW como referencia](capitulos/16-kriging.qmd#idw-como-referencia).
+
 
 ### Intercepto {#glosario-intercepto}
 
@@ -354,9 +396,25 @@ Función no negativa, generalmente simétrica y de integral uno, utilizada para 
 
 **Inglés:** *kriging*.
 
-Familia de estimadores lineales espaciales que asignan pesos utilizando la geometría de los datos y un modelo de dependencia, bajo restricciones específicas. Según la variante, busca insesgamiento y mínima varianza dentro de una clase de estimadores. No es sinónimo genérico de interpolación.
+Familia de estimadores lineales espaciales que asigna pesos utilizando la geometría de los datos y un modelo de dependencia, bajo restricciones específicas. Según la variante, busca insesgamiento y mínima varianza dentro de una clase de estimadores. No es sinónimo genérico de interpolación. Véase [Kriging ordinario](capitulos/16-kriging.qmd#kriging-ordinario).
+
+### Kriging de bloques {#glosario-kriging-bloques}
+
+**Inglés:** *block kriging*.
+
+Variante cuyo objetivo es el promedio de una variable sobre un área o volumen, no el valor en un punto. Utiliza covarianzas o variogramas promediados entre datos y bloque, y dentro del bloque. Cambiar el soporte modifica pesos, estimación e incertidumbre. Véase [Kriging puntual y kriging de bloques](capitulos/16-kriging.qmd#kriging-puntual-y-kriging-de-bloques).
+
+### K-means {#glosario-kmeans}
+
+Algoritmo de agrupamiento que asigna observaciones a $K$ centroides para minimizar la suma de cuadrados intragrupo. Requiere elegir $K$ y puede depender de la inicialización; favorece grupos aproximadamente compactos en el espacio definido por las variables y escalas seleccionadas. Véase [K-means](capitulos/13-metodos-multivariados.qmd#k-means).
 
 ## L
+
+### Lag {#glosario-lag}
+
+**Inglés:** *lag* o *lag class*.
+
+Clase de separaciones utilizada para agrupar pares espaciales aproximadamente equivalentes al calcular un variograma experimental. Su ancho equilibra resolución en distancia y número de pares; en análisis direccional intervienen además tolerancias angulares y laterales. Véase [De los pares a una función de distancia](capitulos/15-variograma.qmd#de-los-pares-a-una-función-de-distancia).
 
 
 ### Leverage {#glosario-leverage}
@@ -372,6 +430,12 @@ Medida de cuán alejada está una observación en el espacio de las variables ex
 Posición espacial asociada a una observación. Puede incluir coordenadas horizontales, elevación, profundidad y tiempo. Su interpretación requiere sistema de referencia y relación con el soporte.
 
 ## M
+
+### Meseta {#glosario-meseta}
+
+**Inglés:** *sill*.
+
+Nivel al que se estabiliza un modelo de variograma acotado. La meseta total suele ser la suma del efecto pepita y la contribución estructurada. Bajo estacionariedad de segundo orden y covarianza nula a gran distancia, se relaciona con la varianza del proceso. Véase [Cómo leer un variograma](capitulos/15-variograma.qmd#cómo-leer-un-variograma).
 
 ### Media aritmética {#glosario-media}
 
@@ -426,6 +490,14 @@ Diseño en el que las observaciones de dos condiciones están vinculadas unidad 
 **Inglés:** *preferential sampling*.
 
 Diseño en el que la probabilidad o intensidad de observación está relacionada con el fenómeno de interés. Perforar con mayor frecuencia donde se esperan leyes altas puede hacer que la distribución muestral sobre-represente la mineralización.
+
+## N
+
+### Normal-score {#glosario-normal-score}
+
+**Inglés:** *normal-score transformation*.
+
+Transformación por rangos que asigna a cada observación el cuantil de una normal estándar correspondiente a su posición acumulada. Conserva el orden, pero modifica las diferencias absolutas. Gaussianiza la distribución marginal por construcción; no demuestra gaussianidad conjunta del campo ni es requisito de kriging ordinario. Véase [Transformaciones y variograma](capitulos/15-variograma.qmd#transformaciones-y-variograma).
 
 ## O
 
@@ -558,6 +630,18 @@ Conjunto de valores del estadístico de prueba que llevan a rechazar la hipótes
 Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel respecto del cero y dispersión; no es equivalente a desviación estándar.
 
 ## S
+
+### Semivarianza {#glosario-semivarianza}
+
+**Inglés:** *semivariance*. **Símbolo:** $\gamma(\mathbf h)$.
+
+Mitad de la variabilidad cuadrática esperada de los incrementos entre localizaciones separadas por $\mathbf h$. Su estimador clásico promedia $\tfrac12[z(\mathbf u_i)-z(\mathbf u_j)]^2$ sobre pares de una clase de separación. Véase [Variograma](capitulos/15-variograma.qmd#sec-variograma).
+
+### Silueta {#glosario-silueta}
+
+**Inglés:** *silhouette*.
+
+Índice de agrupamiento que compara la distancia media de una observación a su propio grupo con la menor distancia media a otro grupo. Toma valores entre $-1$ y $1$; valores altos sugieren cohesión y separación, pero no prueban significado geológico ni determinan por sí solos el número correcto de grupos. Véase [¿Cuántos grupos conservar?](capitulos/13-metodos-multivariados.qmd#cuántos-grupos-conservar).
 
 ### Sesgo {#glosario-sesgo}
 

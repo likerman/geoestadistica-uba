@@ -1,4 +1,167 @@
-# De la variable aleatoria a la variable regionalizada
+# De los datos a la dependencia espacial {#sec-dependencia-espacial}
 
-Capítulo planificado. Introducirá soporte, dominio, estacionariedad, ergodicidad y dependencia espacial.
+## Objetivos
 
+Al finalizar este capítulo, el lector debería poder:
+
+- explicar por qué una distribución marginal no describe la organización espacial;
+- representar una observación como valor, localización y soporte;
+- distinguir distancia de vector de separación;
+- interpretar continuidad, dependencia espacial e anisotropía;
+- reconocer el papel de dominio, tendencia y estacionariedad;
+- construir pares espaciales y comprender qué información aportan.
+
+## Cuando la posición empieza a importar
+
+En estadística clásica podemos describir una muestra mediante su histograma, media, varianza y cuantiles. Ninguna de esas cantidades utiliza las coordenadas. Si permutamos los valores entre las localizaciones, todos esos resúmenes permanecen iguales, aunque el mapa pueda pasar de mostrar dominios continuos a parecer desordenado.
+
+Una observación espacial requiere al menos tres componentes:
+
+$$
+\bigl(\mathbf u_i,\; z(\mathbf u_i),\; B_i\bigr),
+$$
+
+donde $\mathbf u_i$ es la localización, $z(\mathbf u_i)$ el valor y $B_i$ el [soporte](../glosario.qmd#glosario-soporte) sobre el cual se integra la medición. Dos análisis con la misma coordenada nominal pero distinto volumen, longitud o área de medición no representan necesariamente la misma variable [@isaaks_srivastava_1989; @goovaerts_1997].
+
+```{python}
+#| label: fig-misma-distribucion-distinta-estructura
+#| fig-cap: "Los mismos valores producen igual histograma, media y varianza, pero organizaciones espaciales diferentes."
+#| fig-alt: "Dos mapas con los mismos valores: uno presenta continuidad suave y el otro una distribución espacial permutada. Debajo, histogramas idénticos."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(20261006)
+n = 38
+x = rng.uniform(0, 100, n)
+y = rng.uniform(0, 100, n)
+z = 12 + 0.09*x + 3*np.sin(y/24) + rng.normal(0, 0.8, n)
+z_perm = rng.permutation(z)
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 8), constrained_layout=True)
+for ax, valores, titulo in zip(axes[0], [z, z_perm],
+                              ["Valores espacialmente organizados", "Los mismos valores permutados"]):
+    sc = ax.scatter(x, y, c=valores, s=70, cmap="viridis", edgecolor="white")
+    ax.set(title=titulo, xlabel="Este", ylabel="Norte", aspect="equal")
+    fig.colorbar(sc, ax=ax, label="Valor")
+
+bins = np.linspace(z.min(), z.max(), 10)
+axes[1, 0].hist(z, bins=bins, color="#446681", edgecolor="white")
+axes[1, 1].hist(z_perm, bins=bins, color="#B56F3A", edgecolor="white")
+for ax in axes[1]:
+    ax.set(xlabel="Valor", ylabel="Frecuencia")
+    ax.grid(alpha=0.2)
+plt.show()
+```
+
+## Variable regionalizada y campo aleatorio
+
+La expresión [variable regionalizada](../glosario.qmd#glosario-variable-regionalizada) destaca que una propiedad varía en un dominio y combina irregularidad local con organización espacial. Para construir inferencia, la geoestadística suele modelar esa realización observada mediante un [campo aleatorio](../glosario.qmd#glosario-campo-aleatorio):
+
+$$
+\{Z(\mathbf u):\mathbf u\in D\}.
+$$
+
+Para cada localización $\mathbf u$ existe una variable aleatoria $Z(\mathbf u)$; en una campaña observamos una sola realización parcial, $z(\mathbf u_i)$. La aleatoriedad representa incertidumbre y variabilidad, no ausencia de mecanismos geológicos [@cressie_1993; @chiles_delfiner_2012].
+
+Es útil separar tres objetos:
+
+| Objeto | Interpretación |
+|---|---|
+| $Z(\mathbf u)$ | variable aleatoria asociada con la localización $\mathbf u$ |
+| $z(\mathbf u)$ | valor de una realización particular |
+| $\{z(\mathbf u_i)\}_{i=1}^n$ | muestra espacial observada |
+
+## Pares y vector de separación
+
+La unidad básica del análisis de continuidad es un par de localizaciones. Para dos puntos $\mathbf u_i$ y $\mathbf u_j$, el vector de separación es
+
+$$
+\mathbf h_{ij}=\mathbf u_j-\mathbf u_i.
+$$
+
+$\mathbf h$ contiene magnitud y dirección. Dos pares pueden tener la misma distancia $\lVert\mathbf h\rVert$ y orientaciones distintas; si la continuidad depende de la dirección, esos pares no son equivalentes.
+
+Para cada par podemos registrar:
+
+$$
+\left(\mathbf h_{ij},\; z(\mathbf u_j)-z(\mathbf u_i)\right).
+$$
+
+La pregunta geoestadística elemental es si la distribución de esas diferencias cambia sistemáticamente con la separación.
+
+## Continuidad y dependencia espacial
+
+Existe [continuidad espacial](../glosario.qmd#glosario-continuidad-espacial) cuando, en términos estadísticos, los valores tienden a ser más semejantes para ciertas separaciones que para otras. No significa que cada par cercano sea semejante. Un contacto, una falla, ruido de medición o variabilidad de pequeña escala pueden producir diferencias grandes a corta distancia.
+
+Una formulación mediante covarianza es
+
+$$
+C(\mathbf h)=\operatorname{Cov}\left[Z(\mathbf u),Z(\mathbf u+\mathbf h)\right].
+$$
+
+Bajo estacionariedad de segundo orden, esta covarianza depende de $\mathbf h$ y no de la localización absoluta. Cuando $C(\mathbf h)$ disminuye con la separación, el conocimiento de un valor aporta progresivamente menos información sobre valores alejados.
+
+## Isotropía y anisotropía
+
+Un modelo es **isótropo** cuando la dependencia depende sólo de la distancia:
+
+$$
+C(\mathbf h)=C(\lVert\mathbf h\rVert).
+$$
+
+Es [anisótropo](../glosario.qmd#glosario-anisotropia) cuando también depende de la dirección. Esto es frecuente en geología:
+
+- continuidad mayor paralela a estratos que perpendicular a ellos;
+- leyes mineralizadas persistentes a lo largo de una veta;
+- permeabilidad organizada por familias de fracturas;
+- plumas geoquímicas elongadas según transporte o estructura.
+
+La anisotropía debe evaluarse con pares direccionales y conocimiento geológico. Una forma alargada en un mapa puede resultar también de tendencia, geometría de muestreo o límites del dominio.
+
+## Dominio, tendencia y estacionariedad
+
+El análisis de continuidad presupone cierta repetibilidad estadística dentro del dominio. Dos ideas deben distinguirse:
+
+1. **Tendencia:** cambio sistemático de la media con la localización, por ejemplo un gradiente térmico regional.
+2. **Dependencia residual:** semejanza entre desviaciones respecto de esa tendencia.
+
+Una representación general es
+
+$$
+Z(\mathbf u)=m(\mathbf u)+R(\mathbf u),
+$$
+
+donde $m(\mathbf u)$ es una componente de gran escala y $R(\mathbf u)$ un residuo espacial. Calcular un variograma sin reconocer una tendencia puede mezclar ambas escalas y producir semivarianzas crecientes que no representan un rango de continuidad local [@wackernagel_2003; @goovaerts_1997].
+
+La [estacionariedad](../glosario.qmd#glosario-estacionariedad) no debe tratarse como una propiedad absoluta del yacimiento o acuífero. Es una hipótesis de modelado relativa al dominio, al soporte y a la escala analizada.
+
+::: {.callout-warning title="Un mapa suave no demuestra continuidad válida"}
+La interpolación siempre puede producir una superficie visualmente continua. La continuidad debe sostenerse con pares observados, cobertura espacial, un modelo explícito y validación; no con la apariencia final del mapa.
+:::
+
+## Del par al variograma
+
+La covarianza mide semejanza; el variograma mide disimilitud mediante incrementos. Para un vector $\mathbf h$, el semivariograma teórico es
+
+$$
+\gamma(\mathbf h)=\frac{1}{2}\operatorname{Var}\left[Z(\mathbf u+\mathbf h)-Z(\mathbf u)\right],
+$$
+
+bajo los supuestos que permiten que dependa sólo de la separación. El capítulo siguiente construye su versión experimental a partir de pares y clases de distancia.
+
+## Errores frecuentes
+
+- interpretar una distribución marginal como estructura espacial;
+- ignorar el soporte de las mediciones;
+- confundir distancia con vector de separación;
+- atribuir anisotropía a cualquier patrón alargado;
+- mezclar dominios geológicos incompatibles;
+- asumir estacionariedad sin revisar tendencia ni escala.
+
+## Preguntas de revisión
+
+1. ¿Qué información se pierde al permutar valores entre coordenadas?
+2. ¿Por qué dos pares con igual distancia pueden no ser equivalentes?
+3. ¿Qué diferencia existe entre tendencia y dependencia residual?
+4. ¿En qué sentido la estacionariedad es una hipótesis de trabajo?

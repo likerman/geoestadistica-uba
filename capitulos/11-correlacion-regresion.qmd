@@ -592,6 +592,64 @@ Si $R^2=0.36$, podemos decir que la recta representa el 36 % de la variabilidad 
 Un $R^2$ alto no demuestra causalidad, independencia, linealidad ni buena predicción fuera de muestra. Un $R^2$ bajo tampoco descarta que la relación sea científicamente relevante. Siempre debe mirarse la geometría, los residuos y el contexto geológico.
 :::
 
+## La tabla ANOVA de la regresión
+
+La descomposición de sumas de cuadrados también permite contrastar si la recta representa una señal lineal que supera la variabilidad residual. Cada suma de cuadrados se divide por sus grados de libertad:
+
+$$
+CM_{\mathrm{reg}}=\frac{SCR}{1},
+\qquad
+CM_{\mathrm{err}}=\frac{SCE}{n-2}.
+$$
+
+El cociente
+
+$$
+F=\frac{CM_{\mathrm{reg}}}{CM_{\mathrm{err}}}
+$$
+
+compara la variabilidad media representada por el modelo con la variabilidad media que permanece en los residuos. Bajo $H_0:\beta_1=0$ y los supuestos clásicos,
+
+$$
+F\sim F_{1,n-2}.
+$$
+
+| Fuente | Suma de cuadrados | gl | Cuadrado medio | Estadístico |
+|---|---:|---:|---:|---:|
+| Regresión | $SCR$ | $1$ | $SCR/1$ | $F=CM_{\mathrm{reg}}/CM_{\mathrm{err}}$ |
+| Error | $SCE$ | $n-2$ | $SCE/(n-2)$ | |
+| Total | $SCT$ | $n-1$ | | |
+
+En regresión lineal simple con intercepto, el contraste global y el contraste bilateral de la pendiente son equivalentes:
+
+$$
+F=t_{b_1}^{,2}.
+$$
+
+La prueba $t$ responde por un coeficiente particular; la prueba $F$ evalúa el modelo en conjunto. Con un solo predictor ambas preguntas coinciden, pero dejan de ser idénticas cuando el modelo contiene varios predictores [@mckillup_dyar_2010; @davis_2002].
+
+```{python}
+#| label: tbl-anova-regresion
+#| tbl-cap: "Tabla ANOVA calculada para la regresión de la suite magmática sintética."
+
+fitted = intercept + slope*x
+resid = y - fitted
+scr = np.sum((fitted - y.mean())**2)
+sce = np.sum(resid**2)
+sct = np.sum((y - y.mean())**2)
+cm_reg = scr
+cm_err = sce / (len(x) - 2)
+f_obs = cm_reg / cm_err
+
+pd.DataFrame({
+    "fuente": ["Regresión", "Error", "Total"],
+    "SC": [scr, sce, sct],
+    "gl": [1, len(x)-2, len(x)-1],
+    "CM": [cm_reg, cm_err, np.nan],
+    "F": [f_obs, np.nan, np.nan],
+})
+```
+
 ## Residuos como diagnóstico
 
 Los residuos muestran qué queda sin representar por la recta. Un gráfico de residuos contra valores ajustados permite buscar patrones:
@@ -677,6 +735,29 @@ Pero hay dos preguntas distintas:
 2. ¿cuál será el valor de $Y$ para una nueva unidad individual con $X=x_0$?
 
 La segunda tiene mayor incertidumbre porque incluye, además de la incertidumbre sobre la media condicional, la variabilidad individual alrededor de la recta. Por eso el intervalo de predicción es más ancho que el intervalo de confianza para la media.
+
+Si $S_{xx}=\sum_i(x_i-\bar x)^2$ y $s_e=\sqrt{SCE/(n-2)}$, el error estándar de la media ajustada en $x_0$ es
+
+$$
+SE\!\left[\widehat{\mathbb E(Y\mid x_0)}\right]
+=s_e\sqrt{\frac{1}{n}+\frac{(x_0-\bar x)^2}{S_{xx}}}.
+$$
+
+Por lo tanto, un intervalo de confianza bilateral para la respuesta media es
+
+$$
+\hat y_0\pm t_{1-\alpha/2,n-2}\,
+s_e\sqrt{\frac{1}{n}+\frac{(x_0-\bar x)^2}{S_{xx}}}.
+$$
+
+Para una nueva observación individual aparece un término adicional igual a uno:
+
+$$
+\hat y_0\pm t_{1-\alpha/2,n-2}\,
+s_e\sqrt{1+\frac{1}{n}+\frac{(x_0-\bar x)^2}{S_{xx}}}.
+$$
+
+Las dos bandas son más estrechas cerca de $\bar x$ y se ensanchan al alejarnos del centro de los datos. La banda de predicción es siempre más ancha porque incorpora la variabilidad de una observación nueva alrededor de su media condicional.
 
 ```{python}
 #| label: fig-ic-prediccion

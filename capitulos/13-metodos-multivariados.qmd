@@ -1,4 +1,270 @@
-# Métodos multivariados
+# Semejanza y agrupamiento multivariado {#sec-clustering}
 
-Capítulo planificado. Organizará ANOVA, agrupamiento, componentes principales y análisis discriminante según las preguntas que permiten responder.
+## Objetivos
 
+Al finalizar este capítulo, el lector debería poder:
+
+- representar cada muestra como un vector de variables;
+- explicar por qué la escala modifica las distancias;
+- construir e interpretar una matriz de distancias;
+- distinguir métodos jerárquicos y $k$-means;
+- leer un dendrograma sin confundirlo con una taxonomía verdadera;
+- comparar criterios para elegir el número de grupos;
+- reconocer el papel de inicialización y función objetivo;
+- adaptar la representación a datos axiales de fracturas.
+
+## Una muestra, muchas variables
+
+Una roca, suelo o muestra de agua suele describirse mediante varias propiedades. Si medimos $p$ variables sobre $n$ unidades, organizamos los datos en una matriz
+
+$$
+\mathbf X=
+\begin{bmatrix}
+x_{11}&\cdots&x_{1p}\\
+\vdots&\ddots&\vdots\\
+x_{n1}&\cdots&x_{np}
+\end{bmatrix}.
+$$
+
+Cada fila es una observación y cada columna una variable. El objetivo del agrupamiento no supervisado es identificar estructuras de semejanza sin etiquetas de clase conocidas. El resultado depende de qué variables incluimos, cómo las representamos, qué distancia elegimos y qué algoritmo usamos [@davis_2002; @wackernagel_2003].
+
+## Distancia como definición de semejanza
+
+Para dos observaciones $\mathbf x_i$ y $\mathbf x_j$, la [distancia euclidiana](../glosario.qmd#glosario-distancia-euclidiana) es
+
+$$
+d_{ij}=\sqrt{\sum_{k=1}^{p}(x_{ik}-x_{jk})^2}.
+$$
+
+Una distancia pequeña significa semejanza **según esas variables y esa escala**. No constituye por sí sola semejanza geológica. Si una variable está expresada en cientos de ppm y otra en fracciones, la primera puede dominar el cálculo aunque no sea científicamente más importante.
+
+## Estandarizar antes de comparar
+
+Una opción habitual es transformar cada variable en z-scores:
+
+$$
+z_{ik}=\frac{x_{ik}-\bar x_k}{s_k}.
+$$
+
+Así cada columna queda con media cero y desviación estándar uno, y la distancia se mide en unidades de desviación estándar. Esto iguala la escala estadística, no la importancia científica. También vuelve muy influyentes variables con variabilidad pequeña y no resuelve valores extremos, censura ni estructura composicional.
+
+::: {.callout-warning title="Estandarizar no es una decisión neutral"}
+La elección de variables y escalas define la geometría del problema. En datos composicionales, las partes suman una constante y las distancias euclidianas sobre porcentajes pueden ser inadecuadas; se requieren transformaciones log-ratio y un tratamiento específico [@tolosana_mueller_2021].
+:::
+
+```{python}
+#| label: fig-efecto-estandarizacion-clustering
+#| fig-cap: "La estandarización cambia la geometría de las distancias cuando las variables tienen escalas muy diferentes."
+#| fig-alt: "Dos scatterplots de porosidad y estroncio: en unidades originales domina el eje de estroncio; en z-scores ambas variables contribuyen en escala comparable."
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.spatial.distance import pdist, squareform
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from scipy.cluster.vq import kmeans2
+
+areniscas = pd.DataFrame({
+    "muestra": list("ABCDEF"),
+    "porosidad": [8.2, 8.8, 14.5, 15.2, 22.0, 22.8],
+    "Sr_ppm": [410, 690, 430, 720, 455, 750],
+})
+X = areniscas[["porosidad", "Sr_ppm"]].to_numpy()
+Z = (X-X.mean(axis=0))/X.std(axis=0, ddof=1)
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4.2), constrained_layout=True)
+axes[0].scatter(X[:,0], X[:,1], s=70, color="#446681")
+axes[0].set(xlabel="Porosidad (%)", ylabel="Sr (ppm)", title="Unidades originales")
+axes[1].scatter(Z[:,0], Z[:,1], s=70, color="#B56F3A")
+axes[1].set(xlabel="Porosidad (z)", ylabel="Sr (z)", title="Variables estandarizadas")
+for ax, datos in zip(axes, [X, Z]):
+    for k, m in enumerate(areniscas["muestra"]):
+        ax.text(datos[k,0]+0.05, datos[k,1]+0.05, m)
+    ax.grid(alpha=0.2)
+plt.show()
+```
+
+## Matriz de distancias
+
+Al calcular todos los pares obtenemos una matriz simétrica:
+
+$$
+\mathbf D=
+\begin{bmatrix}
+0&d_{12}&\cdots&d_{1n}\\
+d_{21}&0&\cdots&d_{2n}\\
+\vdots&\vdots&\ddots&\vdots\\
+d_{n1}&d_{n2}&\cdots&0
+\end{bmatrix}.
+$$
+
+La diagonal es cero y $d_{ij}=d_{ji}$. Esta matriz es el insumo de muchos métodos jerárquicos, pero no contiene por sí sola una partición.
+
+```{python}
+#| label: tbl-matriz-distancias
+#| tbl-cap: "Matriz de distancias euclidianas entre muestras estandarizadas."
+
+pd.DataFrame(squareform(pdist(Z)),
+             index=areniscas["muestra"], columns=areniscas["muestra"])
+```
+
+## Agrupamiento jerárquico aglomerativo
+
+El [agrupamiento jerárquico](../glosario.qmd#glosario-agrupamiento-jerarquico) comienza con cada observación como grupo individual y fusiona iterativamente los grupos más próximos. Cuando un grupo contiene varias observaciones debemos definir distancia entre grupos o **enlace**:
+
+- **simple:** menor distancia entre miembros; puede producir cadenas;
+- **completo:** mayor distancia; favorece grupos compactos;
+- **promedio:** promedio de distancias entre todos los pares;
+- **Ward:** fusión que produce el menor aumento de suma de cuadrados intragrupo, normalmente con distancia euclidiana.
+
+No existe un enlace universalmente mejor. Cada uno formaliza una idea distinta de grupo.
+
+```{python}
+#| label: fig-dendrograma-areniscas
+#| fig-cap: "Dendrograma de enlace promedio para seis areniscas sintéticas estandarizadas."
+#| fig-alt: "Árbol jerárquico que fusiona progresivamente seis muestras según distancia."
+
+L = linkage(Z, method="average", metric="euclidean")
+fig, ax = plt.subplots(figsize=(7, 4.2))
+dendrogram(L, labels=areniscas["muestra"].to_list(), ax=ax,
+           color_threshold=1.4)
+ax.set(xlabel="Muestra", ylabel="Distancia de fusión", title="Agrupamiento jerárquico")
+ax.grid(axis="y", alpha=0.2)
+plt.show()
+```
+
+## Cómo leer un dendrograma
+
+Las hojas del [dendrograma](../glosario.qmd#glosario-dendrograma) representan observaciones. La altura de cada unión indica la disimilitud a la que se fusionaron los grupos. El orden horizontal de hojas puede rotarse sin cambiar el resultado; no debe interpretarse como un eje cuantitativo.
+
+Elegir un corte horizontal produce una partición. Un salto grande entre alturas sucesivas puede sugerir un número de grupos, pero no demuestra que existan clases naturales. La estabilidad frente a variables, escalado, enlace y perturbaciones resulta más informativa que una única figura atractiva.
+
+## K-means
+
+[K-means](../glosario.qmd#glosario-kmeans) busca $K$ centroides y una asignación de observaciones que minimice la suma de cuadrados intragrupo:
+
+$$
+W_K=\sum_{g=1}^{K}\sum_{i\in C_g}
+\lVert\mathbf z_i-\boldsymbol\mu_g\rVert^2.
+$$
+
+El algoritmo alterna:
+
+1. asignar cada observación al centroide más cercano;
+2. recalcular cada centroide como media de su grupo;
+3. repetir hasta que la asignación o la función objetivo se estabilice.
+
+La solución puede depender de la inicialización porque el algoritmo converge a un mínimo local. Por eso se prefieren estrategias como $k$-means++ y múltiples reinicios, conservando la solución con menor $W_K$.
+
+```{python}
+#| label: fig-kmeans-sintetico
+#| fig-cap: "K-means divide observaciones estandarizadas alrededor de centroides y minimiza la suma de cuadrados intragrupo."
+#| fig-alt: "Scatterplot de tres grupos sintéticos con centroides marcados."
+
+rng = np.random.default_rng(20261013)
+Xk = np.vstack([
+    rng.normal([-1.7, -0.8], [0.35, 0.45], size=(35,2)),
+    rng.normal([ 0.0,  1.4], [0.45, 0.35], size=(35,2)),
+    rng.normal([ 1.8, -0.3], [0.40, 0.50], size=(35,2)),
+])
+centros, grupos = kmeans2(Xk, 3, minit="++", iter=50, seed=2026)
+
+fig, ax = plt.subplots(figsize=(6.5, 5))
+ax.scatter(Xk[:,0], Xk[:,1], c=grupos, cmap="Set2", s=40, alpha=0.8)
+ax.scatter(centros[:,0], centros[:,1], marker="X", s=220,
+           color="#1D4162", edgecolor="white", label="centroides")
+ax.set(xlabel="Variable 1 (z)", ylabel="Variable 2 (z)", title="K-means, K=3")
+ax.legend(); ax.grid(alpha=0.2)
+plt.show()
+```
+
+## ¿Cuántos grupos conservar?
+
+No hay una respuesta puramente automática. Se combinan:
+
+- **codo de inercia:** busca dónde aumentar $K$ produce mejoras marginales menores;
+- **silhouette:** compara cohesión interna y separación respecto del grupo vecino;
+- **estabilidad:** repite el análisis con reinicios, remuestreo o perturbaciones;
+- **interpretabilidad geológica:** exige grupos coherentes con mineralogía, facies, estructura o proceso;
+- **utilidad:** considera para qué se usará la clasificación.
+
+Para una observación $i$, la [silueta](../glosario.qmd#glosario-silueta) es
+
+$$
+s(i)=\frac{b(i)-a(i)}{\max\{a(i),b(i)\}},
+$$
+
+donde $a(i)$ es su distancia media al propio grupo y $b(i)$ la menor distancia media a otro grupo. Valores cercanos a uno indican buena separación; cercanos a cero, frontera; negativos, posible asignación inadecuada.
+
+## Familias de fracturas: la representación importa
+
+Los rumbos son datos **axiales**: $0^\circ$ y $180^\circ$ representan la misma orientación. La diferencia convencional falla cerca del límite; $179^\circ$ y $1^\circ$ están separados por $2^\circ$ de orientación, no por $178^\circ$.
+
+Una representación compatible transforma cada rumbo $\theta$ en
+
+$$
+\mathbf v(\theta)=
+\left(\cos 2\theta,\;\sin 2\theta\right).
+$$
+
+El ángulo doble hace equivalentes las orientaciones separadas por $180^\circ$ y permite aplicar distancias euclidianas en el círculo unitario.
+
+```{python}
+#| label: fig-clustering-fracturas
+#| fig-cap: "Agrupamiento de rumbos axiales en el espacio de ángulo doble. Los colores identifican familias estadísticas, no mecanismos tectónicos demostrados."
+#| fig-alt: "Rosa polar de rumbos de fracturas coloreados en cuatro grupos obtenidos mediante clustering."
+
+rng = np.random.default_rng(42)
+centros_ang = np.array([5, 45, 90, 135])
+tamanos = [48, 62, 55, 35]
+theta = np.concatenate([rng.normal(c, 5, m) for c, m in zip(centros_ang, tamanos)]) % 180
+rad2 = np.deg2rad(2*theta)
+V = np.c_[np.cos(rad2), np.sin(rad2)]
+Lfract = linkage(V, method="average")
+familia = fcluster(Lfract, t=4, criterion="maxclust")
+
+fig = plt.figure(figsize=(7, 5.6))
+ax = fig.add_subplot(111, projection="polar")
+for g in np.unique(familia):
+    m = familia == g
+    ax.scatter(np.deg2rad(theta[m]), np.ones(m.sum()) + rng.uniform(-0.05,0.05,m.sum()),
+               s=24, alpha=0.7, label=f"Grupo {g}")
+ax.set_thetamin(0); ax.set_thetamax(180)
+ax.set_yticklabels([])
+ax.set_title("Rumbos axiales agrupados")
+ax.legend(loc="upper right", bbox_to_anchor=(1.28, 1.1))
+plt.show()
+```
+
+En este ejercicio se agrupan rumbos. Si se dispone de orientación tridimensional completa, la representación debe incorporar rumbo y buzamiento mediante vectores o polos y una distancia adecuada sobre la esfera. Agregar buzamientos sólo para dibujar un estereograma no los convierte en variables usadas por el algoritmo.
+
+## Interpretación geológica
+
+Un cluster es una partición estadística condicionada por decisiones analíticas. Para interpretarlo hay que volver a:
+
+- mapas y afloramientos;
+- litología, alteración y contexto estructural;
+- distribución espacial de los grupos;
+- incertidumbre y observaciones fronterizas;
+- estabilidad frente a elecciones razonables.
+
+En fracturas, una familia minoritaria puede ser geológicamente importante. Grupos de igual tamaño no son requisito. Tampoco toda agrupación angular corresponde a un único evento tectónico.
+
+## Errores frecuentes
+
+- usar variables en escalas incompatibles sin justificarlo;
+- creer que z-score vuelve equivalentes todas las variables;
+- interpretar el orden horizontal del dendrograma;
+- elegir $K$ sólo por un gráfico de codo;
+- ejecutar $k$-means una sola vez;
+- usar $k$-means para grupos muy no esféricos o con tamaños muy desiguales sin diagnóstico;
+- aplicar diferencias lineales a ángulos axiales;
+- convertir clusters estadísticos en unidades geológicas sin validación.
+
+## Preguntas de revisión
+
+1. ¿Por qué la definición de distancia forma parte de la hipótesis científica?
+2. ¿Qué diferencia existe entre enlace promedio y Ward?
+3. ¿Por qué $k$-means puede producir resultados distintos entre ejecuciones?
+4. ¿Qué información aporta la silueta y qué no demuestra?
+5. ¿Por qué se duplica el ángulo al representar rumbos axiales?
