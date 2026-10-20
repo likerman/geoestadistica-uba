@@ -62,7 +62,7 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre datos y muestreo; estadística descriptiva; probabilidad e inferencia; pruebas de hipótesis; comparación de varianzas y frecuencias categóricas; correlación y regresión lineal; dependencia espacial; variograma experimental y modelos; anisotropía; IDW y kriging ordinario; incertidumbre, soporte y validación espacial; transformaciones; semejanza multivariada; agrupamiento jerárquico; $k$-means; y una aplicación a familias de fracturas.
+Esta versión cubre datos y muestreo; estadística descriptiva; probabilidad e inferencia; pruebas de hipótesis; comparación de varianzas y frecuencias categóricas; correlación y regresión lineal; dependencia espacial; variograma experimental y modelos; anisotropía; IDW y kriging ordinario; incertidumbre, soporte y validación espacial; transformaciones; semejanza multivariada; agrupamiento jerárquico; $k$-means; análisis de componentes principales; y aplicaciones a familias de fracturas, circones detríticos y aguas geotérmicas.
 
 A lo largo de los capítulos se refuerza una idea central: la información depende del diseño, del soporte y de la estructura de dependencia. El variograma formaliza cómo cambia la disimilitud con la separación; kriging utiliza ese modelo y la geometría de las observaciones para estimar y cuantificar incertidumbre.
 

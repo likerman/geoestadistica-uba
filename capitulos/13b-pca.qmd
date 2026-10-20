@@ -1,0 +1,338 @@
+# Análisis de componentes principales {#sec-pca}
+
+## Objetivos
+
+Al finalizar este capítulo, el lector debería poder:
+
+- explicar qué problema resuelve el [análisis de componentes principales](../glosario.qmd#glosario-pca) (PCA);
+- justificar el centrado, la transformación y la estandarización de las variables;
+- relacionar máxima varianza, autovectores y autovalores;
+- calcular e interpretar *scores*, coeficientes, *loadings* de correlación y proporciones de varianza;
+- decidir cuántas componentes conservar sin convertir una regla orientativa en una receta automática;
+- leer un *biplot* y reconocer qué conclusiones geológicas no se desprenden del PCA.
+
+::: {.callout-tip title="Ejemplo reproducible"}
+El desarrollo completo —incluidos el ejemplo geométrico y el caso de aguas geotérmicas— puede ejecutarse y modificarse en [PCA: geometría, cálculo e interpretación](../ejemplos/05_pca.ipynb).
+:::
+
+## Del agrupamiento a la reducción de dimensionalidad
+
+En el capítulo anterior preguntamos **qué observaciones se parecen**. El PCA responde otra pregunta: **¿qué combinaciones de variables resumen las direcciones principales de variación?** El [agrupamiento](13-metodos-multivariados.qmd#sec-clustering) construye grupos; el PCA construye ejes. Ninguno implica al otro, aunque pueden combinarse en un flujo exploratorio.
+
+Supongamos que medimos $p$ variables sobre $n$ unidades y reunimos los datos en una matriz $\mathbf X\in\mathbb R^{n\times p}$. Cuando las variables están relacionadas, parte de la información es compartida. El PCA reemplaza los ejes originales por nuevas variables llamadas [componentes principales](../glosario.qmd#glosario-componente-principal): combinaciones lineales, mutuamente ortogonales y ordenadas por la varianza de las observaciones proyectadas [@davis_2002; @alperin_2013; @wackernagel_2003].
+
+La primera componente captura la mayor varianza posible; la segunda, la mayor varianza restante entre las direcciones perpendiculares a la primera; y así sucesivamente. Conservar todas las componentes es sólo un cambio de coordenadas. Hay **reducción de dimensionalidad** cuando se retienen menos componentes que variables.
+
+::: {.callout-important title="Qué maximiza el PCA"}
+PCA maximiza varianza. No maximiza separación entre localidades, no conoce edades o litologías que no hayan entrado al análisis y no identifica automáticamente procesos ni áreas fuente.
+:::
+
+## Preparar la matriz: transformar, centrar y escalar
+
+Sea $\mathbf x_i$ la fila correspondiente a la observación $i$. Antes de calcular el PCA debemos decidir qué variables entran y en qué escala.
+
+### Transformaciones
+
+Las concentraciones positivas suelen ser asimétricas. Una transformación logarítmica puede comprimir valores altos y hacer que diferencias multiplicativas se expresen como diferencias aditivas:
+
+$$
+x'_{ij}=\log x_{ij}.
+$$
+
+No es un requisito del PCA ni garantiza normalidad. Debe justificarse por la naturaleza de la variable y por el objetivo. Los ceros, la censura y los datos composicionales requieren tratamientos específicos; agregar una constante arbitraria puede alterar la geometría [@tolosana_mueller_2021].
+
+### Centrado
+
+Restamos la media de cada columna:
+
+$$
+x^{(c)}_{ij}=x'_{ij}-\bar x'_j.
+$$
+
+Así el origen del nuevo sistema corresponde al centro de la nube. Salvo que exista una razón explícita para no hacerlo, el PCA se aplica a datos centrados.
+
+### Covarianza o correlación
+
+Si las variables tienen unidades o dispersiones muy distintas, una variable puede dominar sólo por su escala numérica. La [estandarización](../glosario.qmd#glosario-estandarizacion)
+
+$$
+z_{ij}=\frac{x'_{ij}-\bar x'_j}{s_j}
+$$
+
+produce columnas de media cero y varianza muestral uno. Hacer PCA sobre la covarianza de $\mathbf Z$ equivale a hacerlo sobre la matriz de correlaciones de las variables transformadas.
+
+La elección no es neutral:
+
+- **matriz de covarianzas:** conserva las diferencias de varianza y unidad;
+- **matriz de correlaciones:** concede varianza unitaria a cada variable;
+- **escalas robustas u otras métricas:** pueden ser preferibles ante valores extremos o estructuras particulares.
+
+Estandarizar iguala la escala estadística, no la importancia geológica.
+
+## La geometría de la máxima varianza
+
+Consideremos primero dos variables centradas y estandarizadas. Una dirección unitaria se representa mediante un vector $\mathbf a$, con $\mathbf a^\mathsf T\mathbf a=1$. La coordenada proyectada de todas las observaciones sobre esa dirección es
+
+$$
+\mathbf t=\mathbf Z\mathbf a.
+$$
+
+Si $\mathbf R=(n-1)^{-1}\mathbf Z^\mathsf T\mathbf Z$ es la matriz de correlaciones, la varianza muestral de las proyecciones es
+
+$$
+\operatorname{Var}(\mathbf t)=\mathbf a^\mathsf T\mathbf R\mathbf a.
+$$
+
+PC1 resuelve el problema
+
+$$
+\max_{\mathbf a}\;\mathbf a^\mathsf T\mathbf R\mathbf a
+\qquad\text{sujeto a}\qquad
+\mathbf a^\mathsf T\mathbf a=1.
+$$
+
+La restricción evita aumentar artificialmente la varianza al alargar el vector. Mediante multiplicadores de Lagrange se obtiene
+
+$$
+\mathbf R\mathbf a_k=\lambda_k\mathbf a_k.
+$$
+
+Por lo tanto, los [autovectores](../glosario.qmd#glosario-autovector) unitarios $\mathbf a_k$ definen las direcciones y los [autovalores](../glosario.qmd#glosario-autovalor) $\lambda_k$ son las varianzas de las componentes. Como $\mathbf R$ es simétrica y semidefinida positiva, sus autovalores son no negativos y sus autovectores pueden elegirse ortonormales.
+
+### Un ejemplo de dos variables
+
+Para dos variables estandarizadas con correlación $r$,
+
+$$
+\mathbf R=
+\begin{bmatrix}
+1&r\\
+r&1
+\end{bmatrix},
+$$
+
+los autovalores son $1+r$ y $1-r$. Si $r=0.859$, resultan $\lambda_1=1.859$ y $\lambda_2=0.141$: PC1 conserva $92.95\%$ de la varianza total y PC2 el $7.05\%$. En este caso particular los autovectores tienen coordenadas de igual magnitud, $1/\sqrt2$; no es una propiedad general del PCA.
+
+```{python}
+#| label: fig-geometria-pca
+#| fig-cap: "PCA rota el sistema de coordenadas hacia las direcciones de máxima y mínima varianza. Los puntos no cambian; cambian sus coordenadas."
+#| fig-alt: "Dos paneles con la misma nube correlacionada. El primero muestra los ejes originales y los autovectores; el segundo muestra los scores PC1 y PC2."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(20261016)
+R = np.array([[1.0, 0.859], [0.859, 1.0]])
+Z = rng.multivariate_normal([0, 0], R, size=150)
+S = np.cov(Z, rowvar=False, ddof=1)
+eigval, eigvec = np.linalg.eigh(S)
+orden = np.argsort(eigval)[::-1]
+eigval, eigvec = eigval[orden], eigvec[:, orden]
+T = Z @ eigvec
+
+fig, ax = plt.subplots(1, 2, figsize=(10, 4.4), constrained_layout=True)
+ax[0].scatter(Z[:, 0], Z[:, 1], s=22, alpha=.55, color="#446681")
+for k, color in enumerate(["#B56F3A", "#76557C"]):
+    v = eigvec[:, k] * 2.2 * np.sqrt(eigval[k])
+    ax[0].plot([-v[0], v[0]], [-v[1], v[1]], color=color, lw=2.5,
+               label=f"PC{k+1}")
+ax[0].set(xlabel="Variable 1 (z)", ylabel="Variable 2 (z)",
+          title="Ejes originales")
+ax[0].legend()
+
+ax[1].scatter(T[:, 0], T[:, 1], s=22, alpha=.55, color="#446681")
+ax[1].axhline(0, color="#76557C", lw=1.5)
+ax[1].axvline(0, color="#B56F3A", lw=1.5)
+ax[1].set(xlabel="Score PC1", ylabel="Score PC2", title="Nuevas coordenadas")
+lim = 1.08*np.max(np.abs(np.r_[Z.ravel(), T.ravel()]))
+for a in ax:
+    a.grid(alpha=.2)
+    a.set(xlim=(-lim, lim), ylim=(-lim, lim))
+    a.set_aspect("equal", adjustable="box")
+plt.show()
+```
+
+## Del álgebra a las nuevas coordenadas
+
+Ordenamos los pares $(\lambda_k,\mathbf a_k)$ de mayor a menor autovalor y formamos
+
+$$
+\mathbf A=[\mathbf a_1,\ldots,\mathbf a_p],
+\qquad
+\mathbf T=\mathbf Z\mathbf A.
+$$
+
+Cada columna de $\mathbf T$ contiene los [*scores*](../glosario.qmd#glosario-score) de una componente; cada fila da las nuevas coordenadas de una observación. Para la observación $i$ y la componente $k$,
+
+$$
+t_{ik}=\sum_{j=1}^{p}z_{ij}a_{jk}.
+$$
+
+El signo de un autovector es arbitrario: $(\lambda_k,\mathbf a_k)$ y $(\lambda_k,-\mathbf a_k)$ describen el mismo eje. Un programa puede invertir simultáneamente el signo de los coeficientes y de los *scores* sin cambiar distancias, varianzas ni conclusiones.
+
+## Cuánta varianza explica cada componente
+
+La proporción de varianza explicada por PC$k$ es
+
+$$
+q_k=\frac{\lambda_k}{\sum_{j=1}^{p}\lambda_j},
+$$
+
+y la proporción acumulada hasta $m$ componentes es
+
+$$
+Q_m=\sum_{k=1}^{m}q_k.
+$$
+
+Cuando se usa una matriz de correlaciones de $p$ variables, $\sum_k\lambda_k=\operatorname{tr}(\mathbf R)=p$. El [gráfico de sedimentación](../glosario.qmd#glosario-scree) ordena los autovalores y ayuda a buscar un cambio de pendiente. También se utilizan un umbral de varianza acumulada o, sobre una matriz de correlaciones, el criterio orientativo $\lambda>1$.
+
+Ninguna regla es universal. Deben considerarse estabilidad, interpretabilidad y pérdida relevante para la pregunta geológica. Una componente de baja varianza todavía puede contener una señal científicamente importante.
+
+El número de autovalores positivos tampoco siempre es $p$. Tras centrar los datos,
+
+$$
+\operatorname{rango}(\mathbf Z)\leq\min(n-1,p).
+$$
+
+Con cuatro observaciones y seis variables puede haber como máximo tres componentes con varianza positiva, salvo error numérico.
+
+## Coeficientes, *loadings* y contribuciones
+
+Conviene distinguir cantidades que a veces reciben el mismo nombre:
+
+- $a_{jk}$ es el **coeficiente del autovector**: el peso de la variable $j$ en la combinación lineal de PC$k$;
+- $\ell_{jk}=\sqrt{\lambda_k}\,a_{jk}$ es el [*loading* de correlación](../glosario.qmd#glosario-loading) cuando se trabaja con variables estandarizadas: $\ell_{jk}=\operatorname{Corr}(Z_j,T_k)$;
+- $a_{jk}^2$ puede leerse como contribución relativa de la variable $j$ a la componente $k$, porque los autovectores unitarios cumplen $\sum_j a_{jk}^2=1$.
+
+Un coeficiente grande en magnitud indica peso en el eje, pero no causalidad. Variables con *loadings* próximos apuntan a asociaciones semejantes con las componentes; direcciones opuestas indican asociaciones de signo contrario.
+
+## Cómo leer un biplot
+
+Un [*biplot*](../glosario.qmd#glosario-biplot) superpone una representación de observaciones y variables. Para leerlo:
+
+- los puntos próximos tienen *scores* semejantes en las componentes mostradas;
+- una observación proyectada en la dirección de una flecha tiende a presentar un valor relativo alto de esa variable;
+- flechas con ángulo pequeño sugieren correlación positiva, opuestas correlación negativa y cercanas a $90^\circ$ asociación débil, **si el escalado elegido permite esa lectura**;
+- la calidad de la representación depende de la varianza retenida en el plano.
+
+Los puntos y las flechas no están necesariamente en las mismas unidades. Muchos programas reescalan uno o ambos conjuntos para hacerlos visibles. Por eso se debe documentar la convención y no interpretar literalmente una longitud gráfica sin conocerla.
+
+## Caso trabajado: cuatro pozos geotérmicos
+
+McKillup y Dyar presentan concentraciones de seis elementos traza en aguas ácido-sulfatadas de cuatro pozos geotérmicos para discutir métodos multivariados [@mckillup_dyar_2010, pp. 287–288]. Aquí usamos esos datos en una **adaptación docente** para recorrer un PCA sobre la matriz de correlaciones; no atribuimos al libro este análisis particular.
+
+| Pozo | Ce | Nd | Eu | Tb | Ho | Tm |
+|---|---:|---:|---:|---:|---:|---:|
+| A | 12 | 43 | 32 | 61 | 2 | 31 |
+| B | 16 | 54 | 34 | 23 | 7 | 65 |
+| C | 22 | 6 | 54 | 32 | 10 | 4 |
+| D | 14 | 39 | 28 | 71 | 8 | 29 |
+
+```{python}
+#| label: fig-pca-geotermia
+#| fig-cap: "PCA estandarizado de seis elementos en cuatro pozos: varianza explicada, scores y correlaciones variable-componente."
+#| fig-alt: "Tres paneles: gráfico de sedimentación, scores de cuatro pozos y círculo de correlaciones de seis elementos."
+
+import pandas as pd
+
+geo = pd.DataFrame({
+    "Ce": [12, 16, 22, 14], "Nd": [43, 54, 6, 39],
+    "Eu": [32, 34, 54, 28], "Tb": [61, 23, 32, 71],
+    "Ho": [2, 7, 10, 8], "Tm": [31, 65, 4, 29],
+}, index=["A", "B", "C", "D"])
+
+Zg = (geo-geo.mean())/geo.std(ddof=1)
+Rg = Zg.cov().to_numpy()
+lam, A = np.linalg.eigh(Rg)
+orden = np.argsort(lam)[::-1]
+lam, A = lam[orden], A[:, orden]
+Tg = Zg.to_numpy() @ A
+L = A * np.sqrt(np.clip(lam, 0, None))
+explicada = lam/lam.sum()
+
+fig, ax = plt.subplots(1, 3, figsize=(13, 4.2), constrained_layout=True)
+ax[0].plot(range(1, 7), lam, "o-", color="#B56F3A")
+ax[0].set(xlabel="Componente", ylabel="Autovalor", title="Scree plot")
+ax[0].axhline(1, color="#7B8794", ls="--", lw=1)
+
+ax[1].scatter(Tg[:, 0], Tg[:, 1], s=80, color="#446681")
+for i, pozo in enumerate(geo.index):
+    ax[1].annotate(pozo, Tg[i, :2], xytext=(5, 5), textcoords="offset points")
+ax[1].set(xlabel=f"PC1 ({explicada[0]:.1%})",
+          ylabel=f"PC2 ({explicada[1]:.1%})", title="Scores")
+
+circle = plt.Circle((0, 0), 1, fill=False, color="#AAB4BD", lw=1)
+ax[2].add_patch(circle)
+for j, nombre in enumerate(geo.columns):
+    ax[2].arrow(0, 0, L[j, 0], L[j, 1], color="#76557C",
+                head_width=.035, length_includes_head=True)
+    ax[2].text(1.08*L[j, 0], 1.08*L[j, 1], nombre, ha="center", va="center")
+ax[2].set(xlim=(-1.15,1.15), ylim=(-1.15,1.15), aspect="equal",
+          xlabel="Correlación con PC1", ylabel="Correlación con PC2",
+          title="Variables")
+for a in ax:
+    a.axhline(0, color="#C8CED4", lw=.8)
+    a.axvline(0, color="#C8CED4", lw=.8)
+    a.grid(alpha=.18)
+plt.show()
+
+pd.DataFrame({
+    "autovalor": lam,
+    "proporción": explicada,
+    "acumulada": np.cumsum(explicada),
+}, index=[f"PC{i}" for i in range(1, 7)])
+```
+
+Los dos primeros componentes conservan aproximadamente el $91.1\%$ de la varianza estandarizada. A y D quedan relativamente próximos; C se diferencia principalmente sobre PC1 y B sobre PC2. Con la convención de signos producida por una ejecución, PC1 puede contrastar Ce y Eu con Nd, mientras PC2 contrasta sobre todo Tb y Tm. Invertir un eje cambiará los signos, no la estructura.
+
+Este conjunto es deliberadamente pequeño: con $n=4$ no permite evaluar estabilidad, definir poblaciones ni generalizar. La proximidad en el plano PCA tampoco demuestra conectividad hidráulica ni pertenencia a un mismo reservorio. Harían falta más pozos, replicados y contexto hidrogeológico.
+
+## Circones detríticos: integrar edad y geoquímica
+
+El problema conductor de la clase considera 150 circones de tres localidades de la cuenca Neuquina, descritos por Y, Yb, U, Th, Hf y Eu/Eu*. Las concentraciones positivas se transforman con logaritmos y luego se estandarizan. La edad U–Pb se reserva como información externa: no interviene en la construcción de las componentes. El contexto de las formaciones Tordillo y Quebrada del Sapo y de la Dorsal de Huincul se apoya en el análisis geocronológico y estructural de @naipauer_etal_2012.
+
+El recorrido correcto es:
+
+1. explorar distribuciones, observaciones atípicas y asociaciones bivariadas;
+2. documentar transformaciones y escala;
+3. ajustar el PCA y examinar autovalores, *scores* y *loadings*;
+4. describir patrones sin convertirlos todavía en fuentes geológicas;
+5. contrastarlos con edades y localidades que no participaron del ajuste;
+6. recién entonces formular hipótesis de procedencia y compararlas con evidencia regional independiente.
+
+El conjunto geoquímico utilizado para enseñar este recorrido es sintético. El contexto regional y las edades publicadas pueden orientar hipótesis, pero no validan automáticamente los grupos producidos por la simulación. Dos circones de edad semejante pueden tener historias geoquímicas distintas; dos firmas semejantes tampoco garantizan una fuente única.
+
+## PCA seguido de clustering
+
+Aplicar $k$-means sobre las primeras componentes puede reducir redundancia y ruido, pero introduce decisiones adicionales:
+
+- cuántas componentes retener;
+- cuánta varianza y qué señales se descartan;
+- cuántos grupos buscar;
+- cómo evaluar estabilidad e interpretabilidad.
+
+PCA y clustering resuelven problemas distintos. Una separación visible en PC1–PC2 no demuestra clusters naturales; un clustering sobre PC1–PC$m$ tampoco convierte sus grupos en unidades geológicas. La validación requiere volver a las variables originales, a información externa y al contexto espacial.
+
+## Limitaciones y errores frecuentes
+
+- interpretar “varianza explicada” como porcentaje de proceso geológico explicado;
+- omitir la transformación y el escalado usados;
+- confundir coeficientes de autovectores con correlaciones variable-componente;
+- asignar significado al signo absoluto de una componente;
+- leer un *biplot* sin conocer su escalado;
+- elegir el número de componentes por una sola regla;
+- ignorar valores atípicos, no linealidad, censura o estructura composicional;
+- presentar datos sintéticos como evidencia de campo;
+- inferir causalidad, procedencia o conectividad sólo a partir de proximidad en scores;
+- ignorar dependencia espacial: muchas observaciones cercanas pueden aportar menos información independiente de la aparente.
+
+La idea central es sencilla: **máxima varianza estadística no equivale a máxima información geológica**. El PCA organiza la variabilidad y ayuda a formular hipótesis; no reemplaza su contraste independiente.
+
+## Síntesis
+
+1. El PCA construye combinaciones lineales ortogonales ordenadas por varianza.
+2. Sus resultados dependen de variables, transformaciones, centrado y escala.
+3. Los autovectores definen direcciones; los autovalores, sus varianzas; los *scores*, las coordenadas de las observaciones.
+4. La reducción conserva sólo una parte de la variabilidad y debe justificarse.
+5. *Loadings*, scores y *biplots* describen estructura estadística, no procesos por sí solos.
+6. La interpretación geológica exige regresar a los datos originales y contrastar con evidencia independiente.

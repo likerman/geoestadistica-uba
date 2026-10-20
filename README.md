@@ -8,7 +8,7 @@ El texto busca ser autosuficiente: sigue la secuencia conceptual del curso, pero
 
 ## Estado
 
-Proyecto en construcción. La versión publicada desarrolla estadística descriptiva e inferencial, correlación y regresión, continuidad espacial, variograma, kriging y fundamentos de agrupamiento multivariado. Los ejemplos reproducibles incluyen el caso conductor de arsénico y casos sintéticos de temperatura, geoquímica y familias de fracturas.
+Proyecto en construcción. La versión publicada desarrolla estadística descriptiva e inferencial, correlación y regresión, continuidad espacial, variograma, kriging, agrupamiento multivariado y análisis de componentes principales. Los ejemplos reproducibles incluyen el caso conductor de arsénico y casos de temperatura, geoquímica, aguas geotérmicas y familias de fracturas.
 
 ## Organización
 
@@ -49,6 +49,7 @@ La guía [Cómo ejecutar los ejemplos](capitulos/00-ejecutar-codigo.qmd) explica
 - variograma experimental y anisotropía;
 - kriging ordinario, sensibilidad y validación;
 - semejanza y agrupamiento multivariado.
+- análisis de componentes principales, desde la geometría hasta la interpretación de scores y *loadings*.
 
 Antes de publicar cambios conviene ejecutar:
 

@@ -10,6 +10,12 @@ Este glosario reúne los términos centrales del manual. Las definiciones son de
 
 Familia de métodos que construye una jerarquía de grupos. En el enfoque aglomerativo, cada observación comienza como grupo individual y las fusiones sucesivas se determinan mediante una distancia y un criterio de enlace. El resultado depende de variables, escalado, distancia y enlace; no demuestra por sí solo la existencia de clases naturales. Véase [Agrupamiento jerárquico aglomerativo](capitulos/13-metodos-multivariados.qmd#agrupamiento-jerárquico-aglomerativo).
 
+### Análisis de componentes principales {#glosario-pca}
+
+**Inglés:** *principal component analysis* (**PCA**).
+
+Método lineal de reducción de dimensionalidad que construye combinaciones ortogonales de variables centradas, ordenadas por la varianza de las observaciones proyectadas. El resultado depende de las variables, transformaciones y escala elegidas. Maximizar varianza no equivale a maximizar información geológica ni separación entre grupos. Véase [Análisis de componentes principales](capitulos/13b-pca.qmd#sec-pca).
+
 ### Alcance {#glosario-alcance}
 
 **Inglés:** *range*.
@@ -47,6 +53,18 @@ Propiedad que describe falta de simetría de una distribución. El coeficiente b
 
 Relación estadística entre variables observadas conjuntamente. Puede expresarse mediante diferencias entre grupos, correlaciones, pendientes, patrones en una tabla o estructuras más complejas. Una asociación no implica por sí sola causalidad: puede surgir por un mecanismo causal, por una variable confundente, por mezcla de dominios, por sesgos de muestreo o por dependencia espacial. Véase [Correlación no implica causalidad](capitulos/11-correlacion-regresion.qmd#sec-asociacion-causalidad).
 
+### Autovalor {#glosario-autovalor}
+
+**Inglés:** *eigenvalue*. **Símbolo:** $\lambda$.
+
+Escalar que satisface $\mathbf R\mathbf a=\lambda\mathbf a$ para un autovector no nulo $\mathbf a$. En PCA, si el autovector es unitario, el autovalor es la varianza de los scores sobre esa componente. La proporción de varianza explicada es $\lambda_k/\sum_j\lambda_j$. Véase [La geometría de la máxima varianza](capitulos/13b-pca.qmd#la-geometría-de-la-máxima-varianza).
+
+### Autovector {#glosario-autovector}
+
+**Inglés:** *eigenvector*.
+
+Vector no nulo cuya dirección se conserva al aplicarle una transformación lineal: $\mathbf R\mathbf a=\lambda\mathbf a$. En PCA, los autovectores unitarios de una matriz de covarianzas o correlaciones definen las direcciones de las componentes. Su signo es arbitrario: $\mathbf a$ y $-\mathbf a$ describen el mismo eje.
+
 ## B
 
 ### Bigote de un boxplot {#glosario-bigote}
@@ -60,6 +78,12 @@ Segmento que se extiende desde una caja hasta el valor observado más extremo ad
 **Inglés:** *boxplot* o *box-and-whisker plot*.
 
 Representación basada en mediana, cuartiles, intervalo intercuartílico y una regla para bigotes y puntos externos. Facilita comparar posición y dispersión robustas entre grupos, pero no muestra adecuadamente modalidad, densidad ni tamaño muestral. Véase [Boxplot](capitulos/07-forma-diagnostico.qmd#boxplot).
+
+### Biplot {#glosario-biplot}
+
+**Inglés:** *biplot*.
+
+Representación conjunta de observaciones y variables en un espacio reducido, habitualmente mediante scores y vectores asociados con las variables. Su interpretación depende del escalado: distancias, ángulos y longitudes no admiten la misma lectura bajo todas las convenciones. Véase [Cómo leer un biplot](capitulos/13b-pca.qmd#cómo-leer-un-biplot).
 
 ## C
 
@@ -98,6 +122,12 @@ Razón entre desviación estándar y media, habitualmente expresada como porcent
 **Inglés:** *coverage*.
 
 Proporción de veces que un procedimiento de intervalo contiene el parámetro verdadero bajo repetición del muestreo y bajo los supuestos del modelo. En un intervalo de confianza frecuentista, el nivel nominal —por ejemplo 95 %— se refiere a esta propiedad del procedimiento, no a la probabilidad posterior de que un parámetro fijo esté dentro de un intervalo ya observado. Véase [Qué significa confianza: cobertura](capitulos/09-muestreo-e-inferencia.qmd#sec-intervalos-confianza).
+
+### Componente principal {#glosario-componente-principal}
+
+**Inglés:** *principal component* (**PC**).
+
+Combinación lineal de variables centradas definida por un autovector de su matriz de covarianzas o correlaciones. Las componentes se ordenan por varianza decreciente y sus scores son incorrelacionados dentro del conjunto usado para calcularlas. No representan necesariamente procesos físicos independientes.
 
 ### Continuidad espacial {#glosario-continuidad-espacial}
 
@@ -337,6 +367,12 @@ Rama de la estadística espacial que modela variables distribuidas en el espacio
 
 Representación que refleja una estimación de densidad alrededor de un eje y puede incorporar mediana, cuartiles u observaciones. El ancho muestra densidad estimada, no tamaño muestral ni probabilidad puntual. Su apariencia depende del ancho de banda. Véase [Gráfico de violín](capitulos/07-forma-diagnostico.qmd#gráfico-de-violín).
 
+### Gráfico de sedimentación {#glosario-scree}
+
+**Inglés:** *scree plot*.
+
+Gráfico de autovalores ordenados de mayor a menor según el número de componente. Ayuda a reconocer un cambio de pendiente y evaluar cuánta varianza aporta cada componente, pero el “codo” puede ser ambiguo y no constituye una regla automática de retención.
+
 ### Grados de libertad {#glosario-grados-libertad}
 
 **Inglés:** *degrees of freedom*.
@@ -466,6 +502,12 @@ Medida de cuán alejada está una observación en el espacio de las variables ex
 **Inglés:** *location*. **Notación habitual:** $\mathbf{u}$ o $\mathbf{s}$.
 
 Posición espacial asociada a una observación. Puede incluir coordenadas horizontales, elevación, profundidad y tiempo. Su interpretación requiere sistema de referencia y relación con el soporte.
+
+### Loading de correlación {#glosario-loading}
+
+**Inglés:** *correlation loading*.
+
+Correlación entre una variable estandarizada y una componente principal. Si $a_{jk}$ es el coeficiente del autovector y $\lambda_k$ su autovalor, entonces $\ell_{jk}=\sqrt{\lambda_k}a_{jk}$. No debe confundirse con el coeficiente $a_{jk}$ ni interpretarse como efecto causal.
 
 ## M
 
@@ -686,6 +728,12 @@ Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel r
 **Inglés:** *semivariance*. **Símbolo:** $\gamma(\mathbf h)$.
 
 Mitad de la variabilidad cuadrática esperada de los incrementos entre localizaciones separadas por $\mathbf h$. Su estimador clásico promedia $\tfrac12[z(\mathbf u_i)-z(\mathbf u_j)]^2$ sobre pares de una clase de separación. Véase [Variograma](capitulos/15-variograma.qmd#sec-variograma).
+
+### Score de componente principal {#glosario-score}
+
+**Inglés:** *principal component score*.
+
+Coordenada de una observación sobre una componente principal. Si $\mathbf z_i$ es la fila centrada o estandarizada y $\mathbf a_k$ el autovector de la componente $k$, el score es $t_{ik}=\mathbf z_i^\mathsf T\mathbf a_k$. Proximidad entre scores significa semejanza sólo en las componentes representadas.
 
 ### Silueta {#glosario-silueta}
 

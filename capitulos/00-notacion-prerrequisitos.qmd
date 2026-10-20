@@ -102,5 +102,10 @@ Por ejemplo, $\bar X$ es un estimador de $\mu$ y $\bar x=18.4$ es una estimació
 | $D=(d_{ij})$ | matriz de distancias o disimilitudes |
 | $K$ | número de grupos en un particionamiento |
 | $W_K$ | inercia intragrupo para una partición en $K$ grupos |
+| $\mathbf X$ | matriz de datos, con observaciones en filas y variables en columnas |
+| $\mathbf Z$ | matriz de variables centradas y estandarizadas |
+| $\mathbf R$ | matriz de correlaciones |
+| $\lambda_k$, $\mathbf a_k$ | autovalor y autovector unitario de la componente $k$ |
+| $\mathbf T=\mathbf Z\mathbf A$ | matriz de scores de las componentes principales |
 
 Salvo indicación contraria, los logaritmos serán naturales y se escribirán $\log x$ o $\ln x$. Toda concentración deberá acompañarse por su unidad y toda coordenada por su sistema de referencia.

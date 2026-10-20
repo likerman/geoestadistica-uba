@@ -58,6 +58,7 @@ book:
     - part: "VI. Análisis multivariado"
       chapters:
         - capitulos/13-metodos-multivariados.qmd
+        - capitulos/13b-pca.qmd
     - glosario.qmd
     - referencias.qmd
     - part: "Laboratorio"

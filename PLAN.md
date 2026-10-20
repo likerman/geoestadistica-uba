@@ -25,6 +25,7 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Bivariado | correlación, regresión, ANOVA de la regresión e incertidumbre predictiva | 11 | revisión docente |
 | Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador |
 | Multivariado | semejanza, cluster jerárquico, k-means y familias de fracturas | 13 | revisión docente |
+| Multivariado | PCA, autovalores y autovectores, scores, loadings, biplot y vínculo con clustering | 13b | revisión docente |
 | Espacial | variable regionalizada, pares, continuidad, anisotropía y estacionariedad | 14 | revisión docente |
 | Espacial | variograma experimental, modelos, transformaciones y anisotropía | 15 | revisión docente |
 | Espacial | IDW, kriging ordinario, bloques, sensibilidad y validación | 16 | revisión docente |
@@ -150,4 +151,19 @@ Se contrastaron presentaciones, guiones y recursos reproducibles de las clases 9
 11. $k$-means, inicialización, selección de $K$ y silueta;
 12. aplicación a rumbos axiales mediante la representación $(\cos2\theta,\sin2\theta)$.
 
-PCA y LDA permanecen fuera del índice porque no integran todavía el tramo desarrollado y publicado del manual.
+PCA se incorporó al índice con la clase 13; LDA permanece fuera porque todavía no integra el tramo desarrollado y publicado del manual.
+
+## Actualización PCA — 19 de octubre de 2026
+
+La clase 13 quedó incorporada como un capítulo autónomo y reproducible. El desarrollo incluye:
+
+1. diferencia conceptual entre clustering y reducción de dimensionalidad;
+2. selección de variables, log-transformación, centrado y estandarización;
+3. formulación de máxima varianza y problema de autovalores;
+4. interpretación de autovectores, autovalores y scores;
+5. varianza explicada, scree plot, criterio de Kaiser y límite de rango;
+6. distinción entre coeficientes, loadings de correlación y contribuciones;
+7. lectura crítica del biplot y arbitrariedad del signo;
+8. ejemplo reproducible de aguas geotérmicas basado en McKillup y Dyar;
+9. caso docente de circones detríticos, con separación explícita entre datos sintéticos y evidencia geológica publicada;
+10. articulación de PCA con k-means y límites de interpretación.
