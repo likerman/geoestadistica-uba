@@ -26,10 +26,11 @@ Este archivo mantiene la correspondencia entre el desarrollo del curso y el libr
 | Comparación de grupos | ANOVA y comparaciones múltiples | 12 | borrador |
 | Multivariado | semejanza, cluster jerárquico, k-means y familias de fracturas | 13 | revisión docente |
 | Multivariado | PCA, autovalores y autovectores, scores, loadings, biplot y vínculo con clustering | 13b | revisión docente |
+| Aprendizaje | bootstrap, bagging, árboles, random forest, OOB, validación espacial y declustering | 13c | revisión docente |
 | Espacial | variable regionalizada, pares, continuidad, anisotropía y estacionariedad | 14 | revisión docente |
 | Espacial | variograma experimental, modelos, transformaciones y anisotropía | 15 | revisión docente |
 | Espacial | IDW, kriging ordinario, bloques, sensibilidad y validación | 16 | revisión docente |
-| Integración | simulación, validación, comunicación y límites | 17 | borrador |
+| Integración | clasificación de litologías, kriging 3D, SGS, incertidumbre y límites | 17 | revisión docente |
 
 ## Fuentes docentes vigentes para el tramo auditado
 
@@ -152,6 +153,23 @@ Se contrastaron presentaciones, guiones y recursos reproducibles de las clases 9
 12. aplicación a rumbos axiales mediante la representación $(\cos2\theta,\sin2\theta)$.
 
 PCA se incorporó al índice con la clase 13; LDA permanece fuera porque todavía no integra el tramo desarrollado y publicado del manual.
+
+## Actualización de bootstrap y modelado 3D — 29 de octubre de 2026
+
+Las clases 14 y 15 quedaron incorporadas como dos capítulos completos:
+
+1. bootstrap para medias y cuantiles, error estándar e intervalo percentil;
+2. distinción entre Monte Carlo, bootstrap, bagging y evaluación OOB;
+3. árboles de decisión, Random Forest, métricas y validación espacial;
+4. cell declustering, ponderación y sensibilidad al tamaño y origen de la grilla;
+5. clasificación de litologías por pozos completos;
+6. calibración de porosidad, tendencia vertical y variograma residual;
+7. kriging 3D y diferencia entre estimación y realización;
+8. simulación secuencial gaussiana, normal-score, camino aleatorio y condicionamiento;
+9. media tipo E, dispersión y probabilidad de excedencia entre realizaciones;
+10. reconstrucción litológica 3D y propagación de incertidumbre.
+
+Los ejemplos numéricos de las clases se identifican como sintéticos. Se preservan las cifras efectivamente utilizadas —incluidas las 12 realizaciones del caso de simulación— y se evitan interpretaciones causales de la importancia de variables o probabilísticas de votos del bosque.
 
 ## Actualización PCA — 19 de octubre de 2026
 

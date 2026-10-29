@@ -4,6 +4,18 @@ Este glosario reúne los términos centrales del manual. Las definiciones son de
 
 ## A
 
+### Aprendizaje supervisado {#glosario-aprendizaje-supervisado}
+
+**Inglés:** *supervised learning*.
+
+Familia de métodos que aprende una relación entre predictores y una respuesta conocida en ejemplos etiquetados para predecir respuestas de casos nuevos. Incluye regresión y clasificación; su validez depende del muestreo, la representatividad y la evaluación fuera del ajuste.
+
+### Árbol de decisión {#glosario-arbol-decision}
+
+**Inglés:** *decision tree*.
+
+Modelo que divide recursivamente el espacio predictor mediante reglas de variable y umbral. Las hojas devuelven valores o clases. Es interpretable, pero un árbol profundo puede tener alta varianza y sobreajustarse.
+
 ### Agrupamiento jerárquico {#glosario-agrupamiento-jerarquico}
 
 **Inglés:** *hierarchical clustering*.
@@ -67,6 +79,18 @@ Vector no nulo cuya dirección se conserva al aplicarle una transformación line
 
 ## B
 
+### Bagging {#glosario-bagging}
+
+**Inglés:** *bootstrap aggregating*.
+
+Método de ensamble que ajusta el mismo algoritmo sobre múltiples remuestras bootstrap y agrega sus predicciones. En regresión suele promediarlas; en clasificación combina decisiones o probabilidades según la implementación. Puede reducir la varianza de algoritmos inestables, pero no corrige un sesgo común ni un diseño de muestreo deficiente. Véase [Del remuestreo a los modelos](capitulos/13c-bootstrap-bosques-declustering.qmd#del-remuestreo-a-los-modelos-bagging).
+
+### Bootstrap {#glosario-bootstrap}
+
+**Inglés:** *bootstrap*.
+
+Procedimiento que toma repetidamente muestras con reemplazo, habitualmente de tamaño igual al original, desde la distribución empírica y recalcula un estadístico. Aproxima su distribución muestral bajo los supuestos del esquema de remuestreo; no agrega observaciones ni corrige por sí solo dependencia espacial o falta de representatividad.
+
 ### Bigote de un boxplot {#glosario-bigote}
 
 **Inglés:** *whisker*.
@@ -86,6 +110,12 @@ Representación basada en mediana, cuartiles, intervalo intercuartílico y una r
 Representación conjunta de observaciones y variables en un espacio reducido, habitualmente mediante scores y vectores asociados con las variables. Su interpretación depende del escalado: distancias, ángulos y longitudes no admiten la misma lectura bajo todas las convenciones. Véase [Cómo leer un biplot](capitulos/13b-pca.qmd#cómo-leer-un-biplot).
 
 ## C
+
+### Cell declustering {#glosario-cell-declustering}
+
+**Inglés:** *cell declustering*.
+
+Ponderación espacial que divide el dominio en celdas y distribuye entre las muestras de cada celda ocupada un peso total común. Reduce la contribución individual de zonas densamente muestreadas. El resultado depende del tamaño y origen de la grilla, no representa directamente celdas vacías y no garantiza la media espacial verdadera. Véase [Cell declustering](capitulos/13c-bootstrap-bosques-declustering.qmd#cell-declustering).
 
 ### Centroide {#glosario-centroide}
 
@@ -235,6 +265,12 @@ Representación arbórea de las fusiones producidas por un agrupamiento jerárqu
 Distancia entre dos vectores definida por $d(\mathbf x_i,\mathbf x_j)=\sqrt{\sum_k(x_{ik}-x_{jk})^2}$. Su interpretación depende de la escala, las variables y la geometría del espacio. No siempre es apropiada para datos composicionales, angulares o mixtos. Véase [Distancia como definición de semejanza](capitulos/13-metodos-multivariados.qmd#distancia-como-definición-de-semejanza).
 
 ## E
+
+### Ensamble {#glosario-ensamble}
+
+**Inglés:** *ensemble*.
+
+Modelo que combina las predicciones de múltiples modelos base. El beneficio depende de su desempeño y diversidad: agregar muchos modelos fuertemente correlacionados no garantiza una mejora.
 
 ### Enlace de agrupamiento {#glosario-enlace}
 
@@ -407,6 +443,12 @@ Valor o afirmación de referencia bajo la cual se calcula la distribución del e
 
 ## I
 
+### Impureza Gini {#glosario-gini}
+
+**Inglés:** *Gini impurity*.
+
+Criterio de heterogeneidad de clases en un nodo, $G=1-\sum_k p_k^2$. Vale cero cuando todas las observaciones pertenecen a una clase. En un árbol de clasificación pueden elegirse particiones que produzcan una gran disminución ponderada de esta impureza; no debe confundirse con el coeficiente de Gini de desigualdad.
+
 ### Inercia intragrupo {#glosario-inercia-intragrupo}
 
 **Inglés:** *within-cluster sum of squares* o *within-cluster inertia*.
@@ -511,6 +553,12 @@ Correlación entre una variable estandarizada y una componente principal. Si $a_
 
 ## M
 
+### Matriz de confusión {#glosario-matriz-confusion}
+
+**Inglés:** *confusion matrix*.
+
+Tabla que cruza clases verdaderas y predichas. La diagonal contiene aciertos y las celdas externas identifican qué clases se confunden. Su orientación —filas verdaderas o predichas— debe declararse; permite calcular sensibilidad, precisión y otras métricas por clase.
+
 ### Matriz de distancias {#glosario-matriz-distancias}
 
 **Inglés:** *distance matrix* o *dissimilarity matrix*.
@@ -592,6 +640,12 @@ Diseño en el que la probabilidad o intensidad de observación está relacionada
 Transformación por rangos que asigna a cada observación el cuantil de una normal estándar correspondiente a su posición acumulada. Conserva el orden, pero modifica las diferencias absolutas. Gaussianiza la distribución marginal por construcción; no demuestra gaussianidad conjunta del campo ni es requisito de kriging ordinario. Véase [Transformaciones y variograma](capitulos/15-variograma.qmd#transformaciones-y-variograma).
 
 ## O
+
+### Out-of-bag {#glosario-oob}
+
+**Inglés:** *out-of-bag* (**OOB**).
+
+Observación que quedó fuera de una remuestra bootstrap. En bagging y random forests puede evaluarse con los modelos que no la utilizaron para entrenarse. Es una estimación interna del desempeño y no asegura independencia espacial.
 
 ### Observación {#glosario-observacion}
 
@@ -678,6 +732,12 @@ Gráfico que compara cuantiles observados con cuantiles de una distribución te�
 
 ## R
 
+### Random Forest {#glosario-random-forest}
+
+**Inglés:** *random forest*.
+
+Ensamble de árboles ajustados sobre remuestras bootstrap que, además, restringe aleatoriamente las variables candidatas en cada nodo. Agrega predicciones para reducir variabilidad y correlación entre árboles. La importancia interna de una variable no implica causalidad. Véase [Árboles de decisión y Random Forest](capitulos/13c-bootstrap-bosques-declustering.qmd#árboles-de-decisión-y-random-forest).
+
 
 ### Regresión lineal {#glosario-regresion-lineal}
 
@@ -722,6 +782,19 @@ Conjunto de valores del estadístico de prueba que llevan a rechazar la hipótes
 Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel respecto del cero y dispersión; no es equivalente a desviación estándar.
 
 ## S
+
+### Simulación secuencial gaussiana {#glosario-sgs}
+
+**Inglés:** *sequential Gaussian simulation* (**SGS**).
+
+Algoritmo de simulación condicional que visita las celdas en orden aleatorio, calcula en cada una una distribución gaussiana condicionada por datos originales y valores ya simulados, sortea un valor y lo incorpora al condicionamiento. Suele aplicarse a residuos normal-score y finalizar con transformación inversa y restitución de tendencia. Véase [Simulación secuencial gaussiana](capitulos/17-modelado-3d-simulacion.qmd#simulación-secuencial-gaussiana).
+
+### Sobreajuste {#glosario-sobreajuste}
+
+**Inglés:** *overfitting*.
+
+Adaptación excesiva de un modelo a particularidades de los datos de entrenamiento que no se generalizan. Se manifiesta como desempeño mucho mejor en entrenamiento que en observaciones realmente reservadas; se controla mediante regularización, complejidad apropiada y validación coherente con el objetivo.
+
 
 ### Semivarianza {#glosario-semivarianza}
 

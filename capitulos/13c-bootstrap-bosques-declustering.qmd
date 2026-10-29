@@ -1,0 +1,159 @@
+# Bootstrap, bosques y representatividad espacial {#sec-bootstrap-bosques}
+
+## Objetivos
+
+Al finalizar este capítulo, el lector debería poder:
+
+- construir [remuestras *bootstrap*](../glosario.qmd#glosario-bootstrap) y distinguir la distribución de los datos de la distribución de un estadístico;
+- estimar un error estándar y un intervalo percentil sin atribuir al remuestreo información geológica nueva;
+- explicar [*bagging*](../glosario.qmd#glosario-bagging), árboles de decisión y [*random forest*](../glosario.qmd#glosario-random-forest);
+- diseñar una evaluación que respete la dependencia espacial;
+- calcular pesos de [*cell declustering*](../glosario.qmd#glosario-cell-declustering) y analizar su sensibilidad.
+
+::: {.callout-tip title="Código reproducible"}
+El recorrido completo puede modificarse en [Bootstrap, Random Forest y declustering](../ejemplos/06_bootstrap_random_forest.ipynb). Los datos son sintéticos y la semilla está fijada.
+:::
+
+## Bootstrap: repetir el muestreo con los datos disponibles
+
+Sea una muestra $x_1,\ldots,x_n$ y un estadístico $T=t(x_1,\ldots,x_n)$. Una remuestra *bootstrap* selecciona $n$ observaciones **con reemplazo** desde la distribución empírica
+
+$$
+\widehat F_n(x)=\frac{1}{n}\sum_{i=1}^n\mathbf 1(x_i\le x).
+$$
+
+Para $b=1,\ldots,B$ se obtiene $T_b^*=t(x_{b1}^*,\ldots,x_{bn}^*)$. La colección $T_1^*,\ldots,T_B^*$ aproxima la distribución muestral de $T$ bajo el modelo empírico [@efron_1979]. Su desviación estándar
+
+$$
+\widehat{SE}_{boot}(T)=
+\sqrt{\frac{1}{B-1}\sum_{b=1}^B(T_b^*-\overline T^*)^2}
+$$
+
+es el error estándar *bootstrap*. El intervalo percentil bilateral de nivel aproximado $1-\alpha$ usa los cuantiles $\alpha/2$ y $1-\alpha/2$ de los $T_b^*$.
+
+::: {.callout-important title="Dos distribuciones diferentes"}
+El histograma de porosidades describe variabilidad entre rocas. El histograma de medias o P90 *bootstrap* describe cuánto varía un **estadístico entre remuestras**. Aumentar $B$ estabiliza la aproximación computacional, pero no aumenta $n$ ni agrega sitios.
+:::
+
+Para la media, el TCL suele proporcionar una solución analítica sencilla. *Bootstrap* resulta especialmente útil cuando la distribución muestral del estadístico es difícil de derivar, aunque no es automático: cuantiles extremos, muestras pequeñas, valores atípicos y dependencia requieren cautela. El remuestreo iid convencional supone observaciones intercambiables; si hay continuidad espacial, deben considerarse esquemas por bloques u otro modelo de dependencia.
+
+```{python}
+#| label: fig-bootstrap-p90
+#| fig-cap: "Distribución observada y distribución bootstrap del P90. Son objetos estadísticos distintos."
+#| fig-alt: "Dos histogramas: porosidades sintéticas con su P90 y valores P90 obtenidos de cinco mil remuestras bootstrap."
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(20261020)
+porosidad = np.clip(rng.normal(0.18, 0.035, 60), 0.06, 0.32)
+B = 5000
+p90_boot = np.quantile(
+    rng.choice(porosidad, size=(B, porosidad.size), replace=True), 0.90, axis=1
+)
+
+fig, ax = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
+ax[0].hist(porosidad, bins=12, color="#446681", alpha=.85)
+ax[0].axvline(np.quantile(porosidad, .9), color="#B56F3A", lw=2)
+ax[0].set(title="Valores observados", xlabel="Porosidad", ylabel="Frecuencia")
+ax[1].hist(p90_boot, bins=28, color="#76557C", alpha=.85)
+ax[1].axvline(np.quantile(porosidad, .9), color="#B56F3A", lw=2)
+ax[1].set(title="P90 entre remuestras", xlabel="P90 bootstrap", ylabel="Frecuencia")
+plt.show()
+
+np.quantile(p90_boot, [.025, .975])
+```
+
+## Del remuestreo a los modelos: bagging
+
+En [aprendizaje supervisado](../glosario.qmd#glosario-aprendizaje-supervisado) se aprende una relación entre predictores $\mathbf x$ y una respuesta conocida $y$. *Bagging* (*bootstrap aggregating*) genera remuestras de **filas completas**, ajusta el mismo algoritmo en cada una y agrega sus predicciones [@breiman_1996]. En regresión,
+
+$$
+\widehat f_{bag}(\mathbf x)=\frac1B\sum_{b=1}^{B}\widehat f_b(\mathbf x).
+$$
+
+En clasificación se combinan probabilidades de clase o decisiones según la implementación. La agregación puede reducir la varianza de métodos inestables, pero no corrige un sesgo compartido, datos deficientes ni extrapolación.
+
+Cada remuestra de tamaño $n$ deja fuera, en promedio, una fracción cercana a $e^{-1}\approx0.368$ de las observaciones. Esas observaciones [*out-of-bag*](../glosario.qmd#glosario-oob) (OOB) permiten construir una evaluación interna: cada fila se predice sólo con modelos que no la usaron para ajustarse. No equivale a una validación espacial independiente.
+
+## Árboles de decisión y Random Forest
+
+Un [árbol de decisión](../glosario.qmd#glosario-arbol-decision) divide recursivamente el espacio predictor. Cada nodo elige una variable y un umbral; cada hoja devuelve una media, una clase o probabilidades. Un árbol profundo puede adaptar detalles accidentales de la muestra: es un ejemplo de [sobreajuste](../glosario.qmd#glosario-sobreajuste).
+
+Un *random forest* es un [ensamble](../glosario.qmd#glosario-ensamble) que combina dos fuentes de diversidad [@breiman_2001]:
+
+1. cada árbol se ajusta sobre una remuestra *bootstrap*;
+2. en cada nodo se considera un subconjunto aleatorio de predictores.
+
+La segunda aleatoriedad busca reducir la correlación entre árboles. En clasificación, la reducción de [impureza Gini](../glosario.qmd#glosario-gini) para una partición es un criterio habitual:
+
+$$
+G=1-\sum_{k=1}^{K}p_k^2.
+$$
+
+Los hiperparámetros —número y profundidad de árboles, mínimo por hoja, cantidad de variables candidatas— controlan complejidad y costo. El resultado debe evaluarse sobre datos no usados para el ajuste. La exactitud global puede ocultar una clase minoritaria: conviene informar [matriz de confusión](../glosario.qmd#glosario-matriz-confusion), precisión, sensibilidad y $F_1$ por clase.
+
+La importancia por disminución media de impureza describe el uso de una variable dentro del bosque; no mide causalidad y puede favorecer predictores con muchos cortes posibles. La importancia por permutación sobre un conjunto reservado responde mejor cuánto empeora la predicción al romper la información de una variable, pero también se reparte o distorsiona cuando los predictores están correlacionados.
+
+## Validación espacial
+
+Separar filas al azar puede colocar puntos vecinos en entrenamiento y prueba. Si existe autocorrelación, el error será optimista para el objetivo de predecir una región nueva. La unidad de partición debe corresponder al problema: pozos completos, dominios, bloques o regiones cuya dimensión considere el alcance de continuidad.
+
+::: {.callout-warning title="La pregunta define la validación"}
+Reservar intervalos al azar evalúa interpolación entre registros semejantes. Reservar pozos completos evalúa transferencia entre pozos. Reservar una región completa evalúa extrapolación espacial. No son pruebas equivalentes.
+:::
+
+## Cell declustering
+
+Cuando la densidad de muestreo no es uniforme, la media de las muestras puede sobrerrepresentar sectores intensamente estudiados. *Cell declustering* divide el dominio en celdas y asigna a cada celda ocupada el mismo peso total [@isaaks_srivastava_1989; @pyrcz_2024]. Si la muestra $i$ pertenece a una celda con $n_{c(i)}$ observaciones,
+
+$$
+r_i=\frac{1}{n_{c(i)}},\qquad
+w_i=\frac{r_i}{\sum_j r_j},\qquad
+\overline z_{decl}=\sum_iw_i z_i.
+$$
+
+No se eliminan datos ni se modifican valores: cambia su contribución. Las celdas vacías no quedan representadas y el resultado depende del tamaño y del origen de la grilla. Por eso se analiza una curva de sensibilidad, se desplaza la grilla y se confronta la escala elegida con la geología y el soporte.
+
+```{python}
+#| label: fig-declustering
+#| fig-cap: "Ejemplo mínimo de cell declustering: cuatro datos agrupados reciben menor peso individual que dos datos aislados."
+#| fig-alt: "Tres celdas: la primera contiene cuatro porosidades altas y las otras una porosidad baja cada una; se comparan la media aritmética y la ponderada."
+
+z = np.array([.24, .22, .26, .24, .12, .15])
+celda = np.array(["A", "A", "A", "A", "B", "C"])
+conteo = {c: np.sum(celda == c) for c in np.unique(celda)}
+r = np.array([1/conteo[c] for c in celda])
+w = r/r.sum()
+
+fig, ax = plt.subplots(figsize=(7, 3.8), constrained_layout=True)
+ax.scatter(np.arange(6), z, s=1800*w, c=z, cmap="Blues", edgecolor="#243746")
+for i, c in enumerate(celda):
+    ax.text(i, z[i]+.012, f"celda {c}\nw={w[i]:.3f}", ha="center", fontsize=9)
+ax.set(xlabel="Muestra", ylabel="Porosidad", ylim=(.08, .30))
+ax.grid(axis="y", alpha=.2)
+plt.show()
+
+float(z.mean()), float(np.sum(w*z))
+```
+
+En este ejemplo la media aritmética es $20.5\%$ y la ponderada $17.0\%$. El segundo valor **no queda demostrado como la media verdadera**: sólo muestra el efecto del esquema de ponderación.
+
+## Qué resuelve cada herramienta
+
+| Pregunta | Herramienta | No resuelve por sí sola |
+|---|---|---|
+| ¿Cuánto cambia un estadístico entre muestras semejantes? | *Bootstrap* | sesgo del diseño ni dependencia espacial |
+| ¿Cómo reducir la variabilidad de un predictor inestable? | *Bagging* | calidad de datos ni extrapolación |
+| ¿Cómo combinar árboles y múltiples predictores? | *Random forest* | causalidad ni continuidad espacial |
+| ¿Cómo evaluar una región no observada? | validación espacial | ausencia de datos fuera del dominio |
+| ¿Cómo reducir la sobrerrepresentación de zonas densas? | *cell declustering* | valores en celdas vacías ni una media verdadera conocida |
+
+## Síntesis
+
+1. *Bootstrap* aproxima la variación de un estadístico remuestreando la distribución empírica.
+2. *Bagging* reutiliza el mecanismo para ajustar y agregar modelos.
+3. *Random forest* agrega selección aleatoria de variables y debe validarse según el objetivo espacial.
+4. OOB es útil, pero no sustituye una prueba por pozos o regiones.
+5. *Cell declustering* aborda representatividad espacial; su sensibilidad forma parte del resultado.
+

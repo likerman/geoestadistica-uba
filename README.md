@@ -8,7 +8,7 @@ El texto busca ser autosuficiente: sigue la secuencia conceptual del curso, pero
 
 ## Estado
 
-Proyecto en construcción. La versión publicada desarrolla estadística descriptiva e inferencial, correlación y regresión, continuidad espacial, variograma, kriging, agrupamiento multivariado y análisis de componentes principales. Los ejemplos reproducibles incluyen el caso conductor de arsénico y casos de temperatura, geoquímica, aguas geotérmicas y familias de fracturas.
+Proyecto en construcción. La versión publicada desarrolla estadística descriptiva e inferencial, correlación y regresión, continuidad espacial, variograma, kriging, agrupamiento multivariado, PCA, bootstrap, Random Forest, declustering y simulación secuencial gaussiana. Los ejemplos reproducibles incluyen el caso conductor de arsénico y casos sintéticos de clasificación, representatividad espacial y modelado condicionado.
 
 ## Organización
 
@@ -50,6 +50,9 @@ La guía [Cómo ejecutar los ejemplos](capitulos/00-ejecutar-codigo.qmd) explica
 - kriging ordinario, sensibilidad y validación;
 - semejanza y agrupamiento multivariado.
 - análisis de componentes principales, desde la geometría hasta la interpretación de scores y *loadings*.
+- bootstrap para estadísticos, bagging, árboles, Random Forest y validación por regiones;
+- cell declustering y sensibilidad a la grilla;
+- integración 3D de clasificación, kriging y simulación secuencial gaussiana.
 
 Antes de publicar cambios conviene ejecutar:
 

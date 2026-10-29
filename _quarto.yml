@@ -55,10 +55,14 @@ book:
         - capitulos/14-variable-regionalizada.qmd
         - capitulos/15-variograma.qmd
         - capitulos/16-kriging.qmd
-    - part: "VI. Análisis multivariado"
+    - part: "VI. Análisis multivariado y aprendizaje"
       chapters:
         - capitulos/13-metodos-multivariados.qmd
         - capitulos/13b-pca.qmd
+        - capitulos/13c-bootstrap-bosques-declustering.qmd
+    - part: "VII. Integración y simulación"
+      chapters:
+        - capitulos/17-modelado-3d-simulacion.qmd
     - glosario.qmd
     - referencias.qmd
     - part: "Laboratorio"

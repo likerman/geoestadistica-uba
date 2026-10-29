@@ -1,0 +1,162 @@
+# Del pozo al modelo espacial 3D {#sec-modelado-3d}
+
+## Objetivos
+
+Al finalizar este capítulo, el lector debería poder:
+
+- distinguir datos de pozo, interpretaciones litológicas, estimaciones continuas y realizaciones simuladas;
+- diseñar un flujo de clasificación de litologías sin fuga entre intervalos del mismo pozo;
+- integrar calibración, tendencia, variograma y kriging en un volumen 3D;
+- describir el algoritmo de [simulación secuencial gaussiana](../glosario.qmd#glosario-sgs) (SGS);
+- resumir un conjunto de realizaciones mediante media, dispersión y probabilidad de excedencia;
+- reconocer cómo se propaga la incertidumbre al reconstruir facies con registros interpolados.
+
+::: {.callout-tip title="Código reproducible"}
+El [ejemplo integrado de clasificación y simulación](../ejemplos/07_modelado_3d_simulacion.ipynb) reproduce un corte 2D simplificado. El capítulo explica el flujo 3D; el notebook reduce la grilla para que pueda ejecutarse en una computadora personal.
+:::
+
+## Cuatro productos que no deben confundirse
+
+Una perforación aporta observaciones localizadas: gamma ray (GR), densidad (RHOB), resistividad (RT), neutrón (NPHI), sónico (DT), coronas y descripciones. La litología es una **interpretación** sostenida por evidencia; un mapa de clases en pozos todavía no contiene facies entre ellos.
+
+El flujo docente considera un dominio sintético de $4\times3$ km entre 1500 y 1620 m, con 60 pozos y 24 intervalos por pozo. Doce pozos tienen litología de referencia; ocho se usan para ajustar un clasificador y cuatro pozos completos para evaluarlo. Los otros 48 se clasifican después. Esta partición evita que intervalos vecinos del mismo pozo aparezcan en ambos conjuntos, aunque no garantiza independencia regional.
+
+Conviene mantener separados:
+
+1. **observación:** medición o descripción en un soporte y localización;
+2. **clasificación:** clase predicha a partir de registros;
+3. **estimación:** valor esperado local bajo un modelo espacial;
+4. **realización:** campo posible sorteado de una distribución condicional.
+
+## Clasificar litologías en pozos
+
+El clasificador recibe cinco predictores y aprende de intervalos etiquetados. Los umbrales de un árbol no son leyes litológicas universales. Las respuestas petrofísicas son no únicas y dependen de mineralogía, porosidad, fluidos, condiciones de pozo y escala.
+
+En el ejemplo de clase, los cuatro pozos reservados contienen 96 intervalos: 92 se clasifican correctamente ($95.8\%$). La matriz presenta 69 lutitas, 11 limolitas y 12 areniscas correctas, además de dos confusiones en cada sentido entre lutita y limolita. El valor global debe acompañarse de errores por clase y profundidad. La aparente ausencia de errores en arenisca no garantiza desempeño futuro: la muestra de validación es limitada.
+
+La importancia de GR o RHOB por disminución de impureza dice cuánto se usaron en ese ajuste; no atribuye causalidad ni porcentaje de aciertos. Tras evaluar, puede reentrenarse el modelo final con los 12 pozos etiquetados para clasificar los 48 restantes, pero la métrica informada sigue perteneciendo al experimento de validación anterior.
+
+## De la porosidad de pozo a un campo continuo
+
+La porosidad de registro es una estimación indirecta. Primero se compara con mediciones de corona y se calibra cualquier sesgo sistemático sin fingir que desaparece el error. Luego se investiga una tendencia vertical $m(z)$. Si $\phi(\mathbf u)$ es la porosidad calibrada,
+
+$$
+r(\mathbf u)=\phi(\mathbf u)-m(z)
+$$
+
+es el residuo que se modelará espacialmente. En el caso docente $m(z)$ es el promedio por nivel, no una regresión lineal. Quitar una tendencia busca un residuo más compatible con estacionariedad; no la garantiza.
+
+El variograma se analiza en $X$, $Y$ y $Z$, con número de pares, tolerancias y anisotropía. Para SGS se aplica una [transformación normal-score](../glosario.qmd#glosario-normal-score) a los residuos y se ajusta la continuidad en esa escala. Cada decisión —dominio, tendencia, transformación, modelo y vecindario— es una hipótesis que debe validarse [@goovaerts_1997; @chiles_delfiner_2012].
+
+## Kriging 3D: una estimación
+
+En una celda $\mathbf u_0$, el kriging calcula una combinación lineal de valores vecinos:
+
+$$
+\widehat r(\mathbf u_0)=\sum_{i=1}^{n}\lambda_i r(\mathbf u_i).
+$$
+
+Los pesos dependen de geometría, anisotropía y covarianza; después se restituye $m(z)$. Los mapas horizontales y secciones verticales son cortes del **mismo volumen**, no interpolaciones independientes. El campo resultante es útil para representar la estimación local, pero suele suavizar máximos, mínimos y conectividad.
+
+Kriging puede acompañarse de varianza de estimación. La diferencia con la simulación no es “sin incertidumbre” frente a “con incertidumbre”: SGS entrega múltiples campos espacialmente coherentes con los que pueden evaluarse funciones no lineales, geometrías y conectividad.
+
+## Simulación secuencial gaussiana
+
+SGS genera una [realización condicional](../glosario.qmd#glosario-simulacion-condicional) mediante los siguientes pasos [@deutsch_journel_1998; @remy_boucher_wu_2009]:
+
+1. transformar a normal-score los residuos;
+2. definir la grilla y elegir un camino aleatorio por las celdas;
+3. en la celda actual, reunir datos originales y valores ya simulados;
+4. resolver el sistema de kriging para obtener media $m_c$ y varianza $\sigma_c^2$ condicionales;
+5. sortear $y(\mathbf u_0)\sim\mathcal N(m_c,\sigma_c^2)$;
+6. incorporar el valor al conjunto condicionante y continuar;
+7. invertir la transformación y restituir la tendencia.
+
+La distribución local no se ajusta al histograma de los vecinos: surge del modelo gaussiano condicional y su covarianza. El camino aleatorio y los sorteos producen realizaciones distintas. Todas están condicionadas por los mismos datos y supuestos; ninguna es “la verdadera”.
+
+::: {.callout-warning title="Condicional no significa exacto"}
+Una realización puede honrar los datos en sus ubicaciones y aun ser inadecuada si el variograma, la tendencia, la transformación, el dominio o el soporte son incorrectos. La variabilidad entre realizaciones no incluye automáticamente incertidumbre de modelo.
+:::
+
+## Resumir un conjunto de realizaciones
+
+Para $R$ realizaciones $z^{(1)}(\mathbf u),\ldots,z^{(R)}(\mathbf u)$, la media tipo E es
+
+$$
+\overline z_E(\mathbf u)=\frac1R\sum_{r=1}^{R}z^{(r)}(\mathbf u),
+$$
+
+y la probabilidad empírica de superar un umbral $c$ es
+
+$$
+\widehat P\{Z(\mathbf u)>c\mid\text{datos, modelo}\}
+=\frac1R\sum_{r=1}^{R}\mathbf1\{z^{(r)}(\mathbf u)>c\}.
+$$
+
+Con 12 realizaciones, la probabilidad cambia en pasos de $1/12\approx8.3$ puntos porcentuales: reportar décimas de porcentaje produciría falsa precisión. Más realizaciones reducen error Monte Carlo, pero no corrigen hipótesis equivocadas.
+
+```{python}
+#| label: fig-realizaciones-resumen
+#| fig-cap: "Tres realizaciones gaussianas condicionadas sintéticas y sus resúmenes: media y probabilidad de exceder cero."
+#| fig-alt: "Cinco mapas pequeños: tres campos espaciales alternativos, su media y la proporción de campos con valores mayores que cero."
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.ndimage import gaussian_filter
+
+rng = np.random.default_rng(20261027)
+R, ny, nx = 24, 35, 48
+real = np.array([gaussian_filter(rng.normal(size=(ny, nx)), sigma=3)
+                 for _ in range(R)])
+real = (real-real.mean(axis=(1,2), keepdims=True))/real.std(axis=(1,2), keepdims=True)
+
+fig, ax = plt.subplots(1, 5, figsize=(14, 3), constrained_layout=True)
+for j in range(3):
+    ax[j].imshow(real[j], cmap="RdBu_r", vmin=-2.5, vmax=2.5, origin="lower")
+    ax[j].set_title(f"Realización {j+1}")
+ax[3].imshow(real.mean(0), cmap="RdBu_r", vmin=-1, vmax=1, origin="lower")
+ax[3].set_title("Media tipo E")
+ax[4].imshow((real > 0).mean(0), cmap="Blues", vmin=0, vmax=1, origin="lower")
+ax[4].set_title("P(Z > 0)")
+for a in ax: a.set(xticks=[], yticks=[])
+plt.show()
+```
+
+La figura ilustra el resumen de realizaciones, no implementa SGS ni condiciona pozos; el notebook asociado desarrolla el algoritmo secuencial en una grilla pequeña.
+
+## Reconstrucción litológica 3D
+
+Para extender la clasificación al volumen se estiman GR, RHOB, RT, NPHI y DT sobre **la misma grilla**. En cada celda se forma el vector de cinco predictores y se aplica el bosque ya entrenado. El resultado es un volumen categórico derivado, no una observación de litología entre pozos.
+
+Este encadenamiento propaga incertidumbres:
+
+$$
+\text{muestreo y soporte}
+\rightarrow\text{calibración}
+\rightarrow\text{modelos espaciales}
+\rightarrow\text{registros estimados}
+\rightarrow\text{clasificación}.
+$$
+
+Interpolar cada registro por separado puede destruir correlaciones petrofísicas y crear combinaciones que no aparecieron en entrenamiento. Se debe comprobar distribución univariada, relaciones multivariadas, variogramas por propiedad, desempeño en pozos ocultos y coherencia geológica. Una extensión más completa simularía conjuntamente predictores o propagaría realizaciones a través del clasificador, en lugar de clasificar sólo sus campos medios.
+
+## Lista de control
+
+- ¿Los datos de entrenamiento y prueba están separados por pozos o regiones?
+- ¿Las etiquetas tienen procedencia y soporte documentados?
+- ¿Se calibró la propiedad indirecta contra referencias?
+- ¿Se modeló la tendencia antes del variograma residual?
+- ¿Las direcciones y el vecindario responden a la anisotropía?
+- ¿El número real de realizaciones coincide con el informado?
+- ¿Las probabilidades se interpretan condicionadas a datos y modelo?
+- ¿Los predictores interpolados conservan relaciones físicamente plausibles?
+- ¿La validación incluye pozos omitidos y no sólo métricas internas?
+
+## Síntesis
+
+1. Los pozos observan soportes localizados; el volumen entre ellos se modela.
+2. La clasificación debe validarse por unidades espacialmente independientes.
+3. Kriging produce una estimación; SGS produce realizaciones alternativas condicionadas.
+4. La incertidumbre se estudia comparando realizaciones, sin confundirla con error total.
+5. El volumen litológico hereda las incertidumbres de interpolación y clasificación.
+

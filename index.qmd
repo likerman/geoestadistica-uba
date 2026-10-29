@@ -38,7 +38,7 @@ favicon: recursos/identidad/logo.png
 
 # Propósito {.unnumbered}
 
-Este manual desarrolla progresivamente las ideas fundamentales que conducen hacia la geoestadística: comienza con problemas de descripción de datos, muestreo, probabilidad e inferencia, y avanza hacia el estudio de relaciones entre variables, la dependencia espacial, el variograma y la estimación por kriging.
+Este manual desarrolla progresivamente las ideas fundamentales que conducen hacia la geoestadística: comienza con problemas de descripción de datos, muestreo, probabilidad e inferencia, y avanza hacia relaciones entre variables, dependencia espacial, variograma, kriging, aprendizaje supervisado y simulación geoestadística.
 
 La pregunta que organiza el recorrido es sencilla: **¿qué cambia cuando, además del valor observado, importa dónde fue observado?** Antes de responderla necesitamos comprender qué puede —y qué no puede— decir la estadística clásica sobre una muestra.
 
@@ -62,9 +62,9 @@ Las figuras que representen resultados numéricos se generarán, siempre que sea
 
 ## Estado actual del manual
 
-Esta versión cubre datos y muestreo; estadística descriptiva; probabilidad e inferencia; pruebas de hipótesis; comparación de varianzas y frecuencias categóricas; correlación y regresión lineal; dependencia espacial; variograma experimental y modelos; anisotropía; IDW y kriging ordinario; incertidumbre, soporte y validación espacial; transformaciones; semejanza multivariada; agrupamiento jerárquico; $k$-means; análisis de componentes principales; y aplicaciones a familias de fracturas, circones detríticos y aguas geotérmicas.
+Esta versión cubre datos y muestreo; estadística descriptiva; probabilidad e inferencia; pruebas de hipótesis; comparación de varianzas y frecuencias categóricas; correlación y regresión lineal; dependencia espacial; variograma experimental y modelos; anisotropía; IDW y kriging ordinario; incertidumbre, soporte y validación espacial; transformaciones; semejanza multivariada; agrupamiento jerárquico; $k$-means; análisis de componentes principales; bootstrap, bagging, Random Forest y declustering; y un flujo integrado desde registros de pozo hasta clasificación de litologías, kriging 3D y simulación secuencial gaussiana.
 
-A lo largo de los capítulos se refuerza una idea central: la información depende del diseño, del soporte y de la estructura de dependencia. El variograma formaliza cómo cambia la disimilitud con la separación; kriging utiliza ese modelo y la geometría de las observaciones para estimar y cuantificar incertidumbre.
+A lo largo de los capítulos se refuerza una idea central: la información depende del diseño, del soporte y de la estructura de dependencia. El variograma formaliza cómo cambia la disimilitud con la separación; kriging utiliza ese modelo y la geometría para estimar; la simulación genera campos alternativos condicionados para explorar incertidumbre espacial bajo supuestos explícitos.
 
 Los capítulos visibles buscan ser autosuficientes y revisables. Los temas que todavía no forman parte del tramo publicado no se reemplazan por capítulos vacíos ni apuntes incompletos.
 
