@@ -1,0 +1,94 @@
+# Programa de la materia 2026 {.unnumbered}
+
+Este programa reúne los contenidos desarrollados en la cursada de Geoestadística 2026 y permite localizar su tratamiento en el manual. Está organizado en unidades temáticas para facilitar el estudio y la consulta. Es una síntesis del contenido de esta edición; no pretende sustituir la documentación institucional oficial de la asignatura.
+
+El recorrido parte de la descripción y la inferencia estadística, incorpora la posición y el soporte de los datos, y llega a la estimación y la simulación espacial. También presenta herramientas multivariadas y de aprendizaje para integrar propiedades geológicas.
+
+## Unidad 1. Datos, muestreo y problemas geoestadísticos
+
+- Estadística descriptiva e inferencial. Introducción a la geoestadística, antecedentes históricos y aplicaciones geológicas.
+- Población, muestra, unidad de observación, parámetro y estadístico. Poblaciones finitas y modelos conceptuales.
+- Diseño de muestreo, representatividad, cobertura espacial y muestreo preferencial. Incertidumbre y sesgo de selección.
+- Variables cualitativas y cuantitativas; escalas de medición. Calidad, unidades, duplicados, valores atípicos, faltantes y censura.
+- Localización, dominio y soporte. El caso conductor de arsénico en aguas subterráneas.
+
+**Para estudiar:** [Introducción](01-introduccion-geoestadistica.qmd), [Población, muestra y muestreo](02-poblacion-muestra-muestreo.qmd) y [Tipos, calidad y preparación de datos](03-tipos-calidad-datos.qmd).
+
+## Unidad 2. Estadística descriptiva
+
+- Tablas de frecuencia, histogramas y elección de intervalos. Distribución acumulada empírica (ECDF) y estimación de densidad por kernels (KDE).
+- Medidas de posición: media aritmética, ponderada, geométrica y cuadrática; mediana, moda y cuantiles.
+- Dispersión: rango, intervalo intercuartílico, varianza, desviación estándar y coeficiente de variación. Grados de libertad y corrección $n-1$.
+- Momentos, asimetría y curtosis. Diagramas de caja, gráficos de violín y valores atípicos.
+- Distribución de los valores y organización espacial: qué información conserva cada representación.
+
+**Para estudiar:** [Distribuciones y gráficos](04-distribuciones-graficos.qmd), [Medidas de posición](05-posicion.qmd), [Medidas de dispersión](06-dispersion.qmd) y [Forma de la distribución y diagnóstico](07-forma-diagnostico.qmd).
+
+## Unidad 3. Probabilidad e inferencia estadística
+
+- Variables aleatorias, eventos y modelos probabilísticos. Densidad, distribución acumulada y cuantiles.
+- Distribución normal, estandarización, probabilidades y diagnóstico mediante QQ-plots. Diferencia entre distribución empírica y modelo teórico.
+- Distribución muestral, error estándar y Teorema Central del Límite. Efectos del tamaño muestral y de la dependencia espacial.
+- Estimación puntual e intervalos de confianza: cobertura, nivel de confianza, precisión y margen de error. Distribución $t$ de Student y grados de libertad.
+- Pruebas de hipótesis: hipótesis nula y alternativa, estadístico, región crítica, nivel de significación y p-valor. Pruebas de una media, dos muestras independientes y muestras apareadas.
+- Errores de tipo I y II, potencia y tamaño de efecto. Pseudorreplicación y diferencia entre significación estadística e importancia geológica.
+- Comparación de varianzas con la distribución $F$. Tablas de contingencia, frecuencias esperadas y prueba $\chi^2$ de independencia.
+
+**Para estudiar:** [Probabilidad y modelos](08-probabilidad.qmd), [Muestreo e inferencia](09-muestreo-e-inferencia.qmd), [Pruebas de hipótesis](10-hipotesis.qmd), [Varianzas y datos categóricos](11-varianzas-categorias.qmd) y [Síntesis integradora](10b-repaso-integrador.qmd).
+
+## Unidad 4. Relaciones entre variables
+
+- Diagramas de dispersión, covarianza y correlación de Pearson. Asociación lineal, inferencia sobre la correlación y observaciones influyentes.
+- Asociación y causalidad. Mezcla de dominios, relaciones composicionales y dependencia espacial.
+- Regresión lineal simple: modelo, pendiente, intercepto y mínimos cuadrados ordinarios. Residuos, supuestos y diagnóstico.
+- Descomposición de la variabilidad, $R^2$ y tabla ANOVA de la regresión. Inferencia sobre la pendiente.
+- Intervalos para la respuesta media y para una observación individual. Interpolación, extrapolación y evaluación del modelo.
+
+**Para estudiar:** [Correlación y regresión](11-correlacion-regresion.qmd).
+
+## Unidad 5. Continuidad y estimación espacial
+
+- Variable regionalizada y campo aleatorio. Pares de datos, vectores de separación, continuidad espacial y anisotropía.
+- Dominios, tendencias y estacionariedad. Relación entre covarianza y variograma bajo los supuestos correspondientes.
+- Variograma experimental: lags, tolerancias, número de pares y *h-scattergrams*. Efecto pepita, meseta y alcance.
+- Modelos de variograma esférico, exponencial y gaussiano. Direcciones, anisotropía y transformaciones de variables.
+- Estimación por distancia inversa (IDW) y kriging ordinario. Sistemas en covarianzas y variogramas, pesos y redundancia espacial.
+- Varianza de kriging, sensibilidad al modelo, estimación puntual y de bloques. Validación predictiva y límites de interpretación.
+
+**Para estudiar:** [Dependencia espacial](14-variable-regionalizada.qmd), [Variograma](15-variograma.qmd) y [Kriging](16-kriging.qmd).
+
+## Unidad 6. Análisis multivariado
+
+- Observaciones multivariadas, selección y transformación de variables. Escalas, estandarización y matrices de distancias.
+- Agrupamiento jerárquico, criterios de enlace y dendrogramas. $k$-means, centroides, inercia y elección del número de grupos.
+- Interpretación y validación de agrupamientos. Datos axiales y familias de fracturas.
+- Análisis de componentes principales (PCA): máxima varianza, autovalores y autovectores, componentes y *scores*.
+- Varianza explicada, selección de componentes, coeficientes, *loadings* y lectura de biplots. Relación entre PCA y agrupamiento.
+- Aplicaciones e interpretación geológica de datos multivariados; límites de los patrones estadísticos.
+
+**Para estudiar:** [Semejanza y agrupamiento multivariado](13-metodos-multivariados.qmd) y [Análisis de componentes principales](13b-pca.qmd).
+
+## Unidad 7. Remuestreo, aprendizaje y representatividad espacial
+
+- Bootstrap: remuestras con reemplazo, distribución de un estadístico, error estándar e intervalos percentiles. Relación con Monte Carlo y con el TCL.
+- Aprendizaje supervisado, *bagging* y agregación de predicciones. Evaluación con datos reservados y observaciones *out-of-bag*.
+- Árboles de decisión, impureza Gini y Random Forest. Clasificación y regresión; importancia de variables y sobreajuste.
+- Matriz de confusión, exactitud, precisión, sensibilidad y $F_1$. Validación por pozos o regiones ante dependencia espacial.
+- Concentración espacial del muestreo y *cell declustering*: pesos, media ponderada y sensibilidad al tamaño y origen de las celdas.
+
+**Para estudiar:** [Bootstrap, bosques y representatividad espacial](13c-bootstrap-bosques-declustering.qmd).
+
+## Unidad 8. Modelado integrado y simulación geoestadística
+
+- Registros de pozo, interpretación y clasificación de litologías. Separación de pozos de entrenamiento y validación.
+- Porosidad: calibración con datos de referencia, tendencia vertical, residuos, variograma y estimación tridimensional por kriging.
+- Diferencias entre una estimación espacial y una realización. Transformación normal-score y simulación secuencial gaussiana (SGS).
+- Condicionamiento, camino aleatorio y realizaciones alternativas. Media tipo E, dispersión y probabilidad de excedencia.
+- Estimación de registros petrofísicos sobre una grilla común y clasificación de litologías en 3D. Propagación de incertidumbre y validación geológica.
+- Exploración interactiva del flujo de modelado con [GeoReservoir 3D](https://slamoge.gl.fcen.uba.ar/apps/georeservoir/).
+
+**Para estudiar:** [Del pozo al modelo espacial 3D](17-modelado-3d-simulacion.qmd).
+
+## Recursos para estudiar
+
+El [glosario](../glosario.qmd) reúne definiciones de los términos principales y la [bibliografía](../referencias.qmd) permite profundizar. El [laboratorio integrador](../ejemplos/01-caso-sintetico.qmd), los notebooks y las figuras con código permiten explorar los conceptos mediante ejemplos. En [Cómo ejecutar los ejemplos](00-ejecutar-codigo.qmd) se explica cómo acceder a ellos.

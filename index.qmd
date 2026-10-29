@@ -42,6 +42,8 @@ Este manual desarrolla progresivamente las ideas fundamentales que conducen haci
 
 La pregunta que organiza el recorrido es sencilla: **¿qué cambia cuando, además del valor observado, importa dónde fue observado?** Antes de responderla necesitamos comprender qué puede —y qué no puede— decir la estadística clásica sobre una muestra.
 
+El [programa de la materia 2026](capitulos/00-programa.qmd) reúne los temas desarrollados y los vincula con los capítulos correspondientes para facilitar el estudio.
+
 ## Un caso conductor
 
 A lo largo del texto volveremos sobre concentraciones de arsénico medidas en pozos de agua subterránea de la provincia de Buenos Aires. El caso permite avanzar por capas:

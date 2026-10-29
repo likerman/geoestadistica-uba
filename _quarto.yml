@@ -26,6 +26,7 @@ book:
   repo-actions: [edit, issue]
   chapters:
     - index.qmd
+    - capitulos/00-programa.qmd
     - capitulos/00-como-leer.qmd
     - capitulos/00-notacion-prerrequisitos.qmd
     - capitulos/00-ejecutar-codigo.qmd
