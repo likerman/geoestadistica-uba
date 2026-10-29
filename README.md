@@ -63,6 +63,12 @@ quarto render --to html
 
 El primer control revisa referencias bibliográficas, enlaces locales, anclas del glosario, caracteres de control, identificadores y estructura de notebooks. El render completo ejecuta además las figuras y tablas integradas en los capítulos.
 
+## Aplicación interactiva
+
+[GeoReservoir 3D](https://slamoge.gl.fcen.uba.ar/apps/georeservoir/) acompaña el capítulo de modelado integrado. Permite explorar facies, registros petrofísicos, kriging y realizaciones SGS en un visor 3D, además de generar experimentos modificando muestreo, grilla, Random Forest, variograma, vecindario y simulaciones.
+
+También puede abrirse desde el [portal de aplicaciones LaMoGe](https://slamoge.gl.fcen.uba.ar/apps/). El repositorio de desarrollo de GeoReservoir es privado; la aplicación educativa es accesible públicamente.
+
 ## Criterio editorial
 
 Cada capítulo debe distinguir con claridad:

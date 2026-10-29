@@ -168,6 +168,7 @@ Las clases 14 y 15 quedaron incorporadas como dos capítulos completos:
 8. simulación secuencial gaussiana, normal-score, camino aleatorio y condicionamiento;
 9. media tipo E, dispersión y probabilidad de excedencia entre realizaciones;
 10. reconstrucción litológica 3D y propagación de incertidumbre.
+11. acceso a GeoReservoir 3D para explorar el flujo completo y modificar sus parámetros.
 
 Los ejemplos numéricos de las clases se identifican como sintéticos. Se preservan las cifras efectivamente utilizadas —incluidas las 12 realizaciones del caso de simulación— y se evitan interpretaciones causales de la importancia de variables o probabilísticas de votos del bosque.
 

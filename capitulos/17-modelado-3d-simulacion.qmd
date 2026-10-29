@@ -10,6 +10,7 @@ Al finalizar este capítulo, el lector debería poder:
 - describir el algoritmo de [simulación secuencial gaussiana](../glosario.qmd#glosario-sgs) (SGS);
 - resumir un conjunto de realizaciones mediante media, dispersión y probabilidad de excedencia;
 - reconocer cómo se propaga la incertidumbre al reconstruir facies con registros interpolados.
+- utilizar GeoReservoir 3D para comparar visual y cuantitativamente las etapas del flujo de modelado.
 
 ::: {.callout-tip title="Código reproducible"}
 El [ejemplo integrado de clasificación y simulación](../ejemplos/07_modelado_3d_simulacion.ipynb) reproduce un corte 2D simplificado. El capítulo explica el flujo 3D; el notebook reduce la grilla para que pueda ejecutarse en una computadora personal.
@@ -140,6 +141,63 @@ $$
 
 Interpolar cada registro por separado puede destruir correlaciones petrofísicas y crear combinaciones que no aparecieron en entrenamiento. Se debe comprobar distribución univariada, relaciones multivariadas, variogramas por propiedad, desempeño en pozos ocultos y coherencia geológica. Una extensión más completa simularía conjuntamente predictores o propagaría realizaciones a través del clasificador, en lugar de clasificar sólo sus campos medios.
 
+## Explorar el flujo con GeoReservoir 3D {#sec-georeservoir}
+
+[GeoReservoir 3D](https://slamoge.gl.fcen.uba.ar/apps/georeservoir/) es la aplicación web pedagógica que acompaña este capítulo. Permite recorrer el modelo geológico y petrofísico, modificar decisiones de modelado y comparar sus consecuencias. No requiere instalar Python para explorar el caso base.
+
+::: {.callout-tip title="Abrir la aplicación"}
+[**Iniciar GeoReservoir 3D**](https://slamoge.gl.fcen.uba.ar/apps/georeservoir/){.btn .btn-primary target="_blank"}
+
+[Ver el portal de aplicaciones LaMoGe](https://slamoge.gl.fcen.uba.ar/apps/){target="_blank"}
+:::
+
+### Visor del modelo
+
+El visor 3D permite rotar, acercar y desplazar el volumen, activar planos de corte $X$, $Y$ y $Z$, construir secciones verticales A–B y proyectar pozos sobre ellas. La exageración vertical y la vista cenital ayudan a comparar geometrías, pero también pueden alterar la percepción visual de espesores y pendientes; deben documentarse al exportar una figura.
+
+Desde un mismo espacio se pueden visualizar:
+
+- facies o litologías;
+- GR, RHOB, NPHI, RT y DT;
+- porosidad estimada por kriging;
+- media y desviación estándar entre realizaciones SGS;
+- pozos reales o sintéticos, interpretados y no interpretados.
+
+Las escalas, unidades y leyendas forman parte de la interpretación. Los cortes pueden exportarse como CSV y las vistas como PNG para analizarlos o documentar una comparación. Los modos claro y oscuro cambian la presentación, no los valores del modelo.
+
+### Laboratorio de modelos
+
+La pestaña **Laboratorio** permite convertir el flujo conceptual en un experimento controlado. Se pueden modificar:
+
+| Etapa | Decisiones disponibles | Pregunta para explorar |
+|---|---|---|
+| Datos y grilla | resolución, tamaño, semilla, cantidad y distribución de pozos | ¿qué estructuras puede resolver la discretización y cuánto depende el resultado del muestreo? |
+| Clasificación | pozos interpretados, entrenamiento y validación, cantidad y regularización de árboles | ¿cambia el desempeño cuando la prueba se separa por pozos? |
+| Continuidad | dirección, modelo exponencial, esférico o gaussiano, pepita y alcances $X$, $Y$, $Z$ | ¿qué hipótesis de continuidad y anisotropía se están imponiendo? |
+| Estimación | cantidad de vecinos locales | ¿cómo cambia el equilibrio entre información local, estabilidad y costo? |
+| Simulación | número de realizaciones y umbral de porosidad | ¿son estables la media, la dispersión y la probabilidad de excedencia? |
+
+El experimento sigue la secuencia:
+
+$$
+\text{datos y pozos}
+\rightarrow\text{partición de entrenamiento y validación}
+\rightarrow\text{variograma experimental}
+\rightarrow\text{modelo de variograma}
+\rightarrow\text{kriging}
+\rightarrow\text{SGS}
+\rightarrow\text{registros interpolados}
+\rightarrow\text{facies por Random Forest}.
+$$
+
+La resistividad y otras propiedades positivas con asimetría marcada pueden analizarse en escala logarítmica. Transformar cambia la variable y la escala del variograma; estimaciones o simulaciones deben volver a la escala física con una transformación inversa apropiada, atendiendo al sesgo que puede introducir.
+
+::: {.callout-important title="Alcance pedagógico"}
+GeoReservoir 3D permite formular y comparar hipótesis. Sus modelos no constituyen una caracterización definitiva de un reservorio real sin calibración petrofísica, control de calidad, análisis de soporte, ajuste espacial y validación independiente adicionales.
+:::
+
+El código de mantenimiento se conserva en el [repositorio privado de GeoReservoir](https://github.com/likerman/georeservoir); el acceso a la aplicación educativa se realiza mediante el enlace público anterior.
+
 ## Lista de control
 
 - ¿Los datos de entrenamiento y prueba están separados por pozos o regiones?
@@ -151,6 +209,7 @@ Interpolar cada registro por separado puede destruir correlaciones petrofísicas
 - ¿Las probabilidades se interpretan condicionadas a datos y modelo?
 - ¿Los predictores interpolados conservan relaciones físicamente plausibles?
 - ¿La validación incluye pozos omitidos y no sólo métricas internas?
+- ¿Las capturas o exportaciones de GeoReservoir documentan parámetros, unidades, escala y semilla?
 
 ## Síntesis
 
@@ -159,4 +218,5 @@ Interpolar cada registro por separado puede destruir correlaciones petrofísicas
 3. Kriging produce una estimación; SGS produce realizaciones alternativas condicionadas.
 4. La incertidumbre se estudia comparando realizaciones, sin confundirla con error total.
 5. El volumen litológico hereda las incertidumbres de interpolación y clasificación.
+6. GeoReservoir 3D permite experimentar con estas decisiones, pero no reemplaza su justificación ni validación.
 
