@@ -13,7 +13,7 @@ Al finalizar este capítulo, el lector debería poder:
 - utilizar GeoReservoir 3D para comparar visual y cuantitativamente las etapas del flujo de modelado.
 
 ::: {.callout-tip title="Código reproducible"}
-El [ejemplo integrado de clasificación y simulación](../ejemplos/07_modelado_3d_simulacion.ipynb) reproduce un corte 2D simplificado. El capítulo explica el flujo 3D; el notebook reduce la grilla para que pueda ejecutarse en una computadora personal.
+El [ejemplo de simulación secuencial gaussiana](../ejemplos/07_modelado_3d_simulacion.ipynb) reproduce un corte 2D simplificado. Para la clasificación y el declustering, consulte el [notebook de bootstrap y Random Forest](../ejemplos/06_bootstrap_random_forest.ipynb). El capítulo explica el flujo 3D; el ejemplo de simulación reduce la grilla para que pueda ejecutarse en una computadora personal.
 :::
 
 ## Cuatro productos que no deben confundirse
@@ -26,7 +26,7 @@ Conviene mantener separados:
 
 1. **observación:** medición o descripción en un soporte y localización;
 2. **clasificación:** clase predicha a partir de registros;
-3. **estimación:** valor esperado local bajo un modelo espacial;
+3. **estimación:** valor calculado para una cantidad desconocida mediante un procedimiento y un modelo; bajo un modelo gaussiano con parámetros conocidos, la media condicional es una interpretación posible de una estimación de kriging apropiada;
 4. **realización:** campo posible sorteado de una distribución condicional.
 
 ## Clasificar litologías en pozos
@@ -75,6 +75,38 @@ SGS genera una [realización condicional](../glosario.qmd#glosario-simulacion-co
 
 La distribución local no se ajusta al histograma de los vecinos: surge del modelo gaussiano condicional y su covarianza. El camino aleatorio y los sorteos producen realizaciones distintas. Todas están condicionadas por los mismos datos y supuestos; ninguna es “la verdadera”.
 
+Por ejemplo, supongamos que visitamos primero la celda A. Sus datos condicionantes son las observaciones cercanas de los pozos. El sistema devuelve una media y una varianza condicionales y de esa distribución se sortea $y_A$. Al visitar después la celda B se consideran los pozos y, si entra en la vecindad seleccionada, también $y_A$. Así el primer sorteo participa de la distribución desde la que se sorteará $y_B$. El orden es aleatorio; las coordenadas y profundidades de A y B permanecen fijas.
+
+```{python}
+#| label: fig-secuencia-sgs
+#| fig-cap: "Esquema de dos pasos de SGS: el valor simulado en A se suma al condicionamiento de B si pertenece a su vecindad."
+#| fig-alt: "Dos paneles muestran pozos y celdas A y B. En el segundo, el valor simulado en A se incorpora a los pozos para condicionar B."
+
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+
+fig, axes = plt.subplots(1, 2, figsize=(9, 3.6), constrained_layout=True)
+pozos = [(0.8, 1.1), (1.2, 3.3), (4.2, 2.0)]
+for ax in axes:
+    ax.scatter(*zip(*pozos), marker="o", s=90, color="#1D4162")
+    ax.set(xlim=(0, 5), ylim=(0, 4), aspect="equal", xticks=[], yticks=[])
+    ax.grid(alpha=.15)
+axes[0].scatter([2.3, 3.5], [2.7, 1.1], marker="s", s=150,
+                facecolors="none", edgecolors="#B56F3A", linewidths=2)
+axes[0].text(2.3, 3.0, "A", ha="center"); axes[0].text(3.5, 1.4, "B", ha="center")
+axes[0].set_title("1. Sortear A con datos de pozos")
+axes[1].scatter([2.3], [2.7], marker="s", s=150, color="#B56F3A")
+axes[1].scatter([3.5], [1.1], marker="s", s=150, facecolors="none", edgecolors="#B56F3A", linewidths=2)
+axes[1].text(2.3, 3.0, "$y_A$", ha="center"); axes[1].text(3.5, 1.4, "B", ha="center")
+axes[1].annotate("", xy=(3.35, 1.3), xytext=(2.45, 2.5),
+                 arrowprops={"arrowstyle": "->", "color": "#B56F3A"})
+axes[1].set_title("2. Sortear B con pozos y A")
+fig.legend(handles=[Line2D([0], [0], marker="o", color="w", markerfacecolor="#1D4162", label="pozo"),
+                    Line2D([0], [0], marker="s", color="w", markerfacecolor="#B56F3A", label="valor ya simulado")],
+           loc="lower center", ncol=2)
+plt.show()
+```
+
 ::: {.callout-warning title="Condicional no significa exacto"}
 Una realización puede honrar los datos en sus ubicaciones y aun ser inadecuada si el variograma, la tendencia, la transformación, el dominio o el soporte son incorrectos. La variabilidad entre realizaciones no incluye automáticamente incertidumbre de modelo.
 :::
@@ -98,32 +130,48 @@ Con 12 realizaciones, la probabilidad cambia en pasos de $1/12\approx8.3$ puntos
 
 ```{python}
 #| label: fig-realizaciones-resumen
-#| fig-cap: "Tres realizaciones gaussianas condicionadas sintéticas y sus resúmenes: media y probabilidad de exceder cero."
-#| fig-alt: "Cinco mapas pequeños: tres campos espaciales alternativos, su media y la proporción de campos con valores mayores que cero."
+#| fig-cap: "Tres realizaciones gaussianas condicionadas por los mismos datos sintéticos y sus resúmenes. Los puntos negros señalan observaciones."
+#| fig-alt: "Seis mapas: tres realizaciones que respetan los mismos puntos, media, desviación estándar y probabilidad de exceder cero; cada grupo tiene una escala de color."
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.ndimage import gaussian_filter
+from scipy.spatial.distance import cdist
 
 rng = np.random.default_rng(20261027)
-R, ny, nx = 24, 35, 48
-real = np.array([gaussian_filter(rng.normal(size=(ny, nx)), sigma=3)
-                 for _ in range(R)])
-real = (real-real.mean(axis=(1,2), keepdims=True))/real.std(axis=(1,2), keepdims=True)
+R, ny, nx = 24, 12, 15
+xx, yy = np.meshgrid(np.arange(nx), np.arange(ny))
+grilla = np.column_stack([xx.ravel(), yy.ravel()])
+idx = np.array([17, 55, 110, 158])
+obs = np.array([-1.2, 0.5, 1.1, -0.3])
+C = np.exp(-cdist(grilla, grilla)/4.0)  # covarianza exponencial
+Cgg = C[np.ix_(idx, idx)]
+Cgo = C[:, idx]
+# Un campo gaussiano incondicional, corregido para honrar los datos.
+L = np.linalg.cholesky(C + 1e-10*np.eye(len(grilla)))
+u = rng.standard_normal((R, len(grilla))) @ L.T
+correccion = np.linalg.solve(Cgg, (obs-u[:, idx]).T).T @ Cgo.T
+real = (u+correccion).reshape(R, ny, nx)
 
-fig, ax = plt.subplots(1, 5, figsize=(14, 3), constrained_layout=True)
+fig, ax = plt.subplots(2, 3, figsize=(10, 7), constrained_layout=True)
 for j in range(3):
-    ax[j].imshow(real[j], cmap="RdBu_r", vmin=-2.5, vmax=2.5, origin="lower")
-    ax[j].set_title(f"Realización {j+1}")
-ax[3].imshow(real.mean(0), cmap="RdBu_r", vmin=-1, vmax=1, origin="lower")
-ax[3].set_title("Media tipo E")
-ax[4].imshow((real > 0).mean(0), cmap="Blues", vmin=0, vmax=1, origin="lower")
-ax[4].set_title("P(Z > 0)")
-for a in ax: a.set(xticks=[], yticks=[])
+    im = ax.flat[j].imshow(real[j], cmap="RdBu_r", vmin=-2.5, vmax=2.5, origin="lower")
+    ax.flat[j].set_title(f"Realización {j+1}")
+    ax.flat[j].scatter(grilla[idx, 0], grilla[idx, 1], c="black", s=15)
+    fig.colorbar(im, ax=ax.flat[j], label="Residuo normal-score", shrink=.8)
+media = ax.flat[3].imshow(real.mean(0), cmap="RdBu_r", vmin=-2.5, vmax=2.5, origin="lower")
+ax.flat[3].set_title("Media tipo E")
+fig.colorbar(media, ax=ax.flat[3], label="Residuo normal-score", shrink=.8)
+sd = ax.flat[4].imshow(real.std(0, ddof=1), cmap="viridis", vmin=0, origin="lower")
+ax.flat[4].set_title("Desviación estándar")
+fig.colorbar(sd, ax=ax.flat[4], label="Residuo normal-score", shrink=.8)
+prob = ax.flat[5].imshow((real > 0).mean(0), cmap="Blues", vmin=0, vmax=1, origin="lower")
+ax.flat[5].set_title("P(Z > 0 | datos, modelo)")
+fig.colorbar(prob, ax=ax.flat[5], label="Proporción", shrink=.8)
+for a in ax.flat: a.set(xticks=[], yticks=[])
 plt.show()
 ```
 
-La figura ilustra el resumen de realizaciones, no implementa SGS ni condiciona pozos; el notebook asociado desarrolla el algoritmo secuencial en una grilla pequeña.
+El ejemplo usa una distribución gaussiana conjunta y condicionamiento directo mediante covarianzas; **no implementa el recorrido secuencial de SGS**. Los cuatro puntos se mantienen en el mismo valor en todas las realizaciones. El notebook asociado implementa SGS con una vecindad limitada. Ambos ejemplos trabajan en escala gaussiana sintética; no son datos de un reservorio real. Con $R=24$ la proporción de excedencia cambia en pasos de $1/24$.
 
 ## Reconstrucción litológica 3D
 

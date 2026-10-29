@@ -6,7 +6,7 @@ El contenido conceptual puede leerse sin programar. El código cumple otra funci
 
 ### Código integrado en cada capítulo
 
-Los bloques con el rótulo **Código** pueden copiarse y ejecutarse en un notebook. Los capítulos muestran también su resultado para que la lectura no dependa de tener Python instalado.
+Los bloques con el rótulo **Código** pueden copiarse y ejecutarse en un notebook. Algunos utilizan importaciones, funciones o datos definidos en bloques anteriores del mismo capítulo: copiarlos por separado puede producir errores. En ese caso, ejecute primero los bloques previos en orden o use el notebook asociado. Los capítulos muestran también su resultado para que la lectura no dependa de tener Python instalado.
 
 ### Notebooks descargables
 
@@ -16,6 +16,9 @@ Los recorridos prácticos más extensos están disponibles como notebooks:
 - [Variograma experimental y anisotropía](../ejemplos/02_variograma.ipynb)
 - [Kriging ordinario, sensibilidad y validación](../ejemplos/03_kriging.ipynb)
 - [Semejanza y agrupamiento multivariado](../ejemplos/04_clustering.ipynb)
+- [Análisis de componentes principales](../ejemplos/05_pca.ipynb)
+- [Bootstrap, Random Forest y declustering](../ejemplos/06_bootstrap_random_forest.ipynb)
+- [Simulación secuencial gaussiana en un corte 2D](../ejemplos/07_modelado_3d_simulacion.ipynb)
 
 Cada archivo puede descargarse desde el navegador y abrirse en JupyterLab, Jupyter Notebook, VS Code o Google Colab. En Colab, use **Archivo → Subir notebook** y seleccione el archivo descargado.
 

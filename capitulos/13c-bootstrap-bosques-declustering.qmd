@@ -37,6 +37,8 @@ El histograma de porosidades describe variabilidad entre rocas. El histograma de
 
 Para la media, el TCL suele proporcionar una solución analítica sencilla. *Bootstrap* resulta especialmente útil cuando la distribución muestral del estadístico es difícil de derivar, aunque no es automático: cuantiles extremos, muestras pequeñas, valores atípicos y dependencia requieren cautela. El remuestreo iid convencional supone observaciones intercambiables; si hay continuidad espacial, deben considerarse esquemas por bloques u otro modelo de dependencia.
 
+En términos computacionales, esto es una aplicación de [Monte Carlo](../glosario.qmd#glosario-monte-carlo): repetir experimentos aleatorios para aproximar una distribución o cantidad. Monte Carlo es la estrategia general; *bootstrap* especifica aquí cómo generar cada experimento, remuestreando los datos observados.
+
 ```{python}
 #| label: fig-bootstrap-p90
 #| fig-cap: "Distribución observada y distribución bootstrap del P90. Son objetos estadísticos distintos."
@@ -91,6 +93,39 @@ $$
 G=1-\sum_{k=1}^{K}p_k^2.
 $$
 
+### Una partición calculada paso a paso
+
+Imaginemos un nodo con ocho intervalos etiquetados: cuatro areniscas y cuatro lutitas. Su impureza es $G_{padre}=1-(4/8)^2-(4/8)^2=0.5$. Una regla candidata separa los datos por un umbral de gamma ray:
+
+| Nodo | Arenisca | Lutita | Total | Impureza Gini |
+|---|---:|---:|---:|---:|
+| Padre | 4 | 4 | 8 | 0.500 |
+| Hijo: GR bajo | 3 | 1 | 4 | 0.375 |
+| Hijo: GR alto | 1 | 3 | 4 | 0.375 |
+
+La impureza ponderada de los hijos es $(4/8)(0.375)+(4/8)(0.375)=0.375$, y la reducción es $0.5-0.375=0.125$. El algoritmo compara esta reducción con las de otras reglas candidatas. El ejemplo ilustra el cálculo: el umbral y la regla no son propiedades universales de las litologías.
+
+### Evaluar las clases, no sólo el total
+
+En una [matriz de confusión](../glosario.qmd#glosario-matriz-confusion), las filas siguientes contienen las clases de referencia y las columnas las predichas. Reproduce los 96 intervalos del caso docente de modelado:
+
+| Referencia / predicción | Lutita | Limolita | Arenisca | Total |
+|---|---:|---:|---:|---:|
+| Lutita | 69 | 2 | 0 | 71 |
+| Limolita | 2 | 11 | 0 | 13 |
+| Arenisca | 0 | 0 | 12 | 12 |
+| Total | 71 | 13 | 12 | 96 |
+
+La exactitud global es $(69+11+12)/96=95.8\%$. Para interpretar una clase por separado se la considera positiva y se agrupan las demás como negativas. Si $VP$, $FP$ y $FN$ representan verdaderos positivos, falsos positivos y falsos negativos:
+
+$$
+\text{precisión}=\frac{VP}{VP+FP},\qquad
+\text{sensibilidad}=\frac{VP}{VP+FN},\qquad
+F_1=\frac{2\,VP}{2\,VP+FP+FN}.
+$$
+
+La [precisión](../glosario.qmd#glosario-precision-clasificacion) pregunta qué proporción de las predicciones de esa clase fue correcta; la [sensibilidad](../glosario.qmd#glosario-sensibilidad-clasificacion), qué proporción de los casos reales se recuperó. El [puntaje $F_1$](../glosario.qmd#glosario-f1) combina ambas mediante su media armónica cuando están definidas. Para limolita, $VP=11$, $FP=2$ y $FN=2$: precisión, sensibilidad y $F_1$ son $11/13\approx84.6\%$. Los denominadores deben revisarse: una clase ausente puede dejar alguna métrica indefinida. El buen resultado para arenisca en esta muestra de doce intervalos no garantiza el mismo desempeño en otros pozos.
+
 Los hiperparámetros —número y profundidad de árboles, mínimo por hoja, cantidad de variables candidatas— controlan complejidad y costo. El resultado debe evaluarse sobre datos no usados para el ajuste. La exactitud global puede ocultar una clase minoritaria: conviene informar [matriz de confusión](../glosario.qmd#glosario-matriz-confusion), precisión, sensibilidad y $F_1$ por clase.
 
 La importancia por disminución media de impureza describe el uso de una variable dentro del bosque; no mide causalidad y puede favorecer predictores con muchos cortes posibles. La importancia por permutación sobre un conjunto reservado responde mejor cuánto empeora la predicción al romper la información de una variable, pero también se reparte o distorsiona cuando los predictores están correlacionados.
@@ -138,6 +173,8 @@ float(z.mean()), float(np.sum(w*z))
 ```
 
 En este ejemplo la media aritmética es $20.5\%$ y la ponderada $17.0\%$. El segundo valor **no queda demostrado como la media verdadera**: sólo muestra el efecto del esquema de ponderación.
+
+El cálculo puede seguirse sin software. La celda A reúne cuatro porosidades cuya media es $24\%$; las celdas B y C tienen una observación cada una, de $12\%$ y $15\%$. Como hay tres celdas ocupadas, cada una recibe un tercio del peso total. Las cuatro muestras de A reciben individualmente $1/12$; las de B y C, $1/3$ cada una. Así, la media ponderada equivale a $(24+12+15)/3=17\%$. Esta equivalencia entre promedios de celdas supone aquí igual peso para cada celda ocupada.
 
 ## Qué resuelve cada herramienta
 

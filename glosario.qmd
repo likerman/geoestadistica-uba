@@ -371,6 +371,12 @@ Curtosis de Pearson menos tres: $\gamma_2=\beta_2-3$. Esta convención hace que 
 
 ## F
 
+### F1 {#glosario-f1}
+
+**Inglés:** *F1 score*.
+
+Media armónica de precisión y sensibilidad para una clase: $F_1=2VP/(2VP+FP+FN)$. Es útil para sintetizar ambas, pero no reemplaza la matriz de confusión ni informa directamente los verdaderos negativos. Puede quedar indefinida según los conteos y la convención usada. Véase [Evaluar las clases](capitulos/13c-bootstrap-bosques-declustering.qmd#evaluar-las-clases-no-sólo-el-total).
+
 ### Frecuencia absoluta {#glosario-frecuencia-absoluta}
 
 **Inglés:** *absolute frequency*. **Símbolo frecuente:** $f_j$ o $n_j$.
@@ -553,6 +559,12 @@ Correlación entre una variable estandarizada y una componente principal. Si $a_
 
 ## M
 
+### Monte Carlo {#glosario-monte-carlo}
+
+**Inglés:** *Monte Carlo methods*.
+
+Familia de métodos que emplean sorteos aleatorios repetidos para aproximar cantidades, distribuciones o resultados de modelos. La precisión computacional mejora al aumentar repeticiones bajo condiciones apropiadas, pero las simulaciones siguen dependiendo de los datos y del modelo elegidos.
+
 ### Matriz de confusión {#glosario-matriz-confusion}
 
 **Inglés:** *confusion matrix*.
@@ -660,6 +672,12 @@ Registro obtenido para una unidad de observación. Puede comprender valor, local
 Observación alejada respecto de un patrón o criterio descriptivo. La etiqueta depende del método y no establece la causa: puede reflejar error, contaminación, otra población o un proceso geológico real. *Outlier* no equivale a error.
 
 ## P
+
+### Precisión de clasificación {#glosario-precision-clasificacion}
+
+**Inglés:** *precision*.
+
+Para una clase, proporción de predicciones positivas que son correctas: $VP/(VP+FP)$. Depende de qué clase se considera positiva y puede quedar indefinida si no se predice ningún caso positivo. Es distinta de la precisión de una estimación estadística.
 
 ### Parámetro {#glosario-parametro}
 
@@ -783,6 +801,12 @@ Raíz de la media de los cuadrados: $\sqrt{n^{-1}\sum_i x_i^2}$. Combina nivel r
 
 ## S
 
+### Sensibilidad de clasificación {#glosario-sensibilidad-clasificacion}
+
+**Inglés:** *recall* o *sensitivity*.
+
+Para una clase, proporción de casos positivos de referencia recuperados: $VP/(VP+FN)$. Puede quedar indefinida si no hay casos de referencia de esa clase. En clasificación multiclase se calcula eligiendo una clase como positiva frente a las demás.
+
 ### Simulación secuencial gaussiana {#glosario-sgs}
 
 **Inglés:** *sequential Gaussian simulation* (**SGS**).
@@ -856,7 +880,7 @@ Medida de la magnitud de una diferencia o relación. Puede expresarse en unidade
 
 **Inglés:** *Student's t distribution*.
 
-Familia de distribuciones simétricas, indexadas por grados de libertad, que aparece al estandarizar una media usando la desviación estándar muestral $S$ en lugar de la desviación estándar poblacional $\sigma$. Tiene colas más pesadas que la normal estándar, especialmente con pocos grados de libertad. Véase [Cuando sigma es desconocida: t de Student](capitulos/09-muestreo-e-inferencia.qmd#sec-t-student).
+Familia de distribuciones simétricas indexadas por grados de libertad. Para una muestra normal independiente e idénticamente distribuida, al estandarizar su media usando $S$ se obtiene exactamente una t con $n-1$ grados de libertad. Estimar $\sigma$ con $S$ no garantiza por sí solo una distribución t exacta bajo cualquier modelo. Sus colas son más pesadas que las de la normal estándar, especialmente con pocos grados de libertad. Véase [Cuando sigma es desconocida: t de Student](capitulos/09-muestreo-e-inferencia.qmd#sec-t-student).
 
 ### Teorema Central del Límite {#glosario-tcl}
 
